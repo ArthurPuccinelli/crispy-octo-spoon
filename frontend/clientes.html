@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Clientes</title>
+  <script type="module" src="clientes.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f4f4f4; }
+    form { margin-bottom: 2em; }
+    input, button { margin: 0.5em 0; }
+  </style>
+</head>
+<body>
+  <h1>Gestão de Clientes</h1>
+  <form id="cliente-form">
+    <input type="hidden" id="cliente-id">
+    <input type="text" id="nome" placeholder="Nome" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <button type="submit">Salvar</button>
+    <button type="button" id="cancelar-edicao" style="display:none">Cancelar</button>
+  </form>
+  <table id="clientes-table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</body>
+</html>
