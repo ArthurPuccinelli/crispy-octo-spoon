@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@accordproject/concerto-core": "^3.23.0"
+  }
+}
