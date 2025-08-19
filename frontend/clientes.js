@@ -1,4 +1,5 @@
-import { supabase } from './supabaseClient.js';
+// supabase já está disponível via window.supabase
+const supabase = window.supabase;
 
 const tableBody = document.querySelector('#clientes-table tbody');
 const form = document.getElementById('cliente-form');
