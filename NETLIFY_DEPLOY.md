@@ -66,6 +66,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY = sua_chave_anonima_aqui
 - ✅ Configure as variáveis de ambiente no Netlify
 - ✅ Faça um novo deploy
 
+### Erro: "Configuring Next.js via 'next.config.ts' is not supported"
+- ✅ **RESOLVIDO**: O arquivo `next.config.ts` foi convertido para `next.config.js`
+- ✅ O Netlify só suporta arquivos `.js` ou `.mjs` para configuração do Next.js
+- ✅ Faça um novo deploy após a correção
+
 ### Erro: "Build failed"
 - ✅ Verifique se o comando `npm run build` funciona localmente
 - ✅ Verifique se todas as dependências estão no `package.json`
@@ -78,3 +83,10 @@ Se ainda houver problemas:
 2. Teste localmente com `npm run dev`
 3. Execute `npm run check-env` para verificar as variáveis
 4. Consulte o arquivo `ENVIRONMENT_SETUP.md` no frontend
+
+## 🔧 Correções Recentes
+
+### ✅ Problema do next.config.ts Resolvido
+- **Problema**: O Netlify não suporta arquivos de configuração do Next.js em TypeScript
+- **Solução**: Convertido `next.config.ts` para `next.config.js`
+- **Status**: ✅ Resolvido e testado localmente
