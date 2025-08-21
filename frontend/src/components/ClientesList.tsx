@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
 // Configuração do Supabase
@@ -14,11 +14,17 @@ if (!supabaseUrl || !supabaseAnonKey) {
 const supabase = createClient(supabaseUrl!, supabaseAnonKey!)
 
 interface Cliente {
-  id: number
+  id: string
   nome: string
   email: string
-  created_at?: string
-  updated_at?: string
+  cpf_cnpj?: string
+  telefone?: string
+  cidade?: string
+  estado?: string
+  tipo_cliente: 'pessoa_fisica' | 'pessoa_juridica'
+  status: 'ativo' | 'inativo' | 'suspenso'
+  created_at: string
+  updated_at: string
 }
 
 export default function ClientesList() {
@@ -27,7 +33,7 @@ export default function ClientesList() {
   const [error, setError] = useState<string | null>(null)
   const [hasLoaded, setHasLoaded] = useState(false)
 
-  const fetchClientesFromSupabase = useCallback(async () => {
+  const fetchClientesFromSupabase = async () => {
     // Evitar múltiplas requisições simultâneas
     if (loading) return
 
@@ -36,7 +42,7 @@ export default function ClientesList() {
       setError(null)
       console.log('🔄 Consultando tabela clientes no Supabase...')
 
-      // Consulta direta na tabela clientes
+      // Consulta direta na tabela clientes da Fontara
       const { data, error: supabaseError } = await supabase
         .from('clientes')
         .select('*')
@@ -64,25 +70,28 @@ export default function ClientesList() {
     } finally {
       setLoading(false)
     }
-  }, [loading])
+  }
 
-  // Teste automático ao montar o componente
+  // Executar apenas uma vez ao montar o componente
   useEffect(() => {
-    console.log('🚀 Componente montado, conectando com Supabase...')
+    console.log('🚀 Componente montado, conectando com Supabase Fontara...')
     fetchClientesFromSupabase()
-  }, [fetchClientesFromSupabase])
+  }, []) // Array vazio para executar apenas uma vez
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h2 className="text-2xl font-bold text-center">📋 Lista de Clientes (Supabase)</h2>
+    <div className="max-w-6xl mx-auto p-6 space-y-6">
+      <h2 className="text-3xl font-bold text-center text-gray-800">🏦 Fontara - Gestão de Clientes</h2>
 
       {/* Status da conexão */}
-      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg text-center">
-        <p className="text-blue-800">
-          {hasLoaded ? '✅ Conectado ao Supabase!' : '⏳ Conectando com Supabase...'}
-        </p>
-        <p className="text-sm text-blue-600 mt-1">
+      <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 p-6 rounded-lg text-center">
+        <h3 className="text-xl font-semibold text-blue-800 mb-2">
+          {hasLoaded ? '✅ Conectado ao Supabase Fontara!' : '⏳ Conectando com Supabase...'}
+        </h3>
+        <p className="text-blue-600">
           {supabaseUrl ? '🔗 URL configurada' : '❌ URL não configurada'}
+        </p>
+        <p className="text-sm text-blue-500 mt-1">
+          Plataforma Financeira - Gestão Completa de Clientes e Produtos
         </p>
       </div>
 
@@ -91,7 +100,7 @@ export default function ClientesList() {
         <button
           onClick={fetchClientesFromSupabase}
           disabled={loading}
-          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-4 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg hover:from-green-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-200"
         >
           {loading ? '⏳ Consultando...' : '🔄 Recarregar do Supabase'}
         </button>
@@ -99,20 +108,21 @@ export default function ClientesList() {
 
       {/* Loading */}
       {loading && (
-        <div className="flex justify-center items-center p-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-2">Consultando tabela clientes...</span>
+        <div className="flex justify-center items-center p-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <span className="ml-3 text-lg">Consultando tabela clientes da Fontara...</span>
         </div>
       )}
 
       {/* Erro */}
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          <strong className="font-bold">Erro:</strong> {error}
-          <div className="mt-2">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg">
+          <strong className="font-bold text-lg">❌ Erro de Conexão:</strong>
+          <p className="mt-2">{error}</p>
+          <div className="mt-4">
             <button
               onClick={fetchClientesFromSupabase}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+              className="px-6 py-3 bg-red-600 text-white rounded hover:bg-red-700 text-sm font-semibold"
             >
               🔄 Tentar Novamente
             </button>
@@ -122,52 +132,109 @@ export default function ClientesList() {
 
       {/* Lista de Clientes */}
       {clientes.length > 0 ? (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-center text-gray-700">
-            📊 Total de Clientes: {clientes.length}
-          </h3>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {clientes.map((cliente) => (
-              <div key={cliente.id} className="bg-white p-6 rounded-lg shadow-md border hover:shadow-lg transition-shadow">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-lg font-semibold text-gray-800">{cliente.nome}</h4>
-                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">ID: {cliente.id}</span>
+        <div className="space-y-6">
+          <div className="bg-white p-6 rounded-lg shadow-lg border">
+            <h3 className="text-2xl font-bold text-center text-gray-800 mb-4">
+              📊 Dashboard de Clientes - Total: {clientes.length}
+            </h3>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {clientes.map((cliente) => (
+                <div key={cliente.id} className="bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl shadow-md border hover:shadow-lg transition-all duration-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-xl font-bold text-gray-800">{cliente.nome}</h4>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${cliente.status === 'ativo' ? 'bg-green-100 text-green-800' :
+                      cliente.status === 'suspenso' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                      {cliente.status}
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-gray-600 flex items-center">
+                      <span className="mr-2">📧</span>
+                      {cliente.email}
+                    </p>
+
+                    {cliente.telefone && (
+                      <p className="text-gray-600 flex items-center">
+                        <span className="mr-2">📱</span>
+                        {cliente.telefone}
+                      </p>
+                    )}
+
+                    {cliente.cidade && cliente.estado && (
+                      <p className="text-gray-600 flex items-center">
+                        <span className="mr-2">📍</span>
+                        {cliente.cidade} - {cliente.estado}
+                      </p>
+                    )}
+
+                    <div className="flex items-center justify-between mt-4">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${cliente.tipo_cliente === 'pessoa_fisica' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
+                        }`}>
+                        {cliente.tipo_cliente === 'pessoa_fisica' ? '👤 PF' : '🏢 PJ'}
+                      </span>
+
+                      <span className="text-xs text-gray-500">
+                        Criado: {new Date(cliente.created_at).toLocaleDateString('pt-BR')}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-gray-600 flex items-center mb-2">
-                  <span className="mr-2">📧</span>
-                  {cliente.email}
-                </p>
-                {cliente.created_at && (
-                  <p className="text-xs text-gray-500">
-                    Criado: {new Date(cliente.created_at).toLocaleDateString('pt-BR')}
-                  </p>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       ) : (
-        <div className="text-center text-gray-500 py-8">
-          {hasLoaded ? 'Nenhum cliente encontrado na tabela clientes do Supabase.' : 'Aguardando consulta ao Supabase...'}
+        <div className="text-center text-gray-500 py-12">
+          {hasLoaded ? (
+            <div className="space-y-4">
+              <p className="text-xl">Nenhum cliente encontrado na tabela clientes da Fontara.</p>
+              <p className="text-sm text-gray-400">Execute o script SQL para criar os dados iniciais.</p>
+              <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg max-w-md mx-auto">
+                <p className="text-yellow-800 font-semibold">📋 Próximo Passo:</p>
+                <p className="text-yellow-700 text-sm mt-2">
+                  1. Acesse o Supabase<br />
+                  2. Execute o script SQL da Fontara<br />
+                  3. Recarregue esta página
+                </p>
+              </div>
+            </div>
+          ) : (
+            <p className="text-lg">Aguardando consulta ao Supabase...</p>
+          )}
         </div>
       )}
 
       {/* Informações de debug */}
-      <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg text-center">
-        <p className="text-sm text-gray-600">
-          <strong>Debug:</strong> Supabase URL: {supabaseUrl ? '✅ Configurada' : '❌ Não configurada'}
-        </p>
-        <p className="text-sm text-gray-600">
-          <strong>Status:</strong> {hasLoaded ? 'Conectado' : 'Conectando...'} |
-          <strong>Clientes:</strong> {clientes.length}
-        </p>
+      <div className="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+        <h4 className="text-lg font-semibold text-center text-gray-700 mb-4">🔧 Informações de Debug</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div className="text-center">
+            <p className="font-semibold text-gray-600">Supabase URL:</p>
+            <p className={supabaseUrl ? 'text-green-600' : 'text-red-600'}>
+              {supabaseUrl ? '✅ Configurada' : '❌ Não configurada'}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="font-semibold text-gray-600">Status:</p>
+            <p className={hasLoaded ? 'text-green-600' : 'text-yellow-600'}>
+              {hasLoaded ? 'Conectado' : 'Conectando...'}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="font-semibold text-gray-600">Clientes:</p>
+            <p className="text-blue-600">{clientes.length}</p>
+          </div>
+        </div>
       </div>
 
       {/* Botão de recarregar página */}
-      <div className="text-center pt-4 border-t">
+      <div className="text-center pt-6 border-t">
         <button
           onClick={() => window.location.reload()}
-          className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+          className="px-8 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 font-semibold transition-colors"
         >
           🔄 Recarregar Página
         </button>
