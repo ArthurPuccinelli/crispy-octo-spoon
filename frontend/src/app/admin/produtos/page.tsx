@@ -66,15 +66,7 @@ export default function GestaoProdutosPage() {
     }
 
     useEffect(() => {
-        (async () => {
-            const { data } = await supabase.auth.getSession()
-            if (!data.session) {
-                setError('Autenticação necessária para acessar produtos.')
-                setLoading(false)
-                return
-            }
-            fetchProdutos()
-        })()
+        fetchProdutos()
     }, [])
 
     return (

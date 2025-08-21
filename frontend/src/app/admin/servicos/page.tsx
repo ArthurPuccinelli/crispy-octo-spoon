@@ -131,16 +131,8 @@ export default function ServicosContratadosPage() {
     }
 
     useEffect(() => {
-        (async () => {
-            const { data } = await supabase.auth.getSession()
-            if (!data.session) {
-                setError('Autenticação necessária para acessar serviços contratados.')
-                setLoading(false)
-                return
-            }
-            fetchServicos()
-            fetchClientesEProdutos()
-        })()
+        fetchServicos()
+        fetchClientesEProdutos()
     }, [])
 
     const calcularProximaCobranca = (servico: Contrato): string => {

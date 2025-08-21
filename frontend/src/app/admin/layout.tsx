@@ -1,14 +1,17 @@
 import AdminNavBar from '@/components/navigation/AdminNavBar'
+import { ReactNode } from 'react'
 
 export default function AdminLayout({
     children,
 }: {
-    children: React.ReactNode
+    children: ReactNode
 }) {
     return (
-        <div>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50">
             <AdminNavBar />
-            <main>{children}</main>
+            <div className="max-w-7xl mx-auto">
+                {children}
+            </div>
         </div>
     )
 }
