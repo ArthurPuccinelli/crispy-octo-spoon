@@ -6,10 +6,21 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const rawAllowedOrigins = process.env.CORS_ALLOWED_ORIGINS;
+const allowedOrigins = (rawAllowedOrigins
+  ? rawAllowedOrigins.split(',').map(o => o.trim()).filter(Boolean)
+  : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3002']
+);
 
-// Configuração do CORS mais permissiva para desenvolvimento
+// Configuração do CORS controlada por variáveis de ambiente
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3002'],
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -28,15 +39,19 @@ app.use(express.urlencoded({ extended: true }));
 
 // Middleware para adicionar headers CORS em todas as respostas
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  const requestOrigin = req.headers.origin;
+  const isAllowed = !requestOrigin || allowedOrigins.includes('*') || allowedOrigins.includes(requestOrigin);
+  if (isAllowed && requestOrigin) {
+    res.header('Access-Control-Allow-Origin', requestOrigin);
+  }
+  res.header('Vary', 'Origin');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  
+
   if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
+    return res.sendStatus(200);
   }
+  next();
 });
 
 // Rotas

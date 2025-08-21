@@ -43,10 +43,40 @@ export default function ClientesList() {
       console.log('🔄 Consultando tabela clientes no Supabase...')
 
       // Consulta direta na tabela clientes da Fontara
+      console.log('🔍 Supabase URL:', supabaseUrl)
+      console.log('🔑 Supabase Key presente:', !!supabaseAnonKey)
+
+      console.log('🔍 Iniciando consulta ao Supabase...');
+
+      // Fazer a consulta principal
       const { data, error: supabaseError } = await supabase
         .from('clientes')
         .select('*')
-        .order('created_at', { ascending: false })
+        .order('created_at', { ascending: false });
+
+      // Log detalhado do resultado
+      if (data) {
+        console.log('✅ Dados retornados com sucesso');
+        console.log('📊 Número de registros:', data.length);
+        console.log('📦 Dados:', data);
+      } else {
+        console.log('⚠️ Nenhum dado retornado');
+      }
+
+      if (supabaseError) {
+        console.log('❌ Erro na consulta:', supabaseError.message);
+        console.log('� Detalhes do erro:', supabaseError);
+      } else {
+        console.log('✅ Consulta executada sem erros')
+      }      // Se não houver dados, vamos tentar uma consulta mais simples
+      if (!data || data.length === 0) {
+        console.log('⚠️ Tentando consulta simples sem ordenação...');
+        const { data: simpleData, error: simpleError } = await supabase
+          .from('clientes')
+          .select('*');
+        console.log('📦 Dados da consulta simples:', simpleData);
+        console.log('❌ Erro da consulta simples:', simpleError);
+      }
 
       if (supabaseError) {
         console.error('❌ Erro do Supabase:', supabaseError)

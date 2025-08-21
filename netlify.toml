@@ -1,0 +1,35 @@
+[build]
+  # If deploying only the frontend on Netlify (Next.js)
+  base = "frontend"
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Next.js runtime hints
+  NODE_VERSION = "18"
+
+# Redirect all routes to Next.js handler (if using static output or Netlify Next runtime)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+# Contexts allow different env vars per deploy type
+[context.production.environment]
+  NODE_ENV = "production"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "development"
+
+[context.branch-deploy.environment]
+  NODE_ENV = "development"
+
+# If you want to proxy API calls to an external backend
+#[[redirects]]
+#  from = "/api/*"
+#  to = "https://seu-backend.example.com/:splat"
+#  status = 200
+#  force = true
+
+
