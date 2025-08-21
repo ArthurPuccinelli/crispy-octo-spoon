@@ -1,5 +1,21 @@
 {
-  "dependencies": {
-    "@accordproject/concerto-core": "^3.23.0"
+  "name": "crispy-octo-spoon",
+  "version": "1.0.0",
+  "description": "Aplicação full-stack com Next.js e Node.js",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "clean": "rm -rf node_modules frontend/node_modules backend/node_modules"
+  },
+  "keywords": ["nextjs", "nodejs", "react", "express", "fullstack"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
