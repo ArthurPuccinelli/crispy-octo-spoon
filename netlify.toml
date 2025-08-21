@@ -1,37 +1,18 @@
+# Netlify configuration for the entire project
+# Frontend-specific configuration is in frontend/netlify.toml
+
 [build]
-  # If deploying only the frontend on Netlify (Next.js)
+  # Build the frontend
   base = "frontend"
   command = "npm run build"
   publish = ".next"
-
-[build.environment]
-  # Next.js runtime hints
-  NODE_VERSION = "18"
-  # Ensure devDependencies are installed for build
-  NPM_FLAGS = "--include=dev"
 
 # Enable Next.js runtime plugin for SSR
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Contexts allow different env vars per deploy type
-[context.production.environment]
-  # Don't force NODE_ENV=production to allow devDependencies installation
-  # NODE_ENV will be set automatically by Next.js build
-
-[context.deploy-preview.environment]
-  # Keep development for preview builds
-  NODE_ENV = "development"
-
-[context.branch-deploy.environment]
-  # Keep development for branch builds
-  NODE_ENV = "development"
-
-# If you want to proxy API calls to an external backend
-#[[redirects]]
-#  from = "/api/*"
-#  to = "https://seu-backend.example.com/:splat"
-#  status = 200
-#  force = true
+# Important: Set these environment variables in Netlify Dashboard:
+# - NEXT_PUBLIC_SUPABASE_URL
+# - NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 
