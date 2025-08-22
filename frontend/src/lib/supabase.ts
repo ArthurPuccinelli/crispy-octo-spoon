@@ -3,11 +3,13 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
-// Debug: Log environment variables (only in development)
-if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-  console.log('🔍 Supabase Environment Variables:')
-  console.log('URL:', supabaseUrl ? '✅ Set' : '❌ Missing')
-  console.log('ANON_KEY:', supabaseAnonKey ? '✅ Set' : '❌ Missing')
+// Debug: Log environment variables (always, not just in development)
+if (typeof window !== 'undefined') {
+  console.log('🔍 Supabase Environment Variables Check:')
+  console.log('URL:', supabaseUrl ? `✅ Set (${supabaseUrl.substring(0, 30)}...)` : '❌ Missing')
+  console.log('ANON_KEY:', supabaseAnonKey ? `✅ Set (${supabaseAnonKey.substring(0, 30)}...)` : '❌ Missing')
+  console.log('NODE_ENV:', process.env.NODE_ENV || 'undefined')
+  console.log('Current URL:', window.location.href)
 }
 
 // Create a mock client during build time if env vars are not available
@@ -15,7 +17,9 @@ const createSupabaseClient = () => {
   if (!supabaseUrl || !supabaseAnonKey) {
     // Return a mock client during build time
     console.warn('⚠️ Supabase environment variables not found. Using mock client for build.')
-
+    console.warn('🔧 Please check Netlify environment variables configuration.')
+    console.warn('📋 Required variables: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY')
+    
     // Create a more compatible mock client
     const mockTable = () => ({
       select: (columns: string = '*') => ({
@@ -45,7 +49,8 @@ const createSupabaseClient = () => {
       }
     } as any
   }
-
+  
+  console.log('✅ Supabase client created successfully with environment variables')
   return createClient(supabaseUrl, supabaseAnonKey)
 }
 
