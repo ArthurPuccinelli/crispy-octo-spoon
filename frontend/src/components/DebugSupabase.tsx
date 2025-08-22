@@ -51,7 +51,10 @@ export default function DebugSupabase() {
 
     } catch (error) {
       console.error('❌ Erro no teste:', error)
-      setTestResult({ error: error.message, timestamp: new Date().toISOString() })
+      setTestResult({ 
+        error: error instanceof Error ? error.message : String(error), 
+        timestamp: new Date().toISOString() 
+      })
     } finally {
       setLoading(false)
     }
@@ -129,7 +132,7 @@ export default function DebugSupabase() {
         <h3 className="text-lg font-semibold text-blue-800 mb-2">💡 Como usar</h3>
         <ol className="text-blue-700 text-sm space-y-1 list-decimal list-inside">
           <li>Abra o console do navegador (F12)</li>
-          <li>Clique no botão "Testar Conexão Supabase"</li>
+          <li>Clique no botão &quot;Testar Conexão Supabase&quot;</li>
           <li>Verifique os logs no console</li>
           <li>Compare com os resultados exibidos aqui</li>
         </ol>
