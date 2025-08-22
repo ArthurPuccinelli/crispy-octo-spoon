@@ -14,10 +14,10 @@ interface Produto {
     id?: string
     nome: string
     descricao: string
-    valor: number
-    tipo: 'servico' | 'produto'
-    status: 'ativo' | 'inativo'
-    periodo_cobranca?: 'mensal' | 'anual' | 'unico'
+    preco: number
+    tipo_produto: 'servico' | 'produto' | 'assinatura'
+    ativo: boolean
+    periodicidade?: 'unico' | 'mensal' | 'trimestral' | 'semestral' | 'anual'
 }
 
 export default function ProdutoForm({ onSuccess, produtoToEdit }: ProdutoFormProps) {
@@ -25,10 +25,10 @@ export default function ProdutoForm({ onSuccess, produtoToEdit }: ProdutoFormPro
         produtoToEdit || {
             nome: '',
             descricao: '',
-            valor: 0,
-            tipo: 'servico',
-            status: 'ativo',
-            periodo_cobranca: 'mensal'
+            preco: 0,
+            tipo_produto: 'servico',
+            ativo: true,
+            periodicidade: 'mensal'
         }
     )
     const [loading, setLoading] = useState(false)
@@ -66,7 +66,14 @@ export default function ProdutoForm({ onSuccess, produtoToEdit }: ProdutoFormPro
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
-        const value = e.target.name === 'valor' ? parseFloat(e.target.value) : e.target.value
+        let value: any = e.target.value
+
+        if (e.target.name === 'preco') {
+            value = parseFloat(e.target.value) || 0
+        } else if (e.target.name === 'ativo') {
+            value = e.target.value === 'true'
+        }
+
         setFormData(prev => ({
             ...prev,
             [e.target.name]: value
@@ -84,7 +91,7 @@ export default function ProdutoForm({ onSuccess, produtoToEdit }: ProdutoFormPro
                         value={formData.nome}
                         onChange={handleChange}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                 </div>
 
@@ -96,25 +103,25 @@ export default function ProdutoForm({ onSuccess, produtoToEdit }: ProdutoFormPro
                         onChange={handleChange}
                         required
                         rows={3}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Valor</label>
+                    <label className="block text-sm font-medium text-gray-700">Preço</label>
                     <div className="mt-1 relative rounded-md shadow-sm">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span className="text-gray-500 sm:text-sm">R$</span>
                         </div>
                         <input
                             type="number"
-                            name="valor"
-                            value={formData.valor}
+                            name="preco"
+                            value={formData.preco}
                             onChange={handleChange}
                             required
                             min="0"
                             step="0.01"
-                            className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                         />
                     </div>
                 </div>
@@ -122,27 +129,30 @@ export default function ProdutoForm({ onSuccess, produtoToEdit }: ProdutoFormPro
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Tipo</label>
                     <select
-                        name="tipo"
-                        value={formData.tipo}
+                        name="tipo_produto"
+                        value={formData.tipo_produto}
                         onChange={handleChange}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     >
                         <option value="servico">Serviço</option>
                         <option value="produto">Produto</option>
+                        <option value="assinatura">Assinatura</option>
                     </select>
                 </div>
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Período de Cobrança</label>
                     <select
-                        name="periodo_cobranca"
-                        value={formData.periodo_cobranca}
+                        name="periodicidade"
+                        value={formData.periodicidade}
                         onChange={handleChange}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     >
                         <option value="mensal">Mensal</option>
+                        <option value="trimestral">Trimestral</option>
+                        <option value="semestral">Semestral</option>
                         <option value="anual">Anual</option>
                         <option value="unico">Pagamento Único</option>
                     </select>
@@ -151,14 +161,14 @@ export default function ProdutoForm({ onSuccess, produtoToEdit }: ProdutoFormPro
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Status</label>
                     <select
-                        name="status"
-                        value={formData.status}
+                        name="ativo"
+                        value={formData.ativo.toString()}
                         onChange={handleChange}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     >
-                        <option value="ativo">Ativo</option>
-                        <option value="inativo">Inativo</option>
+                        <option value="true">Ativo</option>
+                        <option value="false">Inativo</option>
                     </select>
                 </div>
             </div>

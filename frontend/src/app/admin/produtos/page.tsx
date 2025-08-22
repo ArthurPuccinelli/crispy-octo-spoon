@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import ProdutoForm from '@/components/forms/ProdutoForm'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/contexts/AuthContext'
 
 // Supabase client compartilhado via '@/lib/supabase'
 
@@ -10,29 +12,49 @@ interface Produto {
     id: string
     nome: string
     descricao: string
-    valor: number
-    tipo: 'servico' | 'produto'
-    status: 'ativo' | 'inativo'
-    periodo_cobranca?: 'mensal' | 'anual' | 'unico'
+    preco: number
+    tipo_produto: 'servico' | 'produto' | 'assinatura'
+    ativo: boolean
+    periodicidade?: 'unico' | 'mensal' | 'trimestral' | 'semestral' | 'anual'
     created_at: string
 }
 
 export default function GestaoProdutosPage() {
+    const { user, loading: authLoading, isAdmin } = useAuth()
+    const router = useRouter()
     const [showForm, setShowForm] = useState(false)
     const [selectedProduto, setSelectedProduto] = useState<Produto | null>(null)
     const [produtos, setProdutos] = useState<Produto[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
+    // Verificar autenticação e permissões
+    useEffect(() => {
+        if (!authLoading) {
+            if (!user) {
+                router.push('/login')
+                return
+            }
+            if (!isAdmin) {
+                router.push('/')
+                return
+            }
+        }
+    }, [user, authLoading, isAdmin, router])
+
     const fetchProdutos = async () => {
         try {
             setLoading(true)
+            setError(null)
+
             const { data, error: supabaseError } = await supabase
                 .from('produtos')
                 .select('*')
                 .order('created_at', { ascending: false })
 
-            if (supabaseError) throw supabaseError
+            if (supabaseError) {
+                throw supabaseError
+            }
 
             setProdutos(data || [])
         } catch (err) {
@@ -66,8 +88,24 @@ export default function GestaoProdutosPage() {
     }
 
     useEffect(() => {
-        fetchProdutos()
-    }, [])
+        if (user && isAdmin) {
+            fetchProdutos()
+        }
+    }, [user, isAdmin])
+
+    // Mostrar loading enquanto verifica autenticação
+    if (authLoading) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+        )
+    }
+
+    // Se não estiver autenticado ou não for admin, não renderizar nada (será redirecionado)
+    if (!user || !isAdmin) {
+        return null
+    }
 
     return (
         <div className="max-w-7xl mx-auto p-6">
@@ -112,7 +150,7 @@ export default function GestaoProdutosPage() {
                                     Tipo
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Valor
+                                    Preço
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Período
@@ -138,9 +176,12 @@ export default function GestaoProdutosPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`px-2 py-1 text-xs font-semibold rounded-full
-                      ${produto.tipo === 'servico' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}`}
+                      ${produto.tipo_produto === 'servico' ? 'bg-blue-100 text-blue-800' :
+                                                produto.tipo_produto === 'produto' ? 'bg-purple-100 text-purple-800' :
+                                                    'bg-green-100 text-green-800'}`}
                                         >
-                                            {produto.tipo === 'servico' ? 'Serviço' : 'Produto'}
+                                            {produto.tipo_produto === 'servico' ? 'Serviço' :
+                                                produto.tipo_produto === 'produto' ? 'Produto' : 'Assinatura'}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
@@ -148,20 +189,22 @@ export default function GestaoProdutosPage() {
                                             {new Intl.NumberFormat('pt-BR', {
                                                 style: 'currency',
                                                 currency: 'BRL'
-                                            }).format(produto.valor)}
+                                            }).format(produto.preco)}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="text-sm text-gray-900">
-                                            {produto.periodo_cobranca === 'mensal' ? 'Mensal' :
-                                                produto.periodo_cobranca === 'anual' ? 'Anual' : 'Pagamento Único'}
+                                            {produto.periodicidade === 'mensal' ? 'Mensal' :
+                                                produto.periodicidade === 'trimestral' ? 'Trimestral' :
+                                                    produto.periodicidade === 'semestral' ? 'Semestral' :
+                                                        produto.periodicidade === 'anual' ? 'Anual' : 'Pagamento Único'}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`px-2 py-1 text-xs font-semibold rounded-full
-                      ${produto.status === 'ativo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+                      ${produto.ativo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
                                         >
-                                            {produto.status}
+                                            {produto.ativo ? 'Ativo' : 'Inativo'}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium">

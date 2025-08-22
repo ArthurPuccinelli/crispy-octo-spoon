@@ -201,7 +201,7 @@ export default function ServicosContratadosPage() {
                             <select
                                 name="cliente_id"
                                 required
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                             >
                                 <option value="">Selecione um cliente</option>
                                 {clientes.map((cliente) => (
@@ -217,7 +217,7 @@ export default function ServicosContratadosPage() {
                             <select
                                 name="produto_id"
                                 required
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                             >
                                 <option value="">Selecione um produto</option>
                                 {produtos.map((produto) => (
@@ -236,7 +236,7 @@ export default function ServicosContratadosPage() {
                                 required
                                 step="0.01"
                                 min="0"
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                             />
                         </div>
 

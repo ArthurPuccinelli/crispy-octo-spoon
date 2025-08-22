@@ -1,3 +1,5 @@
+import DebugSupabase from '@/components/DebugSupabase'
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50">
@@ -140,6 +142,11 @@ export default function Home() {
                   <span className="text-sm text-teal-600 font-mono">http://localhost:3001</span>
                 </div>
               </div>
+            </div>
+
+            {/* Debug Supabase Section */}
+            <div className="mt-20">
+              <DebugSupabase />
             </div>
           </div>
         </div>

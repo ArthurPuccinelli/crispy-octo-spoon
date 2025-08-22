@@ -85,7 +85,7 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
                         value={formData.nome}
                         onChange={handleChange}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                 </div>
 
@@ -97,7 +97,7 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                 </div>
 
@@ -108,7 +108,7 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
                         name="cpf_cnpj"
                         value={formData.cpf_cnpj}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                 </div>
 
@@ -119,7 +119,7 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
                         name="telefone"
                         value={formData.telefone}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                 </div>
 
@@ -130,7 +130,7 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
                         name="cidade"
                         value={formData.cidade}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                 </div>
 
@@ -141,7 +141,7 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
                         name="estado"
                         value={formData.estado}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                 </div>
 
@@ -152,7 +152,7 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
                         value={formData.tipo_cliente}
                         onChange={handleChange}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     >
                         <option value="pessoa_fisica">Pessoa Física</option>
                         <option value="pessoa_juridica">Pessoa Jurídica</option>
@@ -166,7 +166,7 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
                         value={formData.status}
                         onChange={handleChange}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     >
                         <option value="ativo">Ativo</option>
                         <option value="inativo">Inativo</option>

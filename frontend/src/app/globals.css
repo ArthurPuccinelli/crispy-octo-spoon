@@ -7,14 +7,29 @@
   --background: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground: #ffffff;
-    --background: #000000;
-  }
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
+}
+
+/* Garantir que inputs sempre tenham cores apropriadas */
+input,
+textarea,
+select {
+  color: #1f2937 !important;
+  /* text-gray-900 */
+  background-color: #ffffff !important;
+}
+
+/* Garantir que options dos selects sejam visíveis */
+option {
+  color: #1f2937 !important;
+  background-color: #ffffff !important;
+}
+
+/* Garantir que placeholders sejam visíveis */
+input::placeholder,
+textarea::placeholder {
+  color: #6b7280 !important;
+  /* text-gray-500 */
 }

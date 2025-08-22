@@ -2,7 +2,9 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface DashboardStats {
     totalClientes: number
@@ -12,6 +14,8 @@ interface DashboardStats {
 }
 
 export default function AdminDashboard() {
+    const { user, loading: authLoading, isAdmin } = useAuth()
+    const router = useRouter()
     const [stats, setStats] = useState<DashboardStats>({
         totalClientes: 0,
         totalProdutos: 0,
@@ -20,8 +24,24 @@ export default function AdminDashboard() {
     })
     const [loading, setLoading] = useState(true)
 
+    // Verificar autenticação e permissões
+    useEffect(() => {
+        if (!authLoading) {
+            if (!user) {
+                router.push('/login')
+                return
+            }
+            if (!isAdmin) {
+                router.push('/')
+                return
+            }
+        }
+    }, [user, authLoading, isAdmin, router])
+
     useEffect(() => {
         const fetchStats = async () => {
+            if (!user || !isAdmin) return
+
             try {
                 const [clientes, produtos, servicos] = await Promise.all([
                     supabase.from('clientes').select('*', { count: 'exact' }),
@@ -44,7 +64,21 @@ export default function AdminDashboard() {
         }
 
         fetchStats()
-    }, [])
+    }, [user, isAdmin])
+
+    // Mostrar loading enquanto verifica autenticação
+    if (authLoading) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+        )
+    }
+
+    // Se não estiver autenticado ou não for admin, não renderizar nada (será redirecionado)
+    if (!user || !isAdmin) {
+        return null
+    }
 
     const adminModules = [
         {

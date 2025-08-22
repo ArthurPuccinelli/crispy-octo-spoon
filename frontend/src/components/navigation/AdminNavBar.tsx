@@ -1,13 +1,40 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
+import { useState } from 'react'
 
 export default function AdminNavBar() {
     const pathname = usePathname()
+    const router = useRouter()
+    const { user, signOut } = useAuth()
+    const [isLoggingOut, setIsLoggingOut] = useState(false)
 
     const isActive = (path: string) => {
         return pathname?.startsWith(path)
+    }
+
+    const handleLogout = async () => {
+        try {
+            setIsLoggingOut(true)
+            console.log('🚪 Iniciando logout...')
+
+            // Chamar signOut do AuthContext (que já faz o redirecionamento)
+            await signOut()
+
+            // O redirecionamento será feito pelo AuthContext
+            console.log('✅ Logout concluído')
+
+        } catch (error) {
+            console.error('❌ Erro no logout:', error)
+            setIsLoggingOut(false)
+
+            // Em caso de erro, forçar redirecionamento
+            if (typeof window !== 'undefined') {
+                window.location.href = '/'
+            }
+        }
     }
 
     return (
@@ -27,50 +54,58 @@ export default function AdminNavBar() {
                             <div className="ml-10 flex items-baseline space-x-4">
                                 <Link
                                     href="/admin"
-                                    className={`${isActive('/admin') && !isActive('/admin/clientes') && !isActive('/admin/produtos') && !isActive('/admin/servicos')
-                                        ? 'bg-gradient-to-r from-teal-600 to-blue-600 text-white'
+                                    className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin') && !isActive('/admin/')
+                                        ? 'bg-gray-900 text-white'
                                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                                        } px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                                        }`}
                                 >
-                                    📊 Dashboard
+                                    Dashboard
                                 </Link>
                                 <Link
                                     href="/admin/clientes"
-                                    className={`${isActive('/admin/clientes')
-                                        ? 'bg-gradient-to-r from-teal-600 to-blue-600 text-white'
+                                    className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin/clientes')
+                                        ? 'bg-gray-900 text-white'
                                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                                        } px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                                        }`}
                                 >
-                                    👥 Clientes
+                                    Clientes
                                 </Link>
                                 <Link
                                     href="/admin/produtos"
-                                    className={`${isActive('/admin/produtos')
-                                        ? 'bg-gradient-to-r from-teal-600 to-blue-600 text-white'
+                                    className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin/produtos')
+                                        ? 'bg-gray-900 text-white'
                                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                                        } px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                                        }`}
                                 >
-                                    📦 Produtos
+                                    Produtos
                                 </Link>
                                 <Link
                                     href="/admin/servicos"
-                                    className={`${isActive('/admin/servicos')
-                                        ? 'bg-gradient-to-r from-teal-600 to-blue-600 text-white'
+                                    className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin/servicos')
+                                        ? 'bg-gray-900 text-white'
                                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                                        } px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                                        }`}
                                 >
-                                    📋 Serviços
+                                    Serviços
                                 </Link>
                             </div>
                         </div>
                     </div>
+
                     <div className="flex items-center space-x-4">
-                        <Link
-                            href="/"
-                            className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                        {user && (
+                            <div className="text-gray-300 text-sm">
+                                Olá, {user.email}
+                            </div>
+                        )}
+                        <button
+                            onClick={handleLogout}
+                            disabled={isLoggingOut}
+                            className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors ${isLoggingOut ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
                         >
-                            🏠 Voltar ao Site
-                        </Link>
+                            {isLoggingOut ? 'Saindo...' : 'Sair'}
+                        </button>
                     </div>
                 </div>
             </div>
