@@ -57,7 +57,7 @@ export default function AdminDashboard() {
                     servicosAtivos: servicos.count || 0
                 })
             } catch (error) {
-                console.error('Erro ao carregar estatísticas:', error)
+                // Erro ao carregar estatísticas
             } finally {
                 setLoading(false)
             }

@@ -18,13 +18,13 @@ export default function AdminNavBar() {
     const handleLogout = async () => {
         try {
             setIsLoggingOut(true)
-            console.log('🚪 Iniciando logout...')
+            // Iniciando logout
 
             // Chamar signOut do AuthContext (que já faz o redirecionamento)
             await signOut()
 
             // O redirecionamento será feito pelo AuthContext
-            console.log('✅ Logout concluído')
+            // Logout concluído
 
         } catch (error) {
             console.error('❌ Erro no logout:', error)

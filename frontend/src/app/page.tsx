@@ -1,4 +1,4 @@
-import DebugSupabase from '@/components/DebugSupabase'
+
 
 export default function Home() {
   return (
@@ -144,10 +144,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Debug Supabase Section */}
-            <div className="mt-20">
-              <DebugSupabase />
-            </div>
+
           </div>
         </div>
       </main>

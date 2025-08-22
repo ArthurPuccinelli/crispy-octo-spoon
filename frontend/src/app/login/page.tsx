@@ -16,7 +16,7 @@ export default function LoginPage() {
     // Redirecionar se já estiver logado
     useEffect(() => {
         if (!authLoading && user) {
-            console.log('🔑 Usuário já logado, redirecionando para admin...')
+            // Usuário já logado, redirecionando para admin
             router.push('/admin')
         }
     }, [user, authLoading, router])
@@ -27,14 +27,14 @@ export default function LoginPage() {
         setError(null)
 
         try {
-            console.log('🔐 Tentando login com:', email)
+            // Tentando login
             const { error } = await signIn(email, password)
 
             if (error) {
                 console.error('❌ Erro no login:', error)
                 setError(error.message)
             } else {
-                console.log('✅ Login bem-sucedido, redirecionando...')
+                // Login bem-sucedido, redirecionando
                 // Aguardar um pouco para o estado ser atualizado
                 setTimeout(() => {
                     router.push('/admin')

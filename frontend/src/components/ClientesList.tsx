@@ -38,7 +38,7 @@ export default function ClientesList() {
 
       setClientes(data || [])
     } catch (error) {
-      console.error('Erro:', error)
+      // Erro ao carregar clientes
       setError(error instanceof Error ? error.message : 'Erro desconhecido')
     } finally {
       setLoading(false)

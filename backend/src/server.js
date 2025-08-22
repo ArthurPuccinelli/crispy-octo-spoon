@@ -72,16 +72,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Rota de exemplo para clientes
-app.get('/api/clientes', (req, res) => {
-  res.json({
-    message: 'Lista de clientes',
-    data: [
-      { id: 1, nome: 'João Silva', email: 'joao@email.com' },
-      { id: 2, nome: 'Maria Santos', email: 'maria@email.com' }
-    ]
-  });
-});
+
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
@@ -102,7 +93,4 @@ app.use('*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`📱 Frontend: http://localhost:3000`);
-  console.log(`🔧 Backend: http://localhost:${PORT}`);
-  console.log(`🏥 Health Check: http://localhost:${PORT}/health`);
 });

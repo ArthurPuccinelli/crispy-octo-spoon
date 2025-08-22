@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const getSession = async () => {
             try {
                 const { data: { session } } = await supabase.auth.getSession()
-                console.log('🔍 Sessão atual:', session?.user?.email || 'Nenhuma')
+                // Sessão atual verificada
                 setUser(session?.user ?? null)
                 if (session?.user) {
                     await checkUserRole(session.user)
@@ -45,11 +45,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Escutar mudanças na autenticação
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
             async (event: any, session: any) => {
-                console.log('🔐 Auth state change:', event, session?.user?.email || 'Nenhum usuário')
+                // Auth state change detected
 
                 // Tratar eventos específicos
                 if (event === 'SIGNED_OUT') {
-                    console.log('🚪 Usuário fez logout, limpando estado...')
+                    // Usuário fez logout, limpando estado
                     setUser(null)
                     setIsAdmin(false)
                     setLoading(false)
@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 }
 
                 if (event === 'SIGNED_IN' && session?.user) {
-                    console.log('🔑 Usuário fez login:', session.user.email)
+                    // Usuário fez login
                     setUser(session.user)
                     await checkUserRole(session.user)
                     setLoading(false)
@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 }
 
                 if (event === 'TOKEN_REFRESHED' && session?.user) {
-                    console.log('🔄 Token renovado para:', session.user.email)
+                    // Token renovado
                     setUser(session.user)
                     await checkUserRole(session.user)
                     setLoading(false)
@@ -88,11 +88,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const checkUserRole = async (user: User) => {
         try {
-            console.log('🔍 Verificando role do usuário:', user.email)
+            // Verificando role do usuário
 
             // Verificar se o usuário tem role admin no JWT
             if (user.user_metadata?.role === 'admin') {
-                console.log('✅ Usuário é admin (JWT)')
+                // Usuário é admin (JWT)
                 setIsAdmin(true)
                 return
             }
@@ -105,20 +105,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 .single()
 
             if (error) {
-                console.log('⚠️ Tabela usuarios não encontrada, verificando JWT...')
+                // Tabela usuarios não encontrada, verificando JWT
                 // Se não houver tabela usuarios, verificar se é o usuário admin padrão
                 if (user.email === 'admin@fontara.com') {
-                    console.log('✅ Usuário admin padrão detectado')
+                    // Usuário admin padrão detectado
                     setIsAdmin(true)
                     return
                 }
             } else if (profile?.role === 'admin') {
-                console.log('✅ Usuário é admin (tabela)')
+                // Usuário é admin (tabela)
                 setIsAdmin(true)
                 return
             }
 
-            console.log('❌ Usuário não é admin')
+            // Usuário não é admin
             setIsAdmin(false)
         } catch (error) {
             console.error('❌ Erro ao verificar role:', error)
@@ -128,7 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const signIn = async (email: string, password: string) => {
         try {
-            console.log('🔐 Tentando login:', email)
+            // Tentando login
             const { error } = await supabase.auth.signInWithPassword({
                 email,
                 password
@@ -137,7 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (error) {
                 console.error('❌ Erro no login:', error)
             } else {
-                console.log('✅ Login bem-sucedido')
+                // Login bem-sucedido
             }
 
             return { error }
@@ -149,7 +149,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const signOut = async () => {
         try {
-            console.log('🚪 Fazendo logout...')
+            // Fazendo logout
 
             // Limpar estado local primeiro
             setUser(null)
@@ -163,7 +163,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 throw error
             }
 
-            console.log('✅ Logout bem-sucedido')
+            // Logout bem-sucedido
 
             // Limpar localStorage manualmente para garantir
             if (typeof window !== 'undefined') {
