@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+// Last updated: 2024-01-XX - Fixed for Netlify compatibility
+// Using .mjs extension for maximum compatibility
+
 const nextConfig = {
     // Ensure environment variables are available at build time
     env: {
@@ -13,4 +16,4 @@ const nextConfig = {
     },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

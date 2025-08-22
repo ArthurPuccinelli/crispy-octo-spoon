@@ -67,8 +67,9 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY = sua_chave_anonima_aqui
 - ✅ Faça um novo deploy
 
 ### Erro: "Configuring Next.js via 'next.config.ts' is not supported"
-- ✅ **RESOLVIDO**: O arquivo `next.config.ts` foi convertido para `next.config.js`
+- ✅ **RESOLVIDO**: O arquivo `next.config.ts` foi convertido para `next.config.mjs`
 - ✅ O Netlify só suporta arquivos `.js` ou `.mjs` para configuração do Next.js
+- ✅ **IMPORTANTE**: Agora usando `next.config.mjs` para máxima compatibilidade
 - ✅ Faça um novo deploy após a correção
 
 ### Erro: "Build failed"
@@ -88,5 +89,11 @@ Se ainda houver problemas:
 
 ### ✅ Problema do next.config.ts Resolvido
 - **Problema**: O Netlify não suporta arquivos de configuração do Next.js em TypeScript
-- **Solução**: Convertido `next.config.ts` para `next.config.js`
+- **Solução**: Convertido para `next.config.mjs` (máxima compatibilidade)
 - **Status**: ✅ Resolvido e testado localmente
+- **Arquivo atual**: `frontend/next.config.mjs`
+
+### 🔄 Mudança para .mjs
+- **Motivo**: Garantir máxima compatibilidade com o Netlify
+- **Formato**: ES Modules (mais moderno e compatível)
+- **Teste**: ✅ Build local funcionando perfeitamente
