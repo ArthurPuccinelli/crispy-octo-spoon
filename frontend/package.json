@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "check-env": "node scripts/check-env.js",
-    "test-supabase": "node scripts/test-supabase.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.55.0",

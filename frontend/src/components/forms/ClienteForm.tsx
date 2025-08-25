@@ -11,8 +11,8 @@ interface ClienteFormProps {
 interface Cliente {
     id?: string
     nome: string
-    email: string
-    cpf_cnpj?: string
+    email?: string
+    cpf_cnpj: string
     telefone?: string
     cidade?: string
     estado?: string
@@ -36,10 +36,23 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
+    // Função para validar CPF/CNPJ
+    const validateCPFCNPJ = (value: string): boolean => {
+        const cleanValue = value.replace(/\D/g, '')
+        return cleanValue.length === 11 || cleanValue.length === 14
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
         setError(null)
+
+        // Validação do CPF/CNPJ
+        if (!validateCPFCNPJ(formData.cpf_cnpj)) {
+            setError('CPF/CNPJ deve ter 11 ou 14 dígitos')
+            setLoading(false)
+            return
+        }
 
         try {
             if (clienteToEdit?.id) {
@@ -74,6 +87,26 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
         }))
     }
 
+    // Função para formatar CPF/CNPJ
+    const formatCPFCNPJ = (value: string) => {
+        const cleanValue = value.replace(/\D/g, '')
+        if (cleanValue.length <= 11) {
+            // Formato CPF: XXX.XXX.XXX-XX
+            return cleanValue.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+        } else {
+            // Formato CNPJ: XX.XXX.XXX/XXXX-XX
+            return cleanValue.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
+        }
+    }
+
+    const handleCPFCNPJChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const formattedValue = formatCPFCNPJ(e.target.value)
+        setFormData(prev => ({
+            ...prev,
+            cpf_cnpj: formattedValue
+        }))
+    }
+
     return (
         <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -90,26 +123,31 @@ export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormPro
                 </div>
 
                 <div>
+                    <label className="block text-sm font-medium text-gray-700">CPF/CNPJ *</label>
+                    <input
+                        type="text"
+                        name="cpf_cnpj"
+                        value={formData.cpf_cnpj}
+                        onChange={handleCPFCNPJChange}
+                        placeholder={formData.tipo_cliente === 'pessoa_fisica' ? '000.000.000-00' : '00.000.000/0000-00'}
+                        required
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                        {formData.tipo_cliente === 'pessoa_fisica' ? 'CPF (11 dígitos)' : 'CNPJ (14 dígitos)'}
+                    </p>
+                </div>
+
+                <div>
                     <label className="block text-sm font-medium text-gray-700">Email</label>
                     <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        required
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
                     />
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">CPF/CNPJ</label>
-                    <input
-                        type="text"
-                        name="cpf_cnpj"
-                        value={formData.cpf_cnpj}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
-                    />
+                    <p className="mt-1 text-xs text-gray-500">Opcional</p>
                 </div>
 
                 <div>

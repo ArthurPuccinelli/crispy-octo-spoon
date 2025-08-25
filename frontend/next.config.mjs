@@ -1,7 +1,4 @@
 /** @type {import('next').NextConfig} */
-// Last updated: 2024-01-XX - Fixed for Netlify compatibility
-// Using .mjs extension for maximum compatibility
-
 const nextConfig = {
     // Ensure environment variables are available at build time
     env: {
@@ -12,15 +9,11 @@ const nextConfig = {
     // Enable experimental features if needed
     experimental: {
         // Enable if you need server components with client-side data fetching
-        serverComponentsExternalPackages: ['@supabase/supabase-js'],
+        serverComponentsExternalPackages: ['@supabase/supabasejs'],
     },
 
-    // Debug: Log environment variables during build
-    onDemandEntries: {
-        // Add build-time logging
-        maxInactiveAge: 25 * 1000,
-        pagesBufferLength: 2,
-    },
+    // Output configuration for static export (if needed)
+    output: 'standalone',
 };
 
 export default nextConfig;

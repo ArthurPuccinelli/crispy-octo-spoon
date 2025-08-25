@@ -1,8 +1,8 @@
 export interface Cliente {
     id: string
     nome: string
-    email: string
-    cpf_cnpj?: string
+    email?: string
+    cpf_cnpj: string
     telefone?: string
     cidade?: string
     estado?: string

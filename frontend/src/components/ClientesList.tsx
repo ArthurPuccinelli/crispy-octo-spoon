@@ -6,8 +6,8 @@ import { supabase } from '@/lib/supabase'
 interface Cliente {
   id: string
   nome: string
-  email: string
-  cpf_cnpj?: string
+  email?: string
+  cpf_cnpj: string
   telefone?: string
   cidade?: string
   estado?: string
@@ -151,9 +151,16 @@ export default function ClientesList() {
 
             <div className="space-y-3">
               <div className="flex items-center text-sm text-gray-600">
-                <span className="mr-2">📧</span>
-                <span className="truncate">{cliente.email}</span>
+                <span className="mr-2">🆔</span>
+                <span className="font-mono font-medium">{cliente.cpf_cnpj}</span>
               </div>
+
+              {cliente.email && (
+                <div className="flex items-center text-sm text-gray-600">
+                  <span className="mr-2">📧</span>
+                  <span className="truncate">{cliente.email}</span>
+                </div>
+              )}
 
               {cliente.telefone && (
                 <div className="flex items-center text-sm text-gray-600">
