@@ -21,6 +21,18 @@ const nextConfig = {
         maxInactiveAge: 25 * 1000,
         pagesBufferLength: 2,
     },
+
+    // Netlify specific configurations
+    output: 'standalone',
+
+    // Ensure proper static generation
+    trailingSlash: false,
+
+    // Optimize for Netlify
+    compress: true,
+
+    // Disable telemetry (removed as it's not supported in Next.js 14)
+    // telemetry: false,
 };
 
 export default nextConfig;

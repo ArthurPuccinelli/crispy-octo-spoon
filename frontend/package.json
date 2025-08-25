@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:netlify": "next build && echo 'Build completed successfully'",
     "start": "next start",
     "lint": "next lint",
     "check-env": "node scripts/check-env.js",
