@@ -4,19 +4,7 @@ import { useState, useEffect } from 'react'
 import ClienteForm from '@/components/forms/ClienteForm'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
-
-interface Cliente {
-    id: string
-    nome: string
-    email: string
-    cpf_cnpj?: string
-    telefone?: string
-    cidade?: string
-    estado?: string
-    tipo_cliente: 'pessoa_fisica' | 'pessoa_juridica'
-    status: 'ativo' | 'inativo' | 'suspenso'
-    created_at: string
-}
+import { Cliente } from '@/types'
 
 export default function GestaoClientesPage() {
     const [showForm, setShowForm] = useState(false)
@@ -186,6 +174,9 @@ export default function GestaoClientesPage() {
                                         Cliente
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        CPF/CNPJ
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Contato
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -216,14 +207,18 @@ export default function GestaoClientesPage() {
                                                     <div className="text-sm text-gray-500">
                                                         {cliente.tipo_cliente === 'pessoa_fisica' ? '👤 Pessoa Física' : '🏢 Pessoa Jurídica'}
                                                     </div>
-                                                    {cliente.cpf_cnpj && (
-                                                        <div className="text-xs text-gray-400">{cliente.cpf_cnpj}</div>
-                                                    )}
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-900">{cliente.email}</div>
+                                            <div className="text-sm font-mono font-medium text-gray-900">{cliente.cpf_cnpj}</div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {cliente.email ? (
+                                                <div className="text-sm text-gray-900">{cliente.email}</div>
+                                            ) : (
+                                                <div className="text-sm text-gray-400 italic">Sem email</div>
+                                            )}
                                             {cliente.telefone && (
                                                 <div className="text-sm text-gray-500">{cliente.telefone}</div>
                                             )}

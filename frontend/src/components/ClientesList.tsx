@@ -2,19 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-
-interface Cliente {
-  id: string
-  nome: string
-  email?: string
-  cpf_cnpj: string
-  telefone?: string
-  cidade?: string
-  estado?: string
-  tipo_cliente: 'pessoa_fisica' | 'pessoa_juridica'
-  status: 'ativo' | 'inativo' | 'suspenso'
-  created_at: string
-}
+import { Cliente } from '@/types'
 
 export default function ClientesList() {
   const [clientes, setClientes] = useState<Cliente[]>([])

@@ -2,35 +2,36 @@
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { Cliente } from '@/types'
 
 interface ClienteFormProps {
     onSuccess: () => void
     clienteToEdit?: Cliente | null
 }
 
-interface Cliente {
-    id?: string
-    nome: string
-    email?: string
-    cpf_cnpj: string
-    telefone?: string
-    cidade?: string
-    estado?: string
-    tipo_cliente: 'pessoa_fisica' | 'pessoa_juridica'
-    status: 'ativo' | 'inativo' | 'suspenso'
-}
+// Tipo para o formulário (sem campos obrigatórios do banco)
+type ClienteFormData = Omit<Cliente, 'id' | 'created_at' | 'updated_at'>
 
 export default function ClienteForm({ onSuccess, clienteToEdit }: ClienteFormProps) {
-    const [formData, setFormData] = useState<Cliente>(
-        clienteToEdit || {
+    const [formData, setFormData] = useState<ClienteFormData>(
+        clienteToEdit ? {
+            nome: clienteToEdit.nome,
+            email: clienteToEdit.email || '',
+            cpf_cnpj: clienteToEdit.cpf_cnpj,
+            telefone: clienteToEdit.telefone || '',
+            cidade: clienteToEdit.cidade || '',
+            estado: clienteToEdit.estado || '',
+            tipo_cliente: clienteToEdit.tipo_cliente,
+            status: clienteToEdit.status
+        } : {
             nome: '',
             email: '',
             cpf_cnpj: '',
             telefone: '',
             cidade: '',
             estado: '',
-            tipo_cliente: 'pessoa_fisica',
-            status: 'ativo'
+            tipo_cliente: 'pessoa_fisica' as const,
+            status: 'ativo' as const
         }
     )
     const [loading, setLoading] = useState(false)

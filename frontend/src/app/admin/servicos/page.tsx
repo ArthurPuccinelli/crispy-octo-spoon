@@ -2,26 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { Cliente, Produto, ServicoContratado } from '@/types'
+
 // Tipos locais alinhados ao schema atual do banco (contratos, clientes, produtos)
-interface Cliente {
-    id: string
-    nome: string
-    email: string
-}
-
-interface Produto {
-    id: string
-    nome: string
-    // Campos conforme schema de produtos
-    tipo_produto?: 'servico' | 'produto' | 'assinatura'
-    preco?: number
-    periodicidade?: 'unico' | 'mensal' | 'trimestral' | 'semestral' | 'anual'
-    // Campos legados (compatibilidade com outros pontos do código)
-    valor?: number
-    tipo?: 'servico' | 'produto'
-    periodo_cobranca?: 'mensal' | 'anual' | 'unico'
-}
-
 interface Contrato {
     id: string
     cliente_id: string
@@ -137,7 +120,7 @@ export default function ServicosContratadosPage() {
 
     const calcularProximaCobranca = (servico: Contrato): string => {
         const baseDate = servico.data_inicio ? new Date(servico.data_inicio) : null
-        const periodicidade = servico.produto?.periodicidade || servico.produto?.periodo_cobranca
+        const periodicidade = servico.produto?.periodo_cobranca
 
         if (!baseDate || !periodicidade || periodicidade === 'unico') {
             return '—'
@@ -147,12 +130,6 @@ export default function ServicosContratadosPage() {
         switch (periodicidade) {
             case 'mensal':
                 proxima.setMonth(proxima.getMonth() + 1)
-                break
-            case 'trimestral':
-                proxima.setMonth(proxima.getMonth() + 3)
-                break
-            case 'semestral':
-                proxima.setMonth(proxima.getMonth() + 6)
                 break
             case 'anual':
                 proxima.setFullYear(proxima.getFullYear() + 1)
@@ -302,7 +279,7 @@ export default function ServicosContratadosPage() {
                                             {servico.produto?.nome}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            {servico.produto?.tipo_produto || servico.produto?.tipo}
+                                            {servico.produto?.tipo}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
