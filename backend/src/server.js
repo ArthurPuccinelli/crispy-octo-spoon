@@ -54,6 +54,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Importar rotas
+const docusignRoutes = require('./routes/docusign');
+
 // Rotas
 app.get('/', (req, res) => {
   res.json({
@@ -71,6 +74,9 @@ app.get('/health', (req, res) => {
     uptime: process.uptime()
   });
 });
+
+// Rotas do DocuSign
+app.use('/api/docusign', docusignRoutes);
 
 
 

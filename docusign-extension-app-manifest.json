@@ -1,0 +1,164 @@
+{
+  "name": "Crispy Octo Spoon - Clientes Data IO",
+  "version": "1.0.0",
+  "description": "Extension app para gerenciar dados de clientes através do DocuSign Data IO",
+  "author": "Crispy Octo Spoon Team",
+  "manifestVersion": "1.0",
+  "extensions": [
+    {
+      "name": "clientes-data-io",
+      "type": "data-io",
+      "description": "Gerenciamento de dados de clientes",
+      "version": "1.0.0",
+      "capabilities": {
+        "read": true,
+        "write": true,
+        "delete": false,
+        "query": true
+      },
+      "dataModel": {
+        "entities": [
+          {
+            "name": "cliente",
+            "displayName": "Cliente",
+            "description": "Informações do cliente",
+            "fields": [
+              {
+                "name": "id",
+                "displayName": "ID",
+                "type": "string",
+                "required": true,
+                "primaryKey": true
+              },
+              {
+                "name": "nome",
+                "displayName": "Nome",
+                "type": "string",
+                "required": true,
+                "maxLength": 255
+              },
+              {
+                "name": "email",
+                "displayName": "Email",
+                "type": "string",
+                "required": true,
+                "maxLength": 255,
+                "validation": "email"
+              },
+              {
+                "name": "cpf_cnpj",
+                "displayName": "CPF/CNPJ",
+                "type": "string",
+                "required": false,
+                "maxLength": 18
+              },
+              {
+                "name": "telefone",
+                "displayName": "Telefone",
+                "type": "string",
+                "required": false,
+                "maxLength": 20
+              },
+              {
+                "name": "cidade",
+                "displayName": "Cidade",
+                "type": "string",
+                "required": false,
+                "maxLength": 100
+              },
+              {
+                "name": "estado",
+                "displayName": "Estado",
+                "type": "string",
+                "required": false,
+                "maxLength": 2
+              },
+              {
+                "name": "tipo_cliente",
+                "displayName": "Tipo de Cliente",
+                "type": "enum",
+                "required": true,
+                "values": ["pessoa_fisica", "pessoa_juridica"]
+              },
+              {
+                "name": "status",
+                "displayName": "Status",
+                "type": "enum",
+                "required": true,
+                "values": ["ativo", "inativo", "suspenso"]
+              },
+              {
+                "name": "created_at",
+                "displayName": "Data de Criação",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "name": "updated_at",
+                "displayName": "Data de Atualização",
+                "type": "datetime",
+                "required": true
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "read-clientes",
+          "displayName": "Ler Clientes",
+          "description": "Ler lista de clientes",
+          "type": "read",
+          "entity": "cliente"
+        },
+        {
+          "name": "read-cliente-by-id",
+          "displayName": "Ler Cliente por ID",
+          "description": "Ler cliente específico por ID",
+          "type": "read",
+          "entity": "cliente"
+        },
+        {
+          "name": "create-cliente",
+          "displayName": "Criar Cliente",
+          "description": "Criar novo cliente",
+          "type": "write",
+          "entity": "cliente"
+        },
+        {
+          "name": "update-cliente",
+          "displayName": "Atualizar Cliente",
+          "description": "Atualizar cliente existente",
+          "type": "write",
+          "entity": "cliente"
+        }
+      ],
+      "connections": [
+        {
+          "name": "api-connection",
+          "type": "api",
+          "description": "Conexão com a API do Crispy Octo Spoon",
+          "baseUrl": "${API_BASE_URL}",
+          "authentication": {
+            "type": "bearer",
+            "tokenUrl": "${API_BASE_URL}/auth/token"
+          },
+          "endpoints": {
+            "read": "/api/docusign/clientes",
+            "write": "/api/docusign/clientes",
+            "query": "/api/docusign/clientes/search"
+          }
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    "data:read",
+    "data:write"
+  ],
+  "settings": {
+    "apiBaseUrl": "${API_BASE_URL}",
+    "maxRecordsPerRequest": 100,
+    "timeout": 30000
+  }
+}
