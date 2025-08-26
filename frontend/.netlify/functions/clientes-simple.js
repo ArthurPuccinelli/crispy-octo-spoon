@@ -1,39 +1,22 @@
 /**
  * 🍜 Função Simples para Clientes - Crispy Octo Spoon
  * 
- * Esta função é uma versão simplificada que não depende do Express
+ * Esta função é uma versão simplificada que conecta ao Supabase real
  * para funcionar no Netlify Functions.
  */
 
-// Simular dados de clientes para teste
-const mockClientes = [
-  {
-    id: '1',
-    nome: 'João Silva',
-    email: 'joao@email.com',
-    cpf_cnpj: '123.456.789-00',
-    telefone: '(11) 99999-9999',
-    cidade: 'São Paulo',
-    estado: 'SP',
-    tipo_cliente: 'pessoa_fisica',
-    status: 'ativo',
-    created_at: '2024-01-15T10:30:00Z',
-    updated_at: '2024-01-15T10:30:00Z'
-  },
-  {
-    id: '2',
-    nome: 'Maria Santos',
-    email: 'maria@email.com',
-    cpf_cnpj: '987.654.321-00',
-    telefone: '(11) 88888-8888',
-    cidade: 'Rio de Janeiro',
-    estado: 'RJ',
-    tipo_cliente: 'pessoa_fisica',
-    status: 'ativo',
-    created_at: '2024-01-15T11:30:00Z',
-    updated_at: '2024-01-15T11:30:00Z'
-  }
-];
+// Importar Supabase
+const { createClient } = require('@supabase/supabase-js');
+
+// Configuração do Supabase
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('❌ Variáveis de ambiente do Supabase não configuradas');
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Função para validar token (simplificada)
 function validarToken(authHeader) {
@@ -111,120 +94,201 @@ exports.handler = async (event, context) => {
 
     // Rota para estatísticas (DEVE VIR ANTES da rota de busca por ID)
     if (path.includes('/clientes-simple/stats/estatisticas') && method === 'GET') {
-      const stats = {
-        total: mockClientes.length,
-        porStatus: {},
-        porTipo: {},
-        porEstado: {},
-        porCidade: {}
-      };
+      try {
+        // Buscar todos os clientes para estatísticas
+        const { data: clientes, error } = await supabase
+          .from('clientes')
+          .select('*')
+          .eq('status', 'ativo');
 
-      mockClientes.forEach(cliente => {
-        // Contar por status
-        stats.porStatus[cliente.status] = (stats.porStatus[cliente.status] || 0) + 1;
-        
-        // Contar por tipo
-        stats.porTipo[cliente.tipo_cliente] = (stats.porTipo[cliente.tipo_cliente] || 0) + 1;
-        
-        // Contar por estado
-        if (cliente.estado) {
-          stats.porEstado[cliente.estado] = (stats.porEstado[cliente.estado] || 0) + 1;
+        if (error) {
+          console.error('Erro ao buscar clientes:', error);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify(formatarErro('Erro ao buscar dados do banco'))
+          };
         }
-        
-        // Contar por cidade
-        if (cliente.cidade) {
-          stats.porCidade[cliente.cidade] = (stats.porCidade[cliente.cidade] || 0) + 1;
-        }
-      });
 
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(formatarResposta(stats, 'Estatísticas obtidas'))
-      };
+        const stats = {
+          total: clientes.length,
+          porStatus: {},
+          porTipo: {},
+          porEstado: {},
+          porCidade: {}
+        };
+
+        clientes.forEach(cliente => {
+          // Contar por status
+          stats.porStatus[cliente.status] = (stats.porStatus[cliente.status] || 0) + 1;
+          
+          // Contar por tipo
+          stats.porTipo[cliente.tipo_cliente] = (stats.porTipo[cliente.tipo_cliente] || 0) + 1;
+          
+          // Contar por estado
+          if (cliente.estado) {
+            stats.porEstado[cliente.estado] = (stats.porEstado[cliente.estado] || 0) + 1;
+          }
+          
+          // Contar por cidade
+          if (cliente.cidade) {
+            stats.porCidade[cliente.cidade] = (stats.porCidade[cliente.cidade] || 0) + 1;
+          }
+        });
+
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify(formatarResposta(stats, 'Estatísticas obtidas'))
+        };
+      } catch (error) {
+        console.error('Erro ao processar estatísticas:', error);
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify(formatarErro('Erro interno do servidor'))
+        };
+      }
     }
 
     // Rota para busca (DEVE VIR ANTES da rota de busca por ID)
     if (path.includes('/clientes-simple/search/buscar') && method === 'GET') {
-      const queryParams = event.queryStringParameters || {};
-      const q = queryParams.q || '';
-      const limit = parseInt(queryParams.limit) || 10;
-      const offset = parseInt(queryParams.offset) || 0;
-      
-      if (!q) {
+      try {
+        const queryParams = event.queryStringParameters || {};
+        const q = queryParams.q || '';
+        const limit = parseInt(queryParams.limit) || 10;
+        const offset = parseInt(queryParams.offset) || 0;
+        
+        if (!q) {
+          return {
+            statusCode: 400,
+            headers,
+            body: JSON.stringify(formatarErro('Parâmetro de busca "q" é obrigatório'))
+          };
+        }
+
+        // Buscar no Supabase com filtros
+        const { data: resultados, error, count } = await supabase
+          .from('clientes')
+          .select('*', { count: 'exact' })
+          .or(`nome.ilike.%${q}%,email.ilike.%${q}%,cpf_cnpj.ilike.%${q}%`)
+          .eq('status', 'ativo')
+          .range(offset, offset + limit - 1)
+          .order('nome');
+
+        if (error) {
+          console.error('Erro na busca:', error);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify(formatarErro('Erro ao buscar no banco'))
+          };
+        }
+
+        const pagination = {
+          total: count || 0,
+          limit: limit,
+          offset: offset,
+          hasMore: offset + limit < (count || 0),
+          page: Math.floor(offset / limit) + 1,
+          totalPages: Math.ceil((count || 0) / limit)
+        };
+
         return {
-          statusCode: 400,
+          statusCode: 200,
           headers,
-          body: JSON.stringify(formatarErro('Parâmetro de busca "q" é obrigatório'))
+          body: JSON.stringify(formatarResposta(resultados || [], 'Busca executada', pagination))
+        };
+      } catch (error) {
+        console.error('Erro ao processar busca:', error);
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify(formatarErro('Erro interno do servidor'))
         };
       }
-
-      const resultados = mockClientes.filter(cliente => 
-        cliente.nome.toLowerCase().includes(q.toLowerCase()) ||
-        cliente.email?.toLowerCase().includes(q.toLowerCase()) ||
-        cliente.cpf_cnpj.includes(q)
-      );
-
-      const resultadosPaginados = resultados.slice(offset, offset + limit);
-      
-      const pagination = {
-        total: resultados.length,
-        limit: limit,
-        offset: offset,
-        hasMore: offset + limit < resultados.length,
-        page: Math.floor(offset / limit) + 1,
-        totalPages: Math.ceil(resultados.length / limit)
-      };
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(formatarResposta(resultadosPaginados, 'Busca executada', pagination))
-      };
     }
 
     // Rota para cliente específico (DEVE VIR ANTES da rota de listagem)
     if (path.includes('/clientes-simple/') && method === 'GET') {
-      const id = path.split('/').pop();
-      const cliente = mockClientes.find(c => c.id === id);
-      
-      if (!cliente) {
+      try {
+        const id = path.split('/').pop();
+        
+        const { data: cliente, error } = await supabase
+          .from('clientes')
+          .select('*')
+          .eq('id', id)
+          .eq('status', 'ativo')
+          .single();
+
+        if (error || !cliente) {
+          return {
+            statusCode: 404,
+            headers,
+            body: JSON.stringify(formatarErro('Cliente não encontrado', 404))
+          };
+        }
+
         return {
-          statusCode: 404,
+          statusCode: 200,
           headers,
-          body: JSON.stringify(formatarErro('Cliente não encontrado', 404))
+          body: JSON.stringify(formatarResposta(cliente, 'Cliente encontrado'))
+        };
+      } catch (error) {
+        console.error('Erro ao buscar cliente por ID:', error);
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify(formatarErro('Erro interno do servidor'))
         };
       }
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(formatarResposta(cliente, 'Cliente encontrado'))
-      };
     }
 
     // Rota raiz (listagem completa)
     if (path.endsWith('/clientes-simple') && method === 'GET') {
-      const queryParams = event.queryStringParameters || {};
-      const limit = parseInt(queryParams.limit) || 10;
-      const offset = parseInt(queryParams.offset) || 0;
-      
-      const clientesFiltrados = mockClientes.slice(offset, offset + limit);
-      
-      const pagination = {
-        total: mockClientes.length,
-        limit: limit,
-        offset: offset,
-        hasMore: offset + limit < mockClientes.length,
-        page: Math.floor(offset / limit) + 1,
-        totalPages: Math.ceil(mockClientes.length / limit)
-      };
+      try {
+        const queryParams = event.queryStringParameters || {};
+        const limit = parseInt(queryParams.limit) || 10;
+        const offset = parseInt(queryParams.offset) || 0;
+        
+        const { data: clientes, error, count } = await supabase
+          .from('clientes')
+          .select('*', { count: 'exact' })
+          .eq('status', 'ativo')
+          .range(offset, offset + limit - 1)
+          .order('nome');
 
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(formatarResposta(clientesFiltrados, 'Clientes listados com sucesso', pagination))
-      };
+        if (error) {
+          console.error('Erro ao listar clientes:', error);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify(formatarErro('Erro ao buscar dados do banco'))
+          };
+        }
+
+        const pagination = {
+          total: count || 0,
+          limit: limit,
+          offset: offset,
+          hasMore: offset + limit < (count || 0),
+          page: Math.floor(offset / limit) + 1,
+          totalPages: Math.ceil((count || 0) / limit)
+        };
+
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify(formatarResposta(clientes || [], 'Clientes listados com sucesso', pagination))
+        };
+      } catch (error) {
+        console.error('Erro ao listar clientes:', error);
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify(formatarErro('Erro interno do servidor'))
+        };
+      }
     }
 
     // Rota para criar cliente
@@ -240,22 +304,49 @@ exports.handler = async (event, context) => {
         };
       }
 
-      const novoCliente = {
-        id: (mockClientes.length + 1).toString(),
-        ...body,
-        status: body.status || 'ativo',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
+      try {
+        const { data, error } = await supabase
+          .from('clientes')
+          .insert([{
+            nome: body.nome,
+            email: body.email || null,
+            cpf_cnpj: body.cpf_cnpj,
+            tipo_cliente: body.tipo_cliente,
+            telefone: body.telefone || null,
+            endereco: body.endereco || null,
+            cidade: body.cidade || null,
+            estado: body.estado || null,
+            cep: body.cep || null,
+            observacoes: body.observacoes || null,
+            status: body.status || 'ativo',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }])
+          .select()
+          .single();
 
-      // Simular adição ao array
-      mockClientes.push(novoCliente);
+        if (error) {
+          console.error('Erro ao criar cliente:', error);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify(formatarErro('Erro ao salvar no banco'))
+          };
+        }
 
-      return {
-        statusCode: 201,
-        headers,
-        body: JSON.stringify(formatarResposta(novoCliente, 'Cliente criado com sucesso'))
-      };
+        return {
+          statusCode: 201,
+          headers,
+          body: JSON.stringify(formatarResposta(data, 'Cliente criado com sucesso'))
+        };
+      } catch (error) {
+        console.error('Erro ao processar criação de cliente:', error);
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify(formatarErro('Erro interno do servidor'))
+        };
+      }
     }
 
     // Rota para atualizar cliente
@@ -263,54 +354,82 @@ exports.handler = async (event, context) => {
       const id = path.split('/').pop();
       const body = JSON.parse(event.body || '{}');
       
-      const clienteIndex = mockClientes.findIndex(c => c.id === id);
-      
-      if (clienteIndex === -1) {
+      try {
+        const { data, error } = await supabase
+          .from('clientes')
+          .update({
+            nome: body.nome || undefined,
+            email: body.email || undefined,
+            cpf_cnpj: body.cpf_cnpj || undefined,
+            tipo_cliente: body.tipo_cliente || undefined,
+            telefone: body.telefone || undefined,
+            endereco: body.endereco || undefined,
+            cidade: body.cidade || undefined,
+            estado: body.estado || undefined,
+            cep: body.cep || undefined,
+            observacoes: body.observacoes || undefined,
+            status: body.status || undefined,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', id)
+          .select()
+          .single();
+
+        if (error || !data) {
+          return {
+            statusCode: 404,
+            headers,
+            body: JSON.stringify(formatarErro('Cliente não encontrado', 404))
+          };
+        }
+
         return {
-          statusCode: 404,
+          statusCode: 200,
           headers,
-          body: JSON.stringify(formatarErro('Cliente não encontrado', 404))
+          body: JSON.stringify(formatarResposta(data, 'Cliente atualizado com sucesso'))
+        };
+      } catch (error) {
+        console.error('Erro ao processar atualização de cliente:', error);
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify(formatarErro('Erro interno do servidor'))
         };
       }
-
-      const clienteAtualizado = {
-        ...mockClientes[clienteIndex],
-        ...body,
-        updated_at: new Date().toISOString()
-      };
-
-      // Simular atualização
-      mockClientes[clienteIndex] = clienteAtualizado;
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(formatarResposta(clienteAtualizado, 'Cliente atualizado com sucesso'))
-      };
     }
 
     // Rota para deletar cliente
     if (path.includes('/clientes-simple/') && method === 'DELETE') {
       const id = path.split('/').pop();
-      const clienteIndex = mockClientes.findIndex(c => c.id === id);
       
-      if (clienteIndex === -1) {
+      try {
+        const { error } = await supabase
+          .from('clientes')
+          .update({ status: 'inativo', updated_at: new Date().toISOString() })
+          .eq('id', id);
+
+        if (error) {
+          console.error('Erro ao deletar cliente:', error);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify(formatarErro('Erro ao deletar no banco'))
+          };
+        }
+
         return {
-          statusCode: 404,
+          statusCode: 200,
           headers,
-          body: JSON.stringify(formatarErro('Cliente não encontrado', 404))
+          body: JSON.stringify(formatarResposta({ id }, 'Cliente removido com sucesso'))
+        };
+      } catch (error) {
+        console.error('Erro ao processar deleção de cliente:', error);
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify(formatarErro('Erro interno do servidor'))
         };
       }
-
-      // Soft delete - marca como inativo
-      mockClientes[clienteIndex].status = 'inativo';
-      mockClientes[clienteIndex].updated_at = new Date().toISOString();
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(formatarResposta(mockClientes[clienteIndex], 'Cliente removido com sucesso'))
-      };
     }
 
     // Rota não encontrada
