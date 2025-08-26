@@ -109,6 +109,80 @@ exports.handler = async (event, context) => {
     const path = event.path || event.rawUrl || '';
     const method = event.httpMethod;
 
+    // Rota para estatísticas (DEVE VIR ANTES da rota de busca por ID)
+    if (path.includes('/clientes-simple/stats/estatisticas') && method === 'GET') {
+      const stats = {
+        total: mockClientes.length,
+        porStatus: {},
+        porTipo: {},
+        porEstado: {},
+        porCidade: {}
+      };
+
+      mockClientes.forEach(cliente => {
+        // Contar por status
+        stats.porStatus[cliente.status] = (stats.porStatus[cliente.status] || 0) + 1;
+        
+        // Contar por tipo
+        stats.porTipo[cliente.tipo_cliente] = (stats.porTipo[cliente.tipo_cliente] || 0) + 1;
+        
+        // Contar por estado
+        if (cliente.estado) {
+          stats.porEstado[cliente.estado] = (stats.porEstado[cliente.estado] || 0) + 1;
+        }
+        
+        // Contar por cidade
+        if (cliente.cidade) {
+          stats.porCidade[cliente.cidade] = (stats.porCidade[cliente.cidade] || 0) + 1;
+        }
+      });
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify(formatarResposta(stats, 'Estatísticas obtidas'))
+      };
+    }
+
+    // Rota para busca (DEVE VIR ANTES da rota de busca por ID)
+    if (path.includes('/clientes-simple/search/buscar') && method === 'GET') {
+      const queryParams = event.queryStringParameters || {};
+      const q = queryParams.q || '';
+      const limit = parseInt(queryParams.limit) || 10;
+      const offset = parseInt(queryParams.offset) || 0;
+      
+      if (!q) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify(formatarErro('Parâmetro de busca "q" é obrigatório'))
+        };
+      }
+
+      const resultados = mockClientes.filter(cliente => 
+        cliente.nome.toLowerCase().includes(q.toLowerCase()) ||
+        cliente.email?.toLowerCase().includes(q.toLowerCase()) ||
+        cliente.cpf_cnpj.includes(q)
+      );
+
+      const resultadosPaginados = resultados.slice(offset, offset + limit);
+      
+      const pagination = {
+        total: resultados.length,
+        limit: limit,
+        offset: offset,
+        hasMore: offset + limit < resultados.length,
+        page: Math.floor(offset / limit) + 1,
+        totalPages: Math.ceil(resultados.length / limit)
+      };
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify(formatarResposta(resultadosPaginados, 'Busca executada', pagination))
+      };
+    }
+
     // Rota para cliente específico (DEVE VIR ANTES da rota de listagem)
     if (path.includes('/clientes-simple/') && method === 'GET') {
       const id = path.split('/').pop();
@@ -236,80 +310,6 @@ exports.handler = async (event, context) => {
         statusCode: 200,
         headers,
         body: JSON.stringify(formatarResposta(mockClientes[clienteIndex], 'Cliente removido com sucesso'))
-      };
-    }
-
-    // Rota para estatísticas
-    if (path.includes('/clientes-simple/stats/estatisticas') && method === 'GET') {
-      const stats = {
-        total: mockClientes.length,
-        porStatus: {},
-        porTipo: {},
-        porEstado: {},
-        porCidade: {}
-      };
-
-      mockClientes.forEach(cliente => {
-        // Contar por status
-        stats.porStatus[cliente.status] = (stats.porStatus[cliente.status] || 0) + 1;
-        
-        // Contar por tipo
-        stats.porTipo[cliente.tipo_cliente] = (stats.porTipo[cliente.tipo_cliente] || 0) + 1;
-        
-        // Contar por estado
-        if (cliente.estado) {
-          stats.porEstado[cliente.estado] = (stats.porEstado[cliente.estado] || 0) + 1;
-        }
-        
-        // Contar por cidade
-        if (cliente.cidade) {
-          stats.porCidade[cliente.cidade] = (stats.porCidade[cliente.cidade] || 0) + 1;
-        }
-      });
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(formatarResposta(stats, 'Estatísticas obtidas'))
-      };
-    }
-
-    // Rota para busca
-    if (path.includes('/clientes-simple/search/buscar') && method === 'GET') {
-      const queryParams = event.queryStringParameters || {};
-      const q = queryParams.q || '';
-      const limit = parseInt(queryParams.limit) || 10;
-      const offset = parseInt(queryParams.offset) || 0;
-      
-      if (!q) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify(formatarErro('Parâmetro de busca "q" é obrigatório'))
-        };
-      }
-
-      const resultados = mockClientes.filter(cliente => 
-        cliente.nome.toLowerCase().includes(q.toLowerCase()) ||
-        cliente.email?.toLowerCase().includes(q.toLowerCase()) ||
-        cliente.cpf_cnpj.includes(q)
-      );
-
-      const resultadosPaginados = resultados.slice(offset, offset + limit);
-      
-      const pagination = {
-        total: resultados.length,
-        limit: limit,
-        offset: offset,
-        hasMore: offset + limit < resultados.length,
-        page: Math.floor(offset / limit) + 1,
-        totalPages: Math.ceil(resultados.length / limit)
-      };
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(formatarResposta(resultadosPaginados, 'Busca executada', pagination))
       };
     }
 
