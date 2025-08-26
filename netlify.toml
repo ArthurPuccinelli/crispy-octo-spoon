@@ -3,6 +3,18 @@
   command = "npm run build"
   publish = ".next"
 
+# Configuração para Netlify Functions
+[functions]
+  directory = ".netlify/functions"
+  node_bundler = "esbuild"
+
+# Configuração específica para a função principal
+[[redirects]]
+  from = "/.netlify/functions/api/*"
+  to = "/.netlify/functions/api-handler"
+  status = 200
+  force = false
+
 [build.environment]
   NODE_VERSION = "18"
 
