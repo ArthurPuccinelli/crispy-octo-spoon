@@ -9,17 +9,16 @@
   node_bundler = "esbuild"
 
 # Configuração específica para a função principal
-[[redirects]]
-  from = "/.netlify/functions/api/*"
-  to = "/.netlify/functions/api-handler"
-  status = 200
-  force = false
+# Removido redirect problemático - será configurado via plugin
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
 
 # Redirects for SPA routing
 [[redirects]]
