@@ -1,0 +1,35 @@
+{
+    "name": "netlify-functions",
+    "version": "1.0.0",
+    "description": "Netlify Functions para Crispy Octo Spoon API",
+    "main": "api.js",
+    "scripts": {
+        "dev": "netlify dev",
+        "build": "echo 'Build não necessário para Netlify Functions'",
+        "test": "echo 'Testes não configurados'"
+    },
+    "keywords": [
+        "netlify",
+        "functions",
+        "serverless",
+        "api",
+        "docusign"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.18.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "helmet": "^7.1.0",
+        "morgan": "^1.10.0",
+        "@supabase/supabase-js": "^2.55.0"
+    },
+    "devDependencies": {
+        "axios": "^1.6.0"
+    },
+    "devDependencies": {},
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

@@ -1,0 +1,15 @@
+# Configurações de ambiente para produção no Netlify
+NODE_ENV=production
+NEXT_TELEMETRY_DISABLED=1
+
+# Configurações de build
+NEXT_PUBLIC_APP_ENV=production
+NEXT_PUBLIC_APP_URL=https://your-app.netlify.app
+
+# Configurações de performance
+NEXT_PUBLIC_ENABLE_ANALYTICS=true
+NEXT_PUBLIC_ENABLE_DEBUG=false
+
+# Configurações de cache
+NEXT_PUBLIC_CACHE_ENABLED=true
+NEXT_PUBLIC_CACHE_TTL=3600
