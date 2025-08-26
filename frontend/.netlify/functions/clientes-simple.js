@@ -109,17 +109,28 @@ exports.handler = async (event, context) => {
     const path = event.path || event.rawUrl || '';
     const method = event.httpMethod;
 
-    // Rota raiz
-    if (path.endsWith('/clientes-simple') && method === 'GET') {
+    // Rota para cliente específico (DEVE VIR ANTES da rota de listagem)
+    if (path.includes('/clientes-simple/') && method === 'GET') {
+      const id = path.split('/').pop();
+      const cliente = mockClientes.find(c => c.id === id);
+      
+      if (!cliente) {
+        return {
+          statusCode: 404,
+          headers,
+          body: JSON.stringify(formatarErro('Cliente não encontrado', 404))
+        };
+      }
+
       return {
         statusCode: 200,
         headers,
-        body: JSON.stringify(formatarResposta(mockClientes, 'Clientes listados com sucesso'))
+        body: JSON.stringify(formatarResposta(cliente, 'Cliente encontrado'))
       };
     }
 
-    // Rota com parâmetros de query
-    if (path.includes('/clientes-simple') && method === 'GET') {
+    // Rota raiz (listagem completa)
+    if (path.endsWith('/clientes-simple') && method === 'GET') {
       const queryParams = event.queryStringParameters || {};
       const limit = parseInt(queryParams.limit) || 10;
       const offset = parseInt(queryParams.offset) || 0;
@@ -139,26 +150,6 @@ exports.handler = async (event, context) => {
         statusCode: 200,
         headers,
         body: JSON.stringify(formatarResposta(clientesFiltrados, 'Clientes listados com sucesso', pagination))
-      };
-    }
-
-    // Rota para cliente específico
-    if (path.includes('/clientes-simple/') && method === 'GET') {
-      const id = path.split('/').pop();
-      const cliente = mockClientes.find(c => c.id === id);
-      
-      if (!cliente) {
-        return {
-          statusCode: 404,
-          headers,
-          body: JSON.stringify(formatarErro('Cliente não encontrado', 404))
-        };
-      }
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(formatarResposta(cliente, 'Cliente encontrado'))
       };
     }
 
