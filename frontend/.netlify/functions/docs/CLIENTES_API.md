@@ -2,9 +2,12 @@
 
 API RESTful para gestão de clientes, compatível com **DocuSign Extension App Data IO**.
 
+> Nota: Estas APIs estão implantadas em Netlify Functions. Para a documentação específica das rotas atuais em produção (clientes-simple) consulte também: `CLIENTES_API_NETLIFY.md`.
+
 ## 🔗 Endpoints Base
 
-- **Base URL**: `/api/clientes`
+- **Base URL (produção)**: `https://crispy-octo-spoon.netlify.app/.netlify/functions`
+- **Prefixo atual**: `clientes-simple`
 - **Autenticação**: Bearer Token (DocuSign)
 - **Formato**: JSON
 
@@ -20,7 +23,7 @@ Authorization: Bearer <seu_token_docusign>
 
 ### 1. Listar Clientes
 
-**GET** `/api/clientes`
+**GET** `/.netlify/functions/clientes-simple`
 
 Lista todos os clientes com paginação e filtros.
 
@@ -28,18 +31,13 @@ Lista todos os clientes com paginação e filtros.
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |------------|------|-------------|-----------|
-| `limit` | number | ❌ | Limite de registros (padrão: 50, máximo: 100) |
+| `limit` | number | ❌ | Limite de registros (padrão: 10) |
 | `offset` | number | ❌ | Offset para paginação (padrão: 0) |
-| `status` | string | ❌ | Filtrar por status: `ativo`, `inativo`, `suspenso` |
-| `tipo_cliente` | string | ❌ | Filtrar por tipo: `pessoa_fisica`, `pessoa_juridica` |
-| `cidade` | string | ❌ | Filtrar por cidade (busca parcial) |
-| `estado` | string | ❌ | Filtrar por estado (exato) |
-| `search` | string | ❌ | Busca por nome, email ou CPF/CNPJ |
 
 #### Exemplo de Requisição
 
 ```bash
-curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes?limit=20&status=ativo&tipo_cliente=pessoa_fisica" \
+curl -X GET "https://crispy-octo-spoon.netlify.app/.netlify/functions/clientes-simple?limit=10&offset=0" \
   -H "Authorization: Bearer seu_token_aqui" \
   -H "Content-Type: application/json"
 ```
@@ -65,12 +63,12 @@ curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes?lim
     }
   ],
   "pagination": {
-    "total": 150,
-    "limit": 20,
+    "total": 3,
+    "limit": 10,
     "offset": 0,
-    "hasMore": true,
+    "hasMore": false,
     "page": 1,
-    "totalPages": 8
+    "totalPages": 1
   },
   "metadata": {
     "entity": "cliente",
@@ -82,7 +80,7 @@ curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes?lim
 
 ### 2. Buscar Cliente por ID
 
-**GET** `/api/clientes/:id`
+**GET** `/.netlify/functions/clientes-simple/:id`
 
 Busca um cliente específico pelo ID.
 
@@ -95,7 +93,7 @@ Busca um cliente específico pelo ID.
 #### Exemplo de Requisição
 
 ```bash
-curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/uuid-do-cliente" \
+curl -X GET "https://crispy-octo-spoon.netlify.app/.netlify/functions/clientes-simple/uuid-do-cliente" \
   -H "Authorization: Bearer seu_token_aqui" \
   -H "Content-Type: application/json"
 ```
@@ -129,7 +127,7 @@ curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/uui
 
 ### 3. Criar Cliente
 
-**POST** `/api/clientes`
+**POST** `/.netlify/functions/clientes-simple`
 
 Cria um novo cliente.
 
@@ -154,7 +152,7 @@ Cria um novo cliente.
 #### Exemplo de Requisição
 
 ```bash
-curl -X POST "https://seu-dominio.netlify.app/.netlify/functions/api/clientes" \
+curl -X POST "https://crispy-octo-spoon.netlify.app/.netlify/functions/clientes-simple" \
   -H "Authorization: Bearer seu_token_aqui" \
   -H "Content-Type: application/json" \
   -d '{
@@ -197,7 +195,7 @@ curl -X POST "https://seu-dominio.netlify.app/.netlify/functions/api/clientes" \
 
 ### 4. Atualizar Cliente
 
-**PUT** `/api/clientes/:id`
+**PUT** `/.netlify/functions/clientes-simple/:id`
 
 Atualiza um cliente existente.
 
@@ -214,7 +212,7 @@ Mesmos campos da criação, mas apenas os que deseja atualizar.
 #### Exemplo de Requisição
 
 ```bash
-curl -X PUT "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/uuid-do-cliente" \
+curl -X PUT "https://crispy-octo-spoon.netlify.app/.netlify/functions/clientes-simple/uuid-do-cliente" \
   -H "Authorization: Bearer seu_token_aqui" \
   -H "Content-Type: application/json" \
   -d '{
@@ -232,15 +230,9 @@ curl -X PUT "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/uui
   "data": {
     "id": "uuid-do-cliente",
     "nome": "João Silva",
-    "email": "joao@email.com",
-    "cpf_cnpj": "123.456.789-00",
     "telefone": "(11) 77777-7777",
     "cidade": "Belo Horizonte",
-    "estado": "MG",
-    "tipo_cliente": "pessoa_fisica",
-    "status": "ativo",
-    "created_at": "2024-01-15T10:30:00Z",
-    "updated_at": "2024-01-15T10:30:00Z"
+    "estado": "MG"
   },
   "message": "Cliente atualizado com sucesso",
   "metadata": {
@@ -254,7 +246,7 @@ curl -X PUT "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/uui
 
 ### 5. Remover Cliente
 
-**DELETE** `/api/clientes/:id`
+**DELETE** `/.netlify/functions/clientes-simple/:id`
 
 Remove um cliente (soft delete - marca como inativo).
 
@@ -267,7 +259,7 @@ Remove um cliente (soft delete - marca como inativo).
 #### Exemplo de Requisição
 
 ```bash
-curl -X DELETE "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/uuid-do-cliente" \
+curl -X DELETE "https://crispy-octo-spoon.netlify.app/.netlify/functions/clientes-simple/uuid-do-cliente" \
   -H "Authorization: Bearer seu_token_aqui"
 ```
 
@@ -276,12 +268,7 @@ curl -X DELETE "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/
 ```json
 {
   "success": true,
-  "data": {
-    "id": "uuid-do-cliente",
-    "nome": "João Silva",
-    "status": "inativo",
-    "updated_at": "2024-01-15T10:30:00Z"
-  },
+  "data": { "id": "uuid-do-cliente" },
   "message": "Cliente removido com sucesso",
   "metadata": {
     "entity": "cliente",
@@ -294,14 +281,14 @@ curl -X DELETE "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/
 
 ### 6. Estatísticas dos Clientes
 
-**GET** `/api/clientes/stats/estatisticas`
+**GET** `/.netlify/functions/clientes-simple/stats/estatisticas`
 
 Obtém estatísticas gerais dos clientes.
 
 #### Exemplo de Requisição
 
 ```bash
-curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/stats/estatisticas" \
+curl -X GET "https://crispy-octo-spoon.netlify.app/.netlify/functions/clientes-simple/stats/estatisticas" \
   -H "Authorization: Bearer seu_token_aqui"
 ```
 
@@ -311,27 +298,11 @@ curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/sta
 {
   "success": true,
   "data": {
-    "total": 150,
-    "porStatus": {
-      "ativo": 120,
-      "inativo": 25,
-      "suspenso": 5
-    },
-    "porTipo": {
-      "pessoa_fisica": 100,
-      "pessoa_juridica": 50
-    },
-    "porEstado": {
-      "SP": 80,
-      "RJ": 30,
-      "MG": 25,
-      "RS": 15
-    },
-    "porCidade": {
-      "São Paulo": 50,
-      "Rio de Janeiro": 20,
-      "Belo Horizonte": 15
-    }
+    "total": 3,
+    "porStatus": { "ativo": 3 },
+    "porTipo": { "pessoa_fisica": 2, "pessoa_juridica": 1 },
+    "porEstado": { "SP": 2, "RJ": 1 },
+    "porCidade": { "São Paulo": 1, "Campinas": 1, "Rio de Janeiro": 1 }
   },
   "metadata": {
     "entity": "cliente",
@@ -343,159 +314,38 @@ curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/sta
 
 ### 7. Busca Avançada
 
-**GET** `/api/clientes/search/buscar`
+**GET** `/.netlify/functions/clientes-simple/search/buscar`
 
-Busca clientes por texto com filtros adicionais.
+Busca clientes por texto com paginação.
 
 #### Parâmetros de Query
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |------------|------|-------------|-----------|
 | `q` | string | ✅ | Texto para busca (nome, email, CPF/CNPJ) |
-| `limit` | number | ❌ | Limite de registros (padrão: 50, máximo: 100) |
+| `limit` | number | ❌ | Limite de registros (padrão: 10) |
 | `offset` | number | ❌ | Offset para paginação (padrão: 0) |
-| `status` | string | ❌ | Filtrar por status |
-| `tipo_cliente` | string | ❌ | Filtrar por tipo |
-| `cidade` | string | ❌ | Filtrar por cidade |
-| `estado` | string | ❌ | Filtrar por estado |
 
 #### Exemplo de Requisição
 
 ```bash
-curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/search/buscar?q=João&status=ativo&limit=10" \
+curl -X GET "https://crispy-octo-spoon.netlify.app/.netlify/functions/clientes-simple/search/buscar?q=Jo%C3%A3o&limit=10" \
   -H "Authorization: Bearer seu_token_aqui"
 ```
 
 ## 🔍 Códigos de Erro
 
-### Códigos HTTP
+Os códigos continuam os mesmos descritos anteriormente, com respostas no padrão DocuSign Data IO (`success`, `data`, `message`, `pagination`, `metadata`).
 
-| Código | Descrição |
-|--------|-----------|
-| `200` | Sucesso |
-| `201` | Criado com sucesso |
-| `400` | Bad Request - Dados inválidos |
-| `401` | Unauthorized - Token inválido |
-| `404` | Not Found - Cliente não encontrado |
-| `500` | Internal Server Error - Erro interno |
+## 📱 Postman
 
-### Códigos de Erro Específicos
-
-| Código | Descrição |
-|--------|-----------|
-| `AUTH_REQUIRED` | Token de autenticação necessário |
-| `INVALID_TOKEN` | Token inválido |
-| `MISSING_REQUIRED_FIELDS` | Campos obrigatórios ausentes |
-| `INVALID_TIPO_CLIENTE` | Tipo de cliente inválido |
-| `VALIDATION_ERROR` | Erro de validação dos dados |
-| `CLIENTE_NOT_FOUND` | Cliente não encontrado |
-| `MISSING_CLIENTE_ID` | ID do cliente ausente |
-| `MISSING_SEARCH_QUERY` | Query de busca ausente |
-
-## 📊 Estrutura de Resposta Padrão
-
-Todas as respostas seguem o padrão DocuSign Data IO:
-
-```json
-{
-  "success": boolean,
-  "data": any,
-  "message": "string (opcional)",
-  "pagination": {
-    "total": number,
-    "limit": number,
-    "offset": number,
-    "hasMore": boolean,
-    "page": number,
-    "totalPages": number
-  },
-  "metadata": {
-    "entity": "cliente",
-    "operation": "string",
-    "id": "string (opcional)",
-    "timestamp": "ISO 8601"
-  }
-}
-```
-
-## 🔧 Validações
-
-### Campos Obrigatórios
-
-- **nome**: String não vazia
-- **cpf_cnpj**: CPF (11 dígitos) ou CNPJ (14 dígitos) válido
-- **tipo_cliente**: `pessoa_fisica` ou `pessoa_juridica`
-
-### Validações de Formato
-
-- **email**: Formato de email válido (se fornecido)
-- **cpf_cnpj**: Formato válido de CPF ou CNPJ
-- **status**: `ativo`, `inativo` ou `suspenso`
-- **estado**: Sigla de estado brasileiro válida
-
-### Validações de Negócio
-
-- **CPF/CNPJ único**: Não permite duplicatas
-- **Soft Delete**: Remoção apenas marca como inativo
-- **Timestamps**: Criação e atualização automáticas
-
-## 🚀 Compatibilidade com DocuSign Data IO
-
-Esta API é totalmente compatível com o contrato do **DocuSign Extension App Data IO**:
-
-- ✅ **Formato de resposta** padronizado
-- ✅ **Paginação** implementada
-- ✅ **Filtros** suportados
-- ✅ **Validações** robustas
-- ✅ **Logs de auditoria** incluídos
-- ✅ **Tratamento de erros** padronizado
-- ✅ **Metadados** completos
-
-## 📝 Exemplos de Uso
-
-### Listar Clientes Ativos
-
-```bash
-curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes?status=ativo&limit=100" \
-  -H "Authorization: Bearer seu_token_aqui"
-```
-
-### Buscar Cliente por CPF
-
-```bash
-curl -X GET "https://seu-dominio.netlify.app/.netlify/functions/api/clientes/search/buscar?q=123.456.789-00" \
-  -H "Authorization: Bearer seu_token_aqui"
-```
-
-### Criar Cliente Pessoa Jurídica
-
-```bash
-curl -X POST "https://seu-dominio.netlify.app/.netlify/functions/api/clientes" \
-  -H "Authorization: Bearer seu_token_aqui" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nome": "Empresa XYZ Ltda",
-    "cpf_cnpj": "12.345.678/0001-90",
-    "tipo_cliente": "pessoa_juridica",
-    "email": "contato@empresa.com",
-    "cidade": "São Paulo",
-    "estado": "SP"
-  }'
-```
-
-## 🔒 Segurança
-
-- **Autenticação**: Bearer Token obrigatório
-- **Validação**: Dados validados antes do processamento
-- **Logs**: Auditoria de todas as operações
-- **Rate Limiting**: Configurável via variáveis de ambiente
-- **CORS**: Configurado para origens permitidas
-
-## 📞 Suporte
-
-Para dúvidas ou problemas:
-
-1. Verifique os logs da função no Netlify
-2. Confirme as variáveis de ambiente
-3. Valide o formato dos dados enviados
-4. Verifique a autenticação DocuSign
+- Use `base_url = https://crispy-octo-spoon.netlify.app/.netlify/functions`
+- Configure `Authorization: Bearer {{auth_token}}` na Collection
+- Exemplos prontos:
+  - `GET {{base_url}}/clientes-simple`
+  - `GET {{base_url}}/clientes-simple/{{cliente_id}}`
+  - `POST {{base_url}}/clientes-simple`
+  - `PUT {{base_url}}/clientes-simple/{{cliente_id}}`
+  - `DELETE {{base_url}}/clientes-simple/{{cliente_id}}`
+  - `GET {{base_url}}/clientes-simple/stats/estatisticas`
+  - `GET {{base_url}}/clientes-simple/search/buscar?q=Joao`
