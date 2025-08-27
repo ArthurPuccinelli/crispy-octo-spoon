@@ -63,6 +63,10 @@ app.get('/', (req, res) => {
   });
 });
 
+// Routers DocuSign Extension App
+const dataIoRouter = require('./services/dataIo');
+app.use('/docusign', dataIoRouter);
+
 // Rota de health check
 app.get('/health', (req, res) => {
   res.json({
