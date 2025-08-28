@@ -15,7 +15,7 @@ const docusignConfig = {
   extensionApp: {
     name: 'Crispy Octo Spoon - Clientes Data IO',
     version: '1.0.0',
-    manifestPath: './docusign-extension-app-manifest.json',
+    festPath: './docusign-extension-app-fest.json',
     capabilities: ['data:read', 'data:write'],
     maxRecordsPerRequest: 100,
     timeout: 30000
@@ -37,8 +37,8 @@ const docusignConfig = {
         displayName: 'Cliente',
         description: 'Informações do cliente',
         fields: [
-          'id', 'nome', 'email', 'cpf_cnpj', 'telefone', 
-          'cidade', 'estado', 'tipo_cliente', 'status', 
+          'id', 'nome', 'email', 'cpf_cnpj', 'telefone',
+          'cidade', 'estado', 'tipo_cliente', 'status',
           'created_at', 'updated_at'
         ],
         requiredFields: ['nome', 'email', 'tipo_cliente'],
@@ -49,7 +49,7 @@ const docusignConfig = {
         displayName: 'Produto',
         description: 'Informações do produto',
         fields: [
-          'id', 'nome', 'descricao', 'preco', 'categoria', 
+          'id', 'nome', 'descricao', 'preco', 'categoria',
           'status', 'created_at', 'updated_at'
         ],
         requiredFields: ['nome', 'preco', 'categoria'],
@@ -60,7 +60,7 @@ const docusignConfig = {
         displayName: 'Serviço',
         description: 'Informações do serviço',
         fields: [
-          'id', 'nome', 'descricao', 'preco', 'tipo', 
+          'id', 'nome', 'descricao', 'preco', 'tipo',
           'status', 'created_at', 'updated_at'
         ],
         requiredFields: ['nome', 'preco', 'tipo'],
@@ -95,12 +95,12 @@ const docusignConfig = {
 const validateConfig = () => {
   const requiredFields = [
     'DOCUSIGN_ACCOUNT_ID',
-    'DOCUSIGN_USER_ID', 
+    'DOCUSIGN_USER_ID',
     'DOCUSIGN_INTEGRATION_KEY'
   ];
 
   const missingFields = requiredFields.filter(field => !process.env[field]);
-  
+
   if (missingFields.length > 0) {
     console.warn('⚠️  Configurações DocuSign ausentes:', missingFields);
     console.warn('   Algumas funcionalidades podem não funcionar corretamente');
