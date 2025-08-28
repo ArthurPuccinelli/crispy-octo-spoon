@@ -11,6 +11,10 @@ const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabase
 // For production, replace with durable store (e.g., Supabase table keyed by idempotencyKey)
 const idemCache = new Map();
 
+function isUuidV4(value) {
+    return typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+}
+
 exports.handler = async (event) => {
     const headers = {
         'Content-Type': 'application/json',
@@ -40,9 +44,9 @@ exports.handler = async (event) => {
 
     const { typeName, idempotencyKey, recordId, data } = payload;
 
-    // Validate
-    if (!typeName || String(typeName).toLowerCase() !== 'cliente') {
-        return { statusCode: 400, headers, body: JSON.stringify({ error: 'Unsupported or missing typeName' }) };
+    const typeNorm = String(typeName || '').toLowerCase();
+    if (!typeName || typeNorm !== 'cliente') {
+        return { statusCode: 400, headers, body: JSON.stringify({ error: 'Unsupported or missing typeName. Use "Cliente".' }) };
     }
     if (!data || typeof data !== 'object') {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing data object' }) };
@@ -54,11 +58,11 @@ exports.handler = async (event) => {
         return { statusCode: 200, headers, body: JSON.stringify(idemCache.get(idemKey)) };
     }
 
-    // Map Data IO field names (potentially PascalCase) to our DB schema (snake_case)
-    // Expecting fields aligned with our Cliente definition
     const now = new Date().toISOString();
-    const newRecord = {
-        id: recordId || undefined,
+
+    // Map fields from potential PascalCase to our schema
+    const mapped = {
+        id: recordId && isUuidV4(recordId) ? recordId : undefined,
         nome: data.Nome ?? data.nome ?? null,
         email: data.Email ?? data.email ?? null,
         cpf_cnpj: data.CpfCnpj ?? data.cpf_cnpj ?? null,
@@ -71,28 +75,32 @@ exports.handler = async (event) => {
         updated_at: now
     };
 
-    // Basic required checks
-    if (!newRecord.nome || !newRecord.cpf_cnpj) {
-        return { statusCode: 400, headers, body: JSON.stringify({ error: 'nome and cpf_cnpj are required' }) };
+    if (!mapped.nome || !mapped.cpf_cnpj) {
+        return { statusCode: 400, headers, body: JSON.stringify({ error: 'Fields "Nome/nome" and "CpfCnpj/cpf_cnpj" are required' }) };
     }
 
-    const insertPayload = [{ ...newRecord }];
+    try {
+        const { data: inserted, error } = await supabase
+            .from('clientes')
+            .insert([mapped])
+            .select('id')
+            .single();
 
-    const { data: inserted, error } = await supabase
-        .from('clientes')
-        .insert(insertPayload)
-        .select('id')
-        .single();
+        if (error) {
+            console.error('CreateRecord insert error:', error);
+            // Common cause: invalid UUID provided
+            const message = error.message || 'Failed to create record';
+            const status = /uuid/i.test(message) ? 400 : 500;
+            return { statusCode: status, headers, body: JSON.stringify({ error: message }) };
+        }
 
-    if (error) {
-        return { statusCode: 500, headers, body: JSON.stringify({ error: 'Failed to create record' }) };
+        const response = { recordId: inserted.id };
+        if (idemKey) {
+            idemCache.set(idemKey, response);
+        }
+        return { statusCode: 200, headers, body: JSON.stringify(response) };
+    } catch (e) {
+        console.error('CreateRecord unexpected error:', e);
+        return { statusCode: 500, headers, body: JSON.stringify({ error: 'Unexpected error creating record' }) };
     }
-
-    const response = { recordId: inserted.id };
-
-    if (idemKey) {
-        idemCache.set(idemKey, response);
-    }
-
-    return { statusCode: 200, headers, body: JSON.stringify(response) };
 };
