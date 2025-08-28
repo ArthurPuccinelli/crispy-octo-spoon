@@ -85,7 +85,7 @@
             "connectionsReference": "Authentication Fontara",
             "relation": "f3ca6b21-6dcb-4c9f-9a3e-004ff6b11e0f",
             "params": {
-                "uri": "https://crispy-octo-spoon.netlify.app/.netlify/functions/GetTypeDefinition"
+                "uri": "https://crispy-octo-spoon.netlify.app/.netlify/functions/GetTypeDefinitions"
             }
         },
         {
