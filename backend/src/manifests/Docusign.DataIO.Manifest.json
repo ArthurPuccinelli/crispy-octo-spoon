@@ -20,8 +20,8 @@
             "type": "oauth2",
             "params": {
                 "provider": "CUSTOM",
-                "clientId": "UXYHU3hd7GHwF7amiwKialAjMsrpOnaL",
-                "clientSecret": "BVBQVEis4k_NaHPJEC11oMkBpzZCAfOm8qj_FAYRk07VSUTPtGV9fM_CVZskxLbs",
+                "clientId": "xxxx",
+                "clientSecret": "xxxxx",
                 "scopes": [],
                 "grantType": "authorization_code",
                 "customConfig": {
