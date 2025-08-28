@@ -43,10 +43,7 @@ exports.handler = async (event) => {
         return { statusCode: 400, headers, body: JSON.stringify({ code: 'BAD_REQUEST', message: 'Unsupported from type. Use "Cliente".' }) };
     }
 
-    // attributesToSelect is required; fall back to ['id'] if missing
-    const attributesToSelect = Array.isArray(query.attributesToSelect) && query.attributesToSelect.length
-        ? query.attributesToSelect
-        : ['id'];
+    // attributesToSelect may be ignored; we'll return full Cliente info as requested
 
     // Map DataIO attribute names to DB columns
     const attrToColumn = (attr) => {
@@ -65,6 +62,9 @@ exports.handler = async (event) => {
             case 'CpfCnpj':
             case 'cpf_cnpj':
                 return 'cpf_cnpj';
+            case 'Telefone':
+            case 'telefone':
+                return 'telefone';
             case 'Cidade':
             case 'cidade':
                 return 'cidade';
@@ -77,6 +77,12 @@ exports.handler = async (event) => {
             case 'Status':
             case 'status':
                 return 'status';
+            case 'CreatedAt':
+            case 'created_at':
+                return 'created_at';
+            case 'UpdatedAt':
+            case 'updated_at':
+                return 'updated_at';
             default:
                 return null; // unsupported
         }
@@ -91,10 +97,8 @@ exports.handler = async (event) => {
         const left = filter.leftOperand;
         const right = filter.rightOperand;
         if (left && right) {
-            // Determine field name and literal
-            // Spec shows left is field (isLiteral=false) and right is literal (isLiteral=true)
-            const fieldName = left.isLiteral ? left.name : left.name;
-            const literal = right.isLiteral ? right.name : right.name;
+            const fieldName = left.name;
+            const literal = right.name;
             const column = attrToColumn(fieldName);
             if (column) {
                 dbQuery = dbQuery.eq(column, literal);
@@ -114,21 +118,20 @@ exports.handler = async (event) => {
         return { statusCode: 500, headers, body: JSON.stringify({ code: 'INTERNAL_SERVER_ERROR', message: 'Unknown error when trying to search records' }) };
     }
 
-    // Project only requested attributes and map keys to attributesToSelect as provided
-    const records = (rows || []).map((r) => {
-        const projected = {};
-        attributesToSelect.forEach((attr) => {
-            const column = attrToColumn(attr);
-            if (column && Object.prototype.hasOwnProperty.call(r, column)) {
-                projected[attr] = r[column];
-            }
-        });
-        // If no attributes requested or none mapped, return Id at least if present
-        if (Object.keys(projected).length === 0 && r.id) {
-            projected['Id'] = r.id;
-        }
-        return projected;
-    });
+    // Return full Cliente info per record
+    const records = (rows || []).map((r) => ({
+        Id: r.id,
+        Name: r.nome,
+        Email: r.email,
+        CpfCnpj: r.cpf_cnpj,
+        Telefone: r.telefone,
+        Cidade: r.cidade,
+        Estado: r.estado,
+        TipoCliente: r.tipo_cliente,
+        Status: r.status,
+        CreatedAt: r.created_at,
+        UpdatedAt: r.updated_at
+    }));
 
     return { statusCode: 200, headers, body: JSON.stringify({ records }) };
 };
