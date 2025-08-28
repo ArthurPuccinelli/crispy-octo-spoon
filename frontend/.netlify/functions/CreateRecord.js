@@ -60,9 +60,8 @@ exports.handler = async (event) => {
 
     const now = new Date().toISOString();
 
-    // Map fields from potential PascalCase to our schema
+    // Build insert object without id by default (allow DB default/trigger)
     const mapped = {
-        id: recordId && isUuidV4(recordId) ? recordId : undefined,
         nome: data.Nome ?? data.nome ?? null,
         email: data.Email ?? data.email ?? null,
         cpf_cnpj: data.CpfCnpj ?? data.cpf_cnpj ?? null,
@@ -74,6 +73,11 @@ exports.handler = async (event) => {
         created_at: now,
         updated_at: now
     };
+
+    // Only include id if valid UUID v4 explicitly provided
+    if (recordId && isUuidV4(recordId)) {
+        mapped.id = recordId;
+    }
 
     if (!mapped.nome || !mapped.cpf_cnpj) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Fields "Nome/nome" and "CpfCnpj/cpf_cnpj" are required' }) };
@@ -88,7 +92,6 @@ exports.handler = async (event) => {
 
         if (error) {
             console.error('CreateRecord insert error:', error);
-            // Common cause: invalid UUID provided
             const message = error.message || 'Failed to create record';
             const status = /uuid/i.test(message) ? 400 : 500;
             return { statusCode: status, headers, body: JSON.stringify({ error: message }) };
