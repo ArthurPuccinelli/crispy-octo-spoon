@@ -18,11 +18,10 @@ exports.handler = async (event) => {
         return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method Not Allowed' }) };
     }
 
-    // Do not enforce Authorization here to avoid blocking console validation
-
+    // Per Data IO contract, typeNames must be objects (not strings)
     const body = {
         typeNames: [
-            'Cliente'
+            { name: 'Cliente' }
         ]
     };
 
