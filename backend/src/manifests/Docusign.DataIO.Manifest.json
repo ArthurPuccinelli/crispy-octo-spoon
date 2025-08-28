@@ -64,7 +64,8 @@
                 "My GetTypeNames Action",
                 "My GetTypeDefinitions Action",
                 "My Verify Action",
-                "My CreateRecord Action"
+                "My CreateRecord Action",
+                "My SearchRecords Action"
             ]
         }
     ],
@@ -107,6 +108,16 @@
             "relation": "2e8b1c7b-52b3-4a83-9c2e-2b0f6b5f9a0d",
             "params": {
                 "uri": "https://crispy-octo-spoon.netlify.app/.netlify/functions/CreateRecord"
+            }
+        },
+        {
+            "name": "My SearchRecords Action",
+            "description": "Search Cliente records in Crispy Octo Spoon",
+            "template": "DataIO.Version6.SearchRecords",
+            "connectionsReference": "Authentication Fontara",
+            "relation": "7a4c1f2e-3d5b-4e6c-8f7a-9b0c1d2e3f4a",
+            "params": {
+                "uri": "https://crispy-octo-spoon.netlify.app/.netlify/functions/SearchRecords"
             }
         }
     ],
