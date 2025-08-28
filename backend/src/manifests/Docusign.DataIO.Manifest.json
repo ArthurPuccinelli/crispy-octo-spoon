@@ -65,7 +65,8 @@
                 "My GetTypeDefinitions Action",
                 "My Verify Action",
                 "My CreateRecord Action",
-                "My SearchRecords Action"
+                "My SearchRecords Action",
+                "My PatchRecord Action"
             ]
         }
     ],
@@ -118,6 +119,16 @@
             "relation": "7a4c1f2e-3d5b-4e6c-8f7a-9b0c1d2e3f4a",
             "params": {
                 "uri": "https://crispy-octo-spoon.netlify.app/.netlify/functions/SearchRecords"
+            }
+        },
+        {
+            "name": "My PatchRecord Action",
+            "description": "Patch Cliente record in Crispy Octo Spoon",
+            "template": "DataIO.Version6.PatchRecord",
+            "connectionsReference": "Authentication Fontara",
+            "relation": "9f8e7d6c-5b4a-3e2d-1c0b-a9f8e7d6c5b4",
+            "params": {
+                "uri": "https://crispy-octo-spoon.netlify.app/.netlify/functions/PatchRecord"
             }
         }
     ],
