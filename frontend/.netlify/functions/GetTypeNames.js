@@ -18,10 +18,13 @@ exports.handler = async (event) => {
         return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method Not Allowed' }) };
     }
 
-    // Per Data IO contract, typeNames must be objects (not strings)
     const body = {
         typeNames: [
-            { name: 'Cliente' }
+            {
+                typeName: 'Cliente',
+                label: 'Cliente',
+                description: 'Registro de cliente no sistema Crispy Octo Spoon'
+            }
         ]
     };
 
