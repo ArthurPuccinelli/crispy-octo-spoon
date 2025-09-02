@@ -4,10 +4,13 @@ export interface Cliente {
     email?: string
     cpf_cnpj: string
     telefone?: string
+    endereco?: string
     cidade?: string
     estado?: string
+    cep?: string
     tipo_cliente: 'pessoa_fisica' | 'pessoa_juridica'
     status: 'ativo' | 'inativo' | 'suspenso'
+    observacoes?: string
     created_at: string
     updated_at: string
 }
