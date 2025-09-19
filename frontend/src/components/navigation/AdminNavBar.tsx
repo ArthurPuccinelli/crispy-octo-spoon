@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { useState } from 'react'
@@ -40,12 +41,18 @@ export default function AdminNavBar() {
     return (
         <nav className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
+                <div className="flex items-center justify-between h-12">
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
-                            <Link href="/admin" className="text-white font-bold text-xl flex items-center">
-                                <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-blue-600 rounded-lg flex items-center justify-center mr-2">
-                                    <span className="text-white font-bold text-sm">F</span>
+                            <Link href="/admin" className="text-white font-bold text-lg flex items-center">
+                                <div className="relative mr-2">
+                                    <Image
+                                        src="/logo-fontara-final.svg"
+                                        alt="Fontara Financial"
+                                        width={120}
+                                        height={40}
+                                        className="h-6 w-auto"
+                                    />
                                 </div>
                                 Fontara Financial
                             </Link>

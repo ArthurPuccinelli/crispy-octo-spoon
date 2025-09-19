@@ -1,0 +1,12 @@
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Logo F -->
+  <g>
+    <!-- Top horizontal bar -->
+    <path d="M10 10 L35 10 L30 20 L15 20 Z" fill="#14B8A6"/>
+    <!-- Middle horizontal bar -->
+    <path d="M10 25 L30 25 L28 35 L15 35 Z" fill="#14B8A6"/>
+    <!-- Vertical stem with diagonal cut -->
+    <path d="M10 10 L15 10 L15 35 L10 40 L10 10 Z" fill="#14B8A6"/>
+    <path d="M15 35 L28 35 L25 40 L10 40 Z" fill="#14B8A6"/>
+  </g>
+</svg>

@@ -1,0 +1,18 @@
+<svg width="300" height="80" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Logo F com destaque maior -->
+  <g>
+    <!-- Top horizontal bar -->
+    <path d="M0 8 L35 8 L28 20 L8 20 Z" fill="#14B8A6"/>
+    <!-- Middle horizontal bar -->
+    <path d="M0 28 L30 28 L26 40 L8 40 Z" fill="#14B8A6"/>
+    <!-- Vertical stem with diagonal cut -->
+    <path d="M0 8 L8 8 L8 40 L0 48 L0 8 Z" fill="#14B8A6"/>
+    <path d="M8 40 L26 40 L22 48 L0 48 Z" fill="#14B8A6"/>
+  </g>
+  
+  <!-- Wordmark "fontara" com fonte maior -->
+  <text x="45" y="35" font-family="serif" font-size="24" fill="white" font-weight="normal">fontara</text>
+  
+  <!-- Subtítulo "Financial" -->
+  <text x="45" y="55" font-family="sans-serif" font-size="14" fill="#14B8A6" font-weight="300">Financial</text>
+</svg>
