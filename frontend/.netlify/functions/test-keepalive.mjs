@@ -207,7 +207,7 @@ async function testKeepalive() {
 }
 
 // Executar teste se chamado diretamente
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && process.argv[1].endsWith('test-keepalive.mjs')) {
     testKeepalive();
 }
 

@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import type { Config } from '@netlify/functions';
 
 // Configuração do Supabase
 const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
