@@ -65,18 +65,27 @@ exports.handler = async (event) => {
             case 'Telefone':
             case 'telefone':
                 return 'telefone';
+            case 'Endereco':
+            case 'endereco':
+                return 'endereco';
             case 'Cidade':
             case 'cidade':
                 return 'cidade';
             case 'Estado':
             case 'estado':
                 return 'estado';
+            case 'Cep':
+            case 'cep':
+                return 'cep';
             case 'TipoCliente':
             case 'tipo_cliente':
                 return 'tipo_cliente';
             case 'Status':
             case 'status':
                 return 'status';
+            case 'Observacoes':
+            case 'observacoes':
+                return 'observacoes';
             case 'CreatedAt':
             case 'created_at':
                 return 'created_at';
@@ -125,10 +134,13 @@ exports.handler = async (event) => {
         Email: r.email,
         CpfCnpj: r.cpf_cnpj,
         Telefone: r.telefone,
+        Endereco: r.endereco,
         Cidade: r.cidade,
         Estado: r.estado,
+        Cep: r.cep,
         TipoCliente: r.tipo_cliente,
         Status: r.status,
+        Observacoes: r.observacoes,
         CreatedAt: r.created_at,
         UpdatedAt: r.updated_at
     }));
