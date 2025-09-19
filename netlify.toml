@@ -6,8 +6,8 @@
 # Configuração para Netlify Functions
 [functions]
   directory = ".netlify/functions"
-  [functions.node_bundler]
-    format = "esm"
+  node_bundler = "esbuild"
+  format = "esm"
 
 # Configuração específica para a função principal
 # Removido redirect problemático - será configurado via plugin
