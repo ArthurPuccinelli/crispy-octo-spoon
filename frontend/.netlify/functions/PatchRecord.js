@@ -1,5 +1,5 @@
 // DocuSign DataIO Version6.PatchRecord
-// Updates an existing Cliente record in Supabase
+// Updates an existing Cliente record in Supabase using CPF/CNPJ as identifier
 
 const { createClient } = require('@supabase/supabase-js');
 
@@ -38,8 +38,15 @@ exports.handler = async (event) => {
     if (!typeName || String(typeName).toLowerCase() !== 'cliente') {
         return { statusCode: 400, headers, body: JSON.stringify({ code: 'BAD_REQUEST', message: 'Unsupported or missing typeName. Use "Cliente".' }) };
     }
-    if (!recordId) {
-        return { statusCode: 400, headers, body: JSON.stringify({ code: 'BAD_REQUEST', message: 'recordId is required' }) };
+
+    // Extrair CPF/CNPJ do recordId ou do data
+    let cpfCnpj = recordId;
+    if (!cpfCnpj && data && (data.cpf_cnpj || data.CpfCnpj)) {
+        cpfCnpj = data.cpf_cnpj || data.CpfCnpj;
+    }
+
+    if (!cpfCnpj) {
+        return { statusCode: 400, headers, body: JSON.stringify({ code: 'BAD_REQUEST', message: 'recordId (CPF/CNPJ) is required' }) };
     }
     if (!data || typeof data !== 'object') {
         return { statusCode: 400, headers, body: JSON.stringify({ code: 'BAD_REQUEST', message: 'data object is required' }) };
@@ -75,8 +82,8 @@ exports.handler = async (event) => {
         const { data: updated, error } = await supabase
             .from('clientes')
             .update(update)
-            .eq('id', recordId)
-            .select('id')
+            .eq('cpf_cnpj', cpfCnpj)
+            .select('cpf_cnpj, nome')
             .single();
 
         if (error) {
@@ -85,7 +92,7 @@ exports.handler = async (event) => {
             return { statusCode: 500, headers, body: JSON.stringify({ code: 'INTERNAL_SERVER_ERROR', message }) };
         }
         if (!updated) {
-            return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided recordId' }) };
+            return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided CPF/CNPJ' }) };
         }
 
         const response = { success: true };
