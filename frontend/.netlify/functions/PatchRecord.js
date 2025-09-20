@@ -76,10 +76,13 @@ exports.handler = async (event) => {
     mapIfPresent('email', 'Email', 'email');
     mapIfPresent('cpf_cnpj', 'CpfCnpj', 'cpf_cnpj');
     mapIfPresent('telefone', 'Telefone', 'telefone');
+    mapIfPresent('endereco', 'Endereco', 'endereco');
     mapIfPresent('cidade', 'Cidade', 'cidade');
     mapIfPresent('estado', 'Estado', 'estado');
+    mapIfPresent('cep', 'Cep', 'cep');
     mapIfPresent('tipo_cliente', 'TipoCliente', 'tipo_cliente');
     mapIfPresent('status', 'Status', 'status');
+    mapIfPresent('observacoes', 'Observacoes', 'observacoes');
 
     update.updated_at = new Date().toISOString();
 

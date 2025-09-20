@@ -74,10 +74,13 @@ exports.handler = async (event) => {
         email: data.Email ?? data.email ?? null,
         cpf_cnpj: data.CpfCnpj ?? data.cpf_cnpj ?? null,
         telefone: data.Telefone ?? data.telefone ?? null,
+        endereco: data.Endereco ?? data.endereco ?? null,
         cidade: data.Cidade ?? data.cidade ?? null,
         estado: data.Estado ?? data.estado ?? null,
+        cep: data.Cep ?? data.cep ?? null,
         tipo_cliente: data.TipoCliente ?? data.tipo_cliente ?? null,
         status: data.Status ?? data.status ?? 'ativo',
+        observacoes: data.Observacoes ?? data.observacoes ?? null,
         created_at: now,
         updated_at: now
     };

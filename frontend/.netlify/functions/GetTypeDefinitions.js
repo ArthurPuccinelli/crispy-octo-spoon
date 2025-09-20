@@ -292,6 +292,75 @@ function buildClienteConcept() {
                         ]
                     }
                 ]
+            },
+            // endereco (String, optional, CRUD)
+            {
+                "$class": "concerto.metamodel@1.0.0.StringProperty",
+                "name": "endereco",
+                "isOptional": true,
+                "isArray": false,
+                "decorators": [
+                    {
+                        "$class": "concerto.metamodel@1.0.0.Decorator",
+                        "name": "Term",
+                        "arguments": [
+                            { "$class": "concerto.metamodel@1.0.0.DecoratorString", "value": "Endereço" }
+                        ]
+                    },
+                    {
+                        "$class": "concerto.metamodel@1.0.0.Decorator",
+                        "name": "Crud",
+                        "arguments": [
+                            { "$class": "concerto.metamodel@1.0.0.DecoratorString", "value": "Createable,Readable,Updateable" }
+                        ]
+                    }
+                ]
+            },
+            // cep (String, optional, CRUD)
+            {
+                "$class": "concerto.metamodel@1.0.0.StringProperty",
+                "name": "cep",
+                "isOptional": true,
+                "isArray": false,
+                "decorators": [
+                    {
+                        "$class": "concerto.metamodel@1.0.0.Decorator",
+                        "name": "Term",
+                        "arguments": [
+                            { "$class": "concerto.metamodel@1.0.0.DecoratorString", "value": "CEP" }
+                        ]
+                    },
+                    {
+                        "$class": "concerto.metamodel@1.0.0.Decorator",
+                        "name": "Crud",
+                        "arguments": [
+                            { "$class": "concerto.metamodel@1.0.0.DecoratorString", "value": "Createable,Readable,Updateable" }
+                        ]
+                    }
+                ]
+            },
+            // observacoes (String, optional, CRUD)
+            {
+                "$class": "concerto.metamodel@1.0.0.StringProperty",
+                "name": "observacoes",
+                "isOptional": true,
+                "isArray": false,
+                "decorators": [
+                    {
+                        "$class": "concerto.metamodel@1.0.0.Decorator",
+                        "name": "Term",
+                        "arguments": [
+                            { "$class": "concerto.metamodel@1.0.0.DecoratorString", "value": "Observações" }
+                        ]
+                    },
+                    {
+                        "$class": "concerto.metamodel@1.0.0.Decorator",
+                        "name": "Crud",
+                        "arguments": [
+                            { "$class": "concerto.metamodel@1.0.0.DecoratorString", "value": "Createable,Readable,Updateable" }
+                        ]
+                    }
+                ]
             }
         ]
     };
