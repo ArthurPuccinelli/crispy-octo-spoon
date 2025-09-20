@@ -90,23 +90,48 @@ exports.handler = async (event) => {
         // Determine if identifier is UUID or CPF/CNPJ
         const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(identifier);
 
-        let dbQuery = supabase.from('clientes').update(update);
-
+        // First, check if the record exists
+        let checkQuery = supabase.from('clientes').select('id, cpf_cnpj, nome');
         if (isUuid) {
-            dbQuery = dbQuery.eq('id', identifier);
+            checkQuery = checkQuery.eq('id', identifier);
         } else {
-            dbQuery = dbQuery.eq('cpf_cnpj', identifier);
+            checkQuery = checkQuery.eq('cpf_cnpj', identifier);
         }
 
-        const { data: updated, error } = await dbQuery
+        const { data: existingRecord, error: checkError } = await checkQuery.single();
+
+        if (checkError) {
+            console.error('PatchRecord check error:', checkError);
+            // If it's a "not found" error, return 404
+            if (checkError.code === 'PGRST116' || checkError.message?.includes('No rows found')) {
+                return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided identifier' }) };
+            }
+            const message = checkError.message || 'Unknown error when checking record existence';
+            return { statusCode: 500, headers, body: JSON.stringify({ code: 'INTERNAL_SERVER_ERROR', message }) };
+        }
+
+        if (!existingRecord) {
+            return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided identifier' }) };
+        }
+
+        // Now perform the update
+        let updateQuery = supabase.from('clientes').update(update);
+        if (isUuid) {
+            updateQuery = updateQuery.eq('id', identifier);
+        } else {
+            updateQuery = updateQuery.eq('cpf_cnpj', identifier);
+        }
+
+        const { data: updated, error: updateError } = await updateQuery
             .select('id, cpf_cnpj, nome')
             .single();
 
-        if (error) {
-            console.error('PatchRecord update error:', error);
-            const message = error.message || 'Unknown error when trying to update record';
+        if (updateError) {
+            console.error('PatchRecord update error:', updateError);
+            const message = updateError.message || 'Unknown error when trying to update record';
             return { statusCode: 500, headers, body: JSON.stringify({ code: 'INTERNAL_SERVER_ERROR', message }) };
         }
+
         if (!updated) {
             return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided identifier' }) };
         }
