@@ -90,7 +90,7 @@ exports.handler = async (event) => {
         // Determine if identifier is UUID or CPF/CNPJ
         const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(identifier);
         
-        console.log('PatchRecord: Checking record with identifier:', identifier, 'isUuid:', isUuid);
+        console.log('PatchRecord: Updating record with identifier:', identifier, 'isUuid:', isUuid);
 
         // First, check if the record exists
         let checkQuery = supabase.from('clientes').select('id, cpf_cnpj, nome');
@@ -107,7 +107,7 @@ exports.handler = async (event) => {
         if (checkError) {
             console.error('PatchRecord check error:', checkError);
             // If it's a "not found" error, return 404
-            if (checkError.code === 'PGRST116' || checkError.message?.includes('No rows found')) {
+            if (checkError.code === 'PGRST116' || checkError.message?.includes('No rows found') || checkError.message?.includes('not found')) {
                 console.log('PatchRecord: Record not found, returning 404');
                 return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided identifier' }) };
             }
@@ -132,6 +132,8 @@ exports.handler = async (event) => {
             .select('id, cpf_cnpj, nome')
             .single();
 
+        console.log('PatchRecord: Update result - updated:', updated, 'error:', updateError);
+
         if (updateError) {
             console.error('PatchRecord update error:', updateError);
             const message = updateError.message || 'Unknown error when trying to update record';
@@ -139,9 +141,11 @@ exports.handler = async (event) => {
         }
 
         if (!updated) {
+            console.log('PatchRecord: No record was updated, returning 404');
             return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided identifier' }) };
         }
 
+        console.log('PatchRecord: Successfully updated record');
         const response = { success: true };
         if (idemKey) idemCache.set(idemKey, response);
         return { statusCode: 200, headers, body: JSON.stringify(response) };
