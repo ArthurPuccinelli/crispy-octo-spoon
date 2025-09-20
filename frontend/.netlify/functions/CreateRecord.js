@@ -52,6 +52,14 @@ exports.handler = async (event) => {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing data object' }) };
     }
 
+    // Validate required fields according to DocuSign DataIO specification
+    if (!data.Nome && !data.nome) {
+        return { statusCode: 400, headers, body: JSON.stringify({ error: 'Field "Nome" is required' }) };
+    }
+    if (!data.CpfCnpj && !data.cpf_cnpj) {
+        return { statusCode: 400, headers, body: JSON.stringify({ error: 'Field "CpfCnpj" is required' }) };
+    }
+
     // Idempotency
     const idemKey = idempotencyKey || event.headers['idempotency-key'] || event.headers['Idempotency-Key'];
     if (idemKey && idemCache.has(idemKey)) {

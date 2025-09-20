@@ -58,7 +58,7 @@
     "extensions": [
         {
             "name": "Informações de Cliente",
-            "description": "Usado para verificar as inflormações do cliente.",
+            "description": "Usado para verificar as informações do cliente.",
             "template": "ConnectedFields.Version1.ConnectedFields",
             "actionReferences": [
                 "My GetTypeNames Action",

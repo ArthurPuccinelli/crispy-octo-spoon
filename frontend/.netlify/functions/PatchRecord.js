@@ -39,17 +39,22 @@ exports.handler = async (event) => {
         return { statusCode: 400, headers, body: JSON.stringify({ code: 'BAD_REQUEST', message: 'Unsupported or missing typeName. Use "Cliente".' }) };
     }
 
-    // Extrair CPF/CNPJ do recordId ou do data
-    let cpfCnpj = recordId;
-    if (!cpfCnpj && data && (data.cpf_cnpj || data.CpfCnpj)) {
-        cpfCnpj = data.cpf_cnpj || data.CpfCnpj;
-    }
-
-    if (!cpfCnpj) {
-        return { statusCode: 400, headers, body: JSON.stringify({ code: 'BAD_REQUEST', message: 'recordId (CPF/CNPJ) is required' }) };
-    }
     if (!data || typeof data !== 'object') {
         return { statusCode: 400, headers, body: JSON.stringify({ code: 'BAD_REQUEST', message: 'data object is required' }) };
+    }
+
+    // Extract identifier from recordId or data
+    let identifier = recordId;
+    if (!identifier && data && (data.cpf_cnpj || data.CpfCnpj)) {
+        identifier = data.cpf_cnpj || data.CpfCnpj;
+    }
+    // If still no identifier, try to use id field
+    if (!identifier && data && (data.id || data.Id)) {
+        identifier = data.id || data.Id;
+    }
+
+    if (!identifier) {
+        return { statusCode: 400, headers, body: JSON.stringify({ code: 'BAD_REQUEST', message: 'recordId or identifier field is required' }) };
     }
 
     const idemKey = idempotencyKey || event.headers['idempotency-key'] || event.headers['Idempotency-Key'];
@@ -79,11 +84,19 @@ exports.handler = async (event) => {
     update.updated_at = new Date().toISOString();
 
     try {
-        const { data: updated, error } = await supabase
-            .from('clientes')
-            .update(update)
-            .eq('cpf_cnpj', cpfCnpj)
-            .select('cpf_cnpj, nome')
+        // Determine if identifier is UUID or CPF/CNPJ
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(identifier);
+
+        let dbQuery = supabase.from('clientes').update(update);
+
+        if (isUuid) {
+            dbQuery = dbQuery.eq('id', identifier);
+        } else {
+            dbQuery = dbQuery.eq('cpf_cnpj', identifier);
+        }
+
+        const { data: updated, error } = await dbQuery
+            .select('id, cpf_cnpj, nome')
             .single();
 
         if (error) {
@@ -92,7 +105,7 @@ exports.handler = async (event) => {
             return { statusCode: 500, headers, body: JSON.stringify({ code: 'INTERNAL_SERVER_ERROR', message }) };
         }
         if (!updated) {
-            return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided CPF/CNPJ' }) };
+            return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided identifier' }) };
         }
 
         const response = { success: true };
