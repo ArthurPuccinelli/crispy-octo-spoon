@@ -89,6 +89,8 @@ exports.handler = async (event) => {
     try {
         // Determine if identifier is UUID or CPF/CNPJ
         const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(identifier);
+        
+        console.log('PatchRecord: Checking record with identifier:', identifier, 'isUuid:', isUuid);
 
         // First, check if the record exists
         let checkQuery = supabase.from('clientes').select('id, cpf_cnpj, nome');
@@ -99,11 +101,14 @@ exports.handler = async (event) => {
         }
 
         const { data: existingRecord, error: checkError } = await checkQuery.single();
+        
+        console.log('PatchRecord: Check result - existingRecord:', existingRecord, 'checkError:', checkError);
 
         if (checkError) {
             console.error('PatchRecord check error:', checkError);
             // If it's a "not found" error, return 404
             if (checkError.code === 'PGRST116' || checkError.message?.includes('No rows found')) {
+                console.log('PatchRecord: Record not found, returning 404');
                 return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided identifier' }) };
             }
             const message = checkError.message || 'Unknown error when checking record existence';
@@ -111,6 +116,7 @@ exports.handler = async (event) => {
         }
 
         if (!existingRecord) {
+            console.log('PatchRecord: No existing record found, returning 404');
             return { statusCode: 404, headers, body: JSON.stringify({ code: 'NOT_FOUND', message: 'No record was found for the provided identifier' }) };
         }
 
