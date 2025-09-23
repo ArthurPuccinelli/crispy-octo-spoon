@@ -190,14 +190,14 @@ exports.handler = async (event) => {
                 // Generate consent URL for Maestro scopes
                 const consentUrl = apiClient.getAuthorizationUri(
                     cfg.integrationKey,
-                    ['signature', 'impersonation', 'aow_manage'],
+                    ['signature', 'impersonation'],
                     'https://crispy-octo-spoon.netlify.app/maestro-consent-callback',
                     'code'
                 )
 
                 return json(200, {
                     consentUrl,
-                    scopes: ['signature', 'impersonation', 'aow_manage'],
+                    scopes: ['signature', 'impersonation'],
                     redirectUri: 'https://crispy-octo-spoon.netlify.app/maestro-consent-callback'
                 })
             } catch (error) {
