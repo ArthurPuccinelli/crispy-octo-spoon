@@ -252,19 +252,20 @@ exports.handler = async (event) => {
             const auth = event.headers.authorization || event.headers.Authorization
             let accessToken = null
             let cfg = null
-
+            
             if (auth?.startsWith('Bearer ')) {
                 // Use provided OAuth2 token
                 accessToken = auth.slice(7)
                 cfg = getEnv()
                 if (cfg.error) throw new Error(cfg.error)
             } else {
-                // Try JWT first, fallback to consent if needed
+                // Try JWT with Maestro scopes
                 try {
-                    const jwtResult = await getJwtToken(['signature', 'impersonation'])
+                    const jwtResult = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
                     accessToken = jwtResult.accessToken
                     cfg = jwtResult.cfg
                 } catch (jwtError) {
+                    console.log('JWT failed, need consent:', jwtError.message)
                     // JWT failed, need consent
                     return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
                 }

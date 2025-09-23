@@ -82,7 +82,48 @@ export default function Home() {
       // Check for consent required error or HTML response (indicates consent needed)
       if (!res.ok && (data?.error === 'consent_required' || data?.message?.error === 'consent_required' || 
           (data?.data && typeof data.data === 'string' && data.data.includes('<!DOCTYPE html>')))) {
-        // Clear any existing tokens
+        
+        // Check if consent was recently given
+        const consentGiven = localStorage.getItem('docusign_consent_given')
+        const consentTime = localStorage.getItem('docusign_consent_time')
+        const now = Date.now()
+        
+        if (consentGiven && consentTime && (now - parseInt(consentTime)) < 300000) { // 5 minutes
+          // Consent was given recently, try again with fresh JWT
+          console.log('Consent was given recently, retrying...')
+          // Clear old consent flag and try again
+          localStorage.removeItem('docusign_consent_given')
+          localStorage.removeItem('docusign_consent_time')
+          
+          // Retry the request
+          const retryRes = await fetch('/.netlify/functions/maestro/trigger', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              workflowKey: 'emprestimos',
+              inputs: {}
+            })
+          })
+          const retryData = await retryRes.json()
+          
+          if (retryRes.ok && retryData.instanceId) {
+            // Success! Get embed URL
+            const embedRes = await fetch(`/.netlify/functions/maestro/embed?instanceId=${retryData.instanceId}`, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' }
+            })
+            const embedData = await embedRes.json()
+            
+            if (embedRes.ok && embedData.embedUrl) {
+              window.open(embedData.embedUrl, '_blank')
+              return
+            } else {
+              throw new Error('Falha ao obter URL de embed')
+            }
+          }
+        }
+        
+        // Clear any existing tokens and get consent
         localStorage.removeItem('docusign_access_token')
         localStorage.removeItem('docusign_token_expires')
         localStorage.removeItem('docusign_consent_given')
