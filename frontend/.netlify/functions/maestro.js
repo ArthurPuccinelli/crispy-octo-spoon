@@ -217,26 +217,30 @@ exports.handler = async (event) => {
                 const cfg = getEnv()
                 if (cfg.error) throw new Error(cfg.error)
 
-                const apiClient = new docusign.ApiClient()
-                apiClient.setOAuthBasePath(cfg.oauthBasePath)
-
-                // Exchange code for token
-                const tokenResponse = await apiClient.getAccessToken(
-                    cfg.integrationKey,
-                    body.code,
-                    'https://crispy-octo-spoon.netlify.app/maestro-consent-callback'
-                )
+                // Use axios to exchange code for token
+                const oauthUrl = `https://${cfg.oauthBasePath}/oauth/token`
+                const tokenResponse = await axios.post(oauthUrl, {
+                    grant_type: 'authorization_code',
+                    code: body.code,
+                    client_id: cfg.integrationKey,
+                    redirect_uri: 'https://crispy-octo-spoon.netlify.app/maestro-consent-callback'
+                }, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
 
                 return json(200, {
                     success: true,
-                    accessToken: tokenResponse.body.access_token,
-                    tokenType: tokenResponse.body.token_type,
-                    expiresIn: tokenResponse.body.expires_in
+                    accessToken: tokenResponse.data.access_token,
+                    tokenType: tokenResponse.data.token_type,
+                    expiresIn: tokenResponse.data.expires_in
                 })
             } catch (error) {
+                console.error('Token exchange error:', error.response?.data || error.message)
                 return json(500, {
                     success: false,
-                    error: error.message
+                    error: error.response?.data?.error_description || error.message
                 })
             }
         }
