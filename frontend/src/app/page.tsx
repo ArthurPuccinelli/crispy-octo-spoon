@@ -35,6 +35,8 @@ export default function Home() {
                 tabs: {
                   signHereTabs: [
                     {
+                      documentId: '1',
+                      pageNumber: '1',
                       anchorString: '/sign_here/',
                       anchorUnits: 'pixels',
                       anchorXOffset: '0',
@@ -50,7 +52,8 @@ export default function Home() {
 
       const data = await res.json()
       if (!res.ok) {
-        alert(`Falha ao criar envelope: ${data?.message || data?.error || 'erro desconhecido'}`)
+        const msg = typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || data?.error)
+        alert(`Falha ao criar envelope: ${msg || 'erro desconhecido'}`)
       } else {
         alert(`Envelope criado (rascunho). ID: ${data.envelopeId || 'desconhecido'}`)
       }
