@@ -23,23 +23,46 @@ function getEnv() {
         DOCUSIGN_ACCOUNT_ID,
         DOCUSIGN_USER_ID,
         DOCUSIGN_INTEGRATION_KEY,
+        DOCUSIGN_IK,
         DOCUSIGN_RSA_PRIVATE_KEY,
-        DOCUSIGN_OAUTH_BASE_PATH = 'account-d.docusign.com',
+        DOCUSIGN_RSA_PEM_AS_BASE64,
+        DOCUSIGN_OAUTH_BASE_PATH,
+        DOCUSIGN_AUTH_SERVER,
+        DOCUSIGN_BASE_PATH,
+        DOCUSIGN_IAM_SCOPES,
     } = process.env
 
-    if (!DOCUSIGN_ACCOUNT_ID || !DOCUSIGN_USER_ID || !DOCUSIGN_INTEGRATION_KEY || !DOCUSIGN_RSA_PRIVATE_KEY) {
+    const integrationKey = DOCUSIGN_IK || DOCUSIGN_INTEGRATION_KEY
+    const oauthBasePath = DOCUSIGN_AUTH_SERVER || DOCUSIGN_BASE_PATH || DOCUSIGN_OAUTH_BASE_PATH || 'account-d.docusign.com'
+
+    let privateKeyPem = null
+    if (DOCUSIGN_RSA_PEM_AS_BASE64) {
+        try {
+            privateKeyPem = Buffer.from(DOCUSIGN_RSA_PEM_AS_BASE64, 'base64').toString('utf8')
+        } catch (_) {
+            privateKeyPem = null
+        }
+    }
+    if (!privateKeyPem && DOCUSIGN_RSA_PRIVATE_KEY) {
+        privateKeyPem = DOCUSIGN_RSA_PRIVATE_KEY.replace(/\\n/g, '\n')
+    }
+
+    if (!DOCUSIGN_ACCOUNT_ID || !DOCUSIGN_USER_ID || !integrationKey || !privateKeyPem) {
         return { error: 'DocuSign environment variables missing' }
     }
     return {
         accountId: DOCUSIGN_ACCOUNT_ID,
         userId: DOCUSIGN_USER_ID,
-        integrationKey: DOCUSIGN_INTEGRATION_KEY,
-        privateKey: DOCUSIGN_RSA_PRIVATE_KEY.replace(/\\n/g, '\n'),
-        oauthBasePath: DOCUSIGN_OAUTH_BASE_PATH,
+        integrationKey,
+        privateKey: privateKeyPem,
+        oauthBasePath,
+        scopes: Array.isArray(DOCUSIGN_IAM_SCOPES)
+            ? DOCUSIGN_IAM_SCOPES
+            : String(DOCUSIGN_IAM_SCOPES || 'signature,impersonation').split(/[ ,]+/).filter(Boolean),
     }
 }
 
-async function getJwtToken(scopes = ['signature', 'impersonation']) {
+async function getJwtToken(scopes) {
     const cfg = getEnv()
     if (cfg.error) throw new Error(cfg.error)
 
@@ -50,7 +73,7 @@ async function getJwtToken(scopes = ['signature', 'impersonation']) {
     const dsJWT = await apiClient.requestJWTUserToken(
         cfg.integrationKey,
         cfg.userId,
-        scopes,
+        scopes || cfg.scopes || ['signature', 'impersonation'],
         Buffer.from(cfg.privateKey),
         jwtLifeSec
     )
@@ -124,9 +147,10 @@ exports.handler = async (event) => {
             const result = {
                 hasAccountId: !!process.env.DOCUSIGN_ACCOUNT_ID,
                 hasUserId: !!process.env.DOCUSIGN_USER_ID,
-                hasIntegrationKey: !!process.env.DOCUSIGN_INTEGRATION_KEY,
-                hasPrivateKey: !!process.env.DOCUSIGN_RSA_PRIVATE_KEY,
-                oauthBasePath: process.env.DOCUSIGN_OAUTH_BASE_PATH || 'account-d.docusign.com',
+                hasIntegrationKey: !!(process.env.DOCUSIGN_IK || process.env.DOCUSIGN_INTEGRATION_KEY),
+                hasPrivateKey: !!(process.env.DOCUSIGN_RSA_PEM_AS_BASE64 || process.env.DOCUSIGN_RSA_PRIVATE_KEY),
+                oauthBasePath: process.env.DOCUSIGN_AUTH_SERVER || process.env.DOCUSIGN_BASE_PATH || process.env.DOCUSIGN_OAUTH_BASE_PATH || 'account-d.docusign.com',
+                scopes: env.scopes,
                 parsedEnvValid: !env.error,
             }
             return json(200, result)

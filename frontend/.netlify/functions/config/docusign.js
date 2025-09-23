@@ -3,12 +3,14 @@ require('dotenv').config();
 const docusignConfig = {
   // Configurações da API DocuSign
   api: {
-    baseUrl: process.env.DOCUSIGN_API_BASE_URL || 'https://demo.docusign.net/restapi',
+    baseUrl: process.env.DOCUSIGN_API_BASE_URL || process.env.DOCUSIGN_BASE_PATH || 'https://demo.docusign.net/restapi',
     accountId: process.env.DOCUSIGN_ACCOUNT_ID,
     userId: process.env.DOCUSIGN_USER_ID,
-    integrationKey: process.env.DOCUSIGN_INTEGRATION_KEY,
-    rsaPrivateKey: process.env.DOCUSIGN_RSA_PRIVATE_KEY,
-    oauthBasePath: process.env.DOCUSIGN_OAUTH_BASE_PATH || 'account-d.docusign.com'
+    integrationKey: process.env.DOCUSIGN_IK || process.env.DOCUSIGN_INTEGRATION_KEY,
+    rsaPrivateKey: (process.env.DOCUSIGN_RSA_PEM_AS_BASE64
+      ? Buffer.from(process.env.DOCUSIGN_RSA_PEM_AS_BASE64, 'base64').toString('utf8')
+      : process.env.DOCUSIGN_RSA_PRIVATE_KEY),
+    oauthBasePath: process.env.DOCUSIGN_AUTH_SERVER || process.env.DOCUSIGN_OAUTH_BASE_PATH || 'account-d.docusign.com'
   },
 
   // Configurações do Extension App
@@ -24,7 +26,7 @@ const docusignConfig = {
   // Configurações de autenticação
   auth: {
     grantType: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-    scope: 'data:read data:write',
+    scope: process.env.DOCUSIGN_IAM_SCOPES || 'signature impersonation',
     tokenExpiration: 3600, // 1 hora
     refreshThreshold: 300 // 5 minutos antes de expirar
   },
