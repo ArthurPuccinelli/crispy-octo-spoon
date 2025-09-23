@@ -8,6 +8,7 @@
 // - https://github.com/docusign/sample-app-workflows-node
 
 const docusign = require('docusign-esign')
+const axios = require('axios')
 
 const CORS_HEADERS = {
     'Access-Control-Allow-Origin': '*',
@@ -66,6 +67,15 @@ async function getJwtToken(scopes) {
     const cfg = getEnv()
     if (cfg.error) throw new Error(cfg.error)
 
+    console.log('Getting JWT token with config:', {
+        hasAccountId: !!cfg.accountId,
+        hasUserId: !!cfg.userId,
+        hasIntegrationKey: !!cfg.integrationKey,
+        hasPrivateKey: !!cfg.privateKey,
+        oauthBasePath: cfg.oauthBasePath,
+        scopes: scopes || cfg.scopes
+    })
+
     const apiClient = new docusign.ApiClient()
     apiClient.setOAuthBasePath(cfg.oauthBasePath)
 
@@ -78,6 +88,7 @@ async function getJwtToken(scopes) {
         jwtLifeSec
     )
 
+    console.log('JWT token obtained successfully')
     return { accessToken: dsJWT.body.access_token, cfg }
 }
 
@@ -97,19 +108,34 @@ function resolveWorkflowId(input) {
 async function maestroFetch(path, method, token, body) {
     const { maestroBaseUrl } = getEnv()
     const url = `${maestroBaseUrl}${path}`
-    const res = await fetch(url, {
-        method,
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-        body: body ? JSON.stringify(body) : undefined,
-    })
-    if (!res.ok) {
-        const errText = await res.text().catch(() => '')
-        throw new Error(`Maestro ${method} ${path} failed: ${res.status} ${errText}`)
+
+    try {
+        const response = await axios({
+            method,
+            url,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            data: body,
+        })
+        return response.data
+    } catch (error) {
+        const status = error.response?.status || 500
+        const message = error.response?.data || error.message || 'Unknown error'
+
+        // Log the full error for debugging
+        console.error('Maestro API error:', {
+            status,
+            message,
+            url,
+            method,
+            headers: error.response?.headers,
+            data: error.response?.data
+        })
+
+        throw new Error(`Maestro ${method} ${path} failed: ${status} ${JSON.stringify(message)}`)
     }
-    return res.json()
 }
 
 exports.handler = async (event) => {
@@ -122,12 +148,34 @@ exports.handler = async (event) => {
         // Diag
         if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/diag')) {
             const env = getEnv()
+            const workflowMap = resolveWorkflowId('emprestimos')
             return json(200, {
                 hasAccountId: !!env.accountId,
                 hasWorkflowId: !!env.workflowId,
                 oauthBasePath: env.oauthBasePath,
                 maestroBaseUrl: env.maestroBaseUrl,
+                workflowMap: workflowMap,
+                envError: env.error
             })
+        }
+
+        // Test JWT auth only
+        if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/test-auth')) {
+            try {
+                const { accessToken, cfg } = await getJwtToken(['signature', 'impersonation'])
+                return json(200, {
+                    success: true,
+                    hasToken: !!accessToken,
+                    tokenLength: accessToken?.length || 0,
+                    accountId: cfg.accountId,
+                    userId: cfg.userId
+                })
+            } catch (error) {
+                return json(500, {
+                    success: false,
+                    error: error.message
+                })
+            }
         }
 
         // Trigger workflow instance
@@ -135,8 +183,12 @@ exports.handler = async (event) => {
             let body = {}
             try { body = JSON.parse(event.body || '{}') } catch (_) { }
 
+            console.log('Trigger request body:', body)
+
             const { cfg, accessToken } = await getJwtToken(['signature', 'impersonation'])
             const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
+
+            console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
             // Per docs, POST /workflows/{workflowId}/instances
@@ -144,7 +196,9 @@ exports.handler = async (event) => {
                 // Optional: inputs, metadata, callbackUrl, etc.
                 inputs: body.inputs || {},
             }
+            console.log('Starting workflow with request:', startRequest)
             const data = await maestroFetch(`/workflows/${workflowId}/instances`, 'POST', accessToken, startRequest)
+            console.log('Workflow started, response:', data)
             return json(200, { instanceId: data?.instanceId || data?.id || null, data })
         }
 
