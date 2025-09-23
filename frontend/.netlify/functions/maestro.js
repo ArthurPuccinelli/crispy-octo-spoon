@@ -162,7 +162,7 @@ exports.handler = async (event) => {
         // Test JWT auth only
         if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/test-auth')) {
             try {
-                const { accessToken, cfg } = await getJwtToken(['signature', 'impersonation'])
+                const { accessToken, cfg } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
                 return json(200, {
                     success: true,
                     hasToken: !!accessToken,
@@ -185,7 +185,7 @@ exports.handler = async (event) => {
 
             console.log('Trigger request body:', body)
 
-            const { cfg, accessToken } = await getJwtToken(['signature', 'impersonation'])
+            const { cfg, accessToken } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
             const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
 
             console.log('Resolved workflowId:', workflowId)
@@ -212,7 +212,7 @@ exports.handler = async (event) => {
                 try { params = JSON.parse(event.body || '{}') } catch (_) { }
             }
 
-            const { accessToken } = await getJwtToken(['signature', 'impersonation'])
+            const { accessToken } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
             const instanceId = params.instanceId
             if (!instanceId) throw new Error('Missing instanceId')
 
@@ -225,7 +225,7 @@ exports.handler = async (event) => {
         if (method === 'POST' && path.endsWith('/maestro/pause')) {
             let body = {}
             try { body = JSON.parse(event.body || '{}') } catch (_) { }
-            const { accessToken } = await getJwtToken(['signature', 'impersonation'])
+            const { accessToken } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
             if (!body.instanceId) throw new Error('Missing instanceId')
             const data = await maestroFetch(`/workflows/instances/${body.instanceId}/pause`, 'POST', accessToken, {})
             return json(200, { success: true, data })
@@ -235,7 +235,7 @@ exports.handler = async (event) => {
         if (method === 'POST' && path.endsWith('/maestro/resume')) {
             let body = {}
             try { body = JSON.parse(event.body || '{}') } catch (_) { }
-            const { accessToken } = await getJwtToken(['signature', 'impersonation'])
+            const { accessToken } = await getJwtToken(['signature', 'impersonation', 'maestro'])
             if (!body.instanceId) throw new Error('Missing instanceId')
             const data = await maestroFetch(`/workflows/instances/${body.instanceId}/resume`, 'POST', accessToken, {})
             return json(200, { success: true, data })
