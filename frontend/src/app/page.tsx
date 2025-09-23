@@ -69,9 +69,18 @@ export default function Home() {
     if (startingLoanFlow) return
     setStartingLoanFlow(true)
     try {
+      // Check if we have a stored access token
+      const storedToken = localStorage.getItem('docusign_access_token')
+      const tokenExpires = localStorage.getItem('docusign_token_expires')
+
+      let headers = { 'Content-Type': 'application/json' }
+      if (storedToken && tokenExpires && Date.now() < parseInt(tokenExpires)) {
+        headers['Authorization'] = `Bearer ${storedToken}`
+      }
+
       const res = await fetch('/.netlify/functions/maestro/trigger', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           workflowKey: 'emprestimos',
           inputs: {}
@@ -81,6 +90,10 @@ export default function Home() {
 
       // Check for consent required error
       if (!res.ok && (data?.error === 'consent_required' || data?.message?.error === 'consent_required')) {
+        // Clear stored token if consent is required
+        localStorage.removeItem('docusign_access_token')
+        localStorage.removeItem('docusign_token_expires')
+
         // Get consent URL
         const consentRes = await fetch('/.netlify/functions/maestro/consent', {
           method: 'GET',
@@ -103,7 +116,7 @@ export default function Home() {
 
       const embedRes = await fetch('/.netlify/functions/maestro/embed', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ instanceId })
       })
       const embedData = await embedRes.json()

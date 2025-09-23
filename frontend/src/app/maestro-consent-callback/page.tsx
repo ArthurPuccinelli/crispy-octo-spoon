@@ -29,15 +29,39 @@ export default function MaestroConsentCallback() {
                     return
                 }
 
-                // Here you would typically exchange the code for tokens
-                // For now, we'll just show success and redirect back
-                setStatus('success')
-                setMessage('Consentimento concedido com sucesso! Redirecionando...')
+                // Exchange code for access token
+                setStatus('loading')
+                setMessage('Trocando código por token de acesso...')
 
-                // Redirect back to home page after 2 seconds
-                setTimeout(() => {
-                    window.location.href = '/'
-                }, 2000)
+                try {
+                    const tokenRes = await fetch('/.netlify/functions/maestro/token-exchange', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ code })
+                    })
+
+                    const tokenData = await tokenRes.json()
+
+                    if (!tokenRes.ok) {
+                        throw new Error(tokenData.error || 'Falha ao trocar código por token')
+                    }
+
+                    // Store token in localStorage for future use
+                    localStorage.setItem('docusign_access_token', tokenData.accessToken)
+                    localStorage.setItem('docusign_token_expires', String(Date.now() + (tokenData.expiresIn * 1000)))
+
+                    setStatus('success')
+                    setMessage('Consentimento concedido com sucesso! Redirecionando...')
+
+                    // Redirect back to home page after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/'
+                    }, 2000)
+
+                } catch (error: any) {
+                    setStatus('error')
+                    setMessage(`Erro ao trocar código: ${error.message}`)
+                }
 
             } catch (error: any) {
                 setStatus('error')

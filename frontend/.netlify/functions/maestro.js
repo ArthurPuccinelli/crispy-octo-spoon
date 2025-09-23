@@ -208,6 +208,39 @@ exports.handler = async (event) => {
             }
         }
 
+        // Exchange authorization code for access token
+        if (method === 'POST' && path.endsWith('/maestro/token-exchange')) {
+            try {
+                let body = {}
+                try { body = JSON.parse(event.body || '{}') } catch (_) { }
+
+                const cfg = getEnv()
+                if (cfg.error) throw new Error(cfg.error)
+
+                const apiClient = new docusign.ApiClient()
+                apiClient.setOAuthBasePath(cfg.oauthBasePath)
+
+                // Exchange code for token
+                const tokenResponse = await apiClient.getAccessToken(
+                    cfg.integrationKey,
+                    body.code,
+                    'https://crispy-octo-spoon.netlify.app/maestro-consent-callback'
+                )
+
+                return json(200, {
+                    success: true,
+                    accessToken: tokenResponse.body.access_token,
+                    tokenType: tokenResponse.body.token_type,
+                    expiresIn: tokenResponse.body.expires_in
+                })
+            } catch (error) {
+                return json(500, {
+                    success: false,
+                    error: error.message
+                })
+            }
+        }
+
         // Trigger workflow instance
         if (method === 'POST' && path.endsWith('/maestro/trigger')) {
             let body = {}
@@ -215,7 +248,23 @@ exports.handler = async (event) => {
 
             console.log('Trigger request body:', body)
 
-            const { cfg, accessToken } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
+            // Check if Authorization header is provided (from stored token)
+            const auth = event.headers.authorization || event.headers.Authorization
+            let accessToken = null
+            let cfg = null
+
+            if (auth?.startsWith('Bearer ')) {
+                // Use provided token
+                accessToken = auth.slice(7)
+                cfg = getEnv()
+                if (cfg.error) throw new Error(cfg.error)
+            } else {
+                // Generate JWT token
+                const jwtResult = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
+                accessToken = jwtResult.accessToken
+                cfg = jwtResult.cfg
+            }
+
             const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
 
             console.log('Resolved workflowId:', workflowId)
