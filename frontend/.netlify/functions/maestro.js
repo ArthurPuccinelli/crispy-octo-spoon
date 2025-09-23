@@ -178,22 +178,14 @@ exports.handler = async (event) => {
             }
         }
 
-        // Get consent URL for Maestro
+        // Get consent URL for JWT (simplified)
         if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/consent')) {
             try {
                 const cfg = getEnv()
                 if (cfg.error) throw new Error(cfg.error)
 
-                const apiClient = new docusign.ApiClient()
-                apiClient.setOAuthBasePath(cfg.oauthBasePath)
-
-                // Generate consent URL for Maestro scopes
-                const consentUrl = apiClient.getAuthorizationUri(
-                    cfg.integrationKey,
-                    ['signature', 'impersonation'],
-                    'https://crispy-octo-spoon.netlify.app/maestro-consent-callback',
-                    'code'
-                )
+                // For JWT integration keys, use the consent URL directly
+                const consentUrl = `https://${cfg.oauthBasePath}/oauth/auth?response_type=code&scope=signature%20impersonation&client_id=${cfg.integrationKey}&redirect_uri=https://crispy-octo-spoon.netlify.app/maestro-consent-callback`
 
                 return json(200, {
                     consentUrl,
@@ -242,26 +234,12 @@ exports.handler = async (event) => {
             try { body = JSON.parse(event.body || '{}') } catch (_) { }
 
             console.log('Trigger request body:', body)
-
-            // Check if Authorization header is provided (from stored token)
-            const auth = event.headers.authorization || event.headers.Authorization
-            let accessToken = null
-            let cfg = null
-
-            if (auth?.startsWith('Bearer ')) {
-                // Use provided token
-                accessToken = auth.slice(7)
-                cfg = getEnv()
-                if (cfg.error) throw new Error(cfg.error)
-            } else {
-                // Generate JWT token
-                const jwtResult = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
-                accessToken = jwtResult.accessToken
-                cfg = jwtResult.cfg
-            }
-
+            
+            // Always use JWT for Maestro API
+            const { accessToken, cfg } = await getJwtToken(['signature', 'impersonation'])
+            
             const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
-
+            
             console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
