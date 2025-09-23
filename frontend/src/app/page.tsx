@@ -90,22 +90,31 @@ export default function Home() {
 
       // Check for consent required error
       if (!res.ok && (data?.error === 'consent_required' || data?.message?.error === 'consent_required')) {
-        // Clear stored token if consent is required
-        localStorage.removeItem('docusign_access_token')
-        localStorage.removeItem('docusign_token_expires')
+        // Check if consent was already given recently
+        const consentGiven = localStorage.getItem('docusign_consent_given')
+        const consentTime = localStorage.getItem('docusign_consent_time')
+        const oneHourAgo = Date.now() - (60 * 60 * 1000)
 
-        // Get consent URL
-        const consentRes = await fetch('/.netlify/functions/maestro/consent', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        })
-        const consentData = await consentRes.json()
-        if (consentRes.ok && consentData.consentUrl) {
-          // Redirect to consent page
-          window.location.href = consentData.consentUrl
-          return
+        if (consentGiven === 'true' && consentTime && parseInt(consentTime) > oneHourAgo) {
+          // Consent was given recently, try again with fresh JWT
+          console.log('Consent was given recently, retrying...')
+          // Clear any old tokens
+          localStorage.removeItem('docusign_access_token')
+          localStorage.removeItem('docusign_token_expires')
         } else {
-          throw new Error('Falha ao obter URL de consentimento')
+          // Get consent URL
+          const consentRes = await fetch('/.netlify/functions/maestro/consent', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+          })
+          const consentData = await consentRes.json()
+          if (consentRes.ok && consentData.consentUrl) {
+            // Redirect to consent page
+            window.location.href = consentData.consentUrl
+            return
+          } else {
+            throw new Error('Falha ao obter URL de consentimento')
+          }
         }
       }
 
