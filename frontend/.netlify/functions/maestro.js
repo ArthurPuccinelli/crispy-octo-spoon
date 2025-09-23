@@ -251,6 +251,12 @@ exports.handler = async (event) => {
             console.log('Starting workflow with request:', startRequest)
             const data = await maestroFetch(`/workflows/${workflowId}/instances`, 'POST', accessToken, startRequest)
             console.log('Workflow started, response:', data)
+            
+            // Check if response is HTML (indicates consent required)
+            if (typeof data === 'string' && data.includes('<!DOCTYPE html>')) {
+                return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
+            }
+            
             return json(200, { instanceId: data?.instanceId || data?.id || null, data })
         }
 
