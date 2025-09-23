@@ -211,13 +211,13 @@ exports.handler = async (event) => {
 
                 // Exchange authorization code for access token
                 const tokenUrl = `https://${cfg.oauthBasePath}/oauth/token`
-                
+
                 const formData = new URLSearchParams()
                 formData.append('grant_type', 'authorization_code')
                 formData.append('code', body.code)
                 formData.append('client_id', cfg.integrationKey)
                 formData.append('redirect_uri', 'https://crispy-octo-spoon.netlify.app/maestro-consent-callback')
-                
+
                 const tokenResponse = await axios.post(tokenUrl, formData, {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -247,12 +247,12 @@ exports.handler = async (event) => {
             try { body = JSON.parse(event.body || '{}') } catch (_) { }
 
             console.log('Trigger request body:', body)
-            
+
             // Check if Authorization header is provided (OAuth2 token)
             const auth = event.headers.authorization || event.headers.Authorization
             let accessToken = null
             let cfg = null
-            
+
             if (auth?.startsWith('Bearer ')) {
                 // Use provided OAuth2 token
                 accessToken = auth.slice(7)
@@ -269,9 +269,9 @@ exports.handler = async (event) => {
                     return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
                 }
             }
-            
+
             const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
-            
+
             console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
@@ -283,12 +283,12 @@ exports.handler = async (event) => {
             console.log('Starting workflow with request:', startRequest)
             const data = await maestroFetch(`/workflows/${workflowId}/instances`, 'POST', accessToken, startRequest)
             console.log('Workflow started, response:', data)
-            
+
             // Check if response is HTML (indicates consent required)
             if (typeof data === 'string' && data.includes('<!DOCTYPE html>')) {
                 return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
             }
-            
+
             return json(200, { instanceId: data?.instanceId || data?.id || null, data })
         }
 
