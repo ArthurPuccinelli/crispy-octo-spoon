@@ -2,6 +2,7 @@
 // Endpoints:
 //  - POST /.netlify/functions/docusign-actions/auth -> obtém access_token via JWT Grant
 //  - POST /.netlify/functions/docusign-actions/envelopes -> cria envelope (send or create)
+//  - GET  /.netlify/functions/docusign-actions/diag -> diagnóstico de ambiente (sem segredos)
 
 const docusign = require('docusign-esign')
 
@@ -117,6 +118,19 @@ exports.handler = async (event) => {
     const method = event.httpMethod
 
     try {
+        // Diagnóstico de ambiente (não vaza segredos)
+        if ((method === 'GET' || method === 'POST') && path.endsWith('/docusign-actions/diag')) {
+            const env = getEnv()
+            const result = {
+                hasAccountId: !!process.env.DOCUSIGN_ACCOUNT_ID,
+                hasUserId: !!process.env.DOCUSIGN_USER_ID,
+                hasIntegrationKey: !!process.env.DOCUSIGN_INTEGRATION_KEY,
+                hasPrivateKey: !!process.env.DOCUSIGN_RSA_PRIVATE_KEY,
+                oauthBasePath: process.env.DOCUSIGN_OAUTH_BASE_PATH || 'account-d.docusign.com',
+                parsedEnvValid: !env.error,
+            }
+            return json(200, result)
+        }
         if (method === 'POST' && path.endsWith('/docusign-actions/auth')) {
             const { accessToken, expiresIn, cfg } = await getJwtToken()
             return json(200, {
