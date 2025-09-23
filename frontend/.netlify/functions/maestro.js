@@ -178,6 +178,36 @@ exports.handler = async (event) => {
             }
         }
 
+        // Get consent URL for Maestro
+        if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/consent')) {
+            try {
+                const cfg = getEnv()
+                if (cfg.error) throw new Error(cfg.error)
+
+                const apiClient = new docusign.ApiClient()
+                apiClient.setOAuthBasePath(cfg.oauthBasePath)
+
+                // Generate consent URL for Maestro scopes
+                const consentUrl = apiClient.getAuthorizationUri(
+                    cfg.integrationKey,
+                    ['signature', 'impersonation', 'aow_manage'],
+                    'https://crispy-octo-spoon.netlify.app/maestro-consent-callback',
+                    'code'
+                )
+
+                return json(200, {
+                    consentUrl,
+                    scopes: ['signature', 'impersonation', 'aow_manage'],
+                    redirectUri: 'https://crispy-octo-spoon.netlify.app/maestro-consent-callback'
+                })
+            } catch (error) {
+                return json(500, {
+                    success: false,
+                    error: error.message
+                })
+            }
+        }
+
         // Trigger workflow instance
         if (method === 'POST' && path.endsWith('/maestro/trigger')) {
             let body = {}

@@ -78,6 +78,24 @@ export default function Home() {
         })
       })
       const data = await res.json()
+
+      // Check for consent required error
+      if (!res.ok && data?.error === 'consent_required') {
+        // Get consent URL
+        const consentRes = await fetch('/.netlify/functions/maestro/consent', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        })
+        const consentData = await consentRes.json()
+        if (consentRes.ok && consentData.consentUrl) {
+          // Redirect to consent page
+          window.location.href = consentData.consentUrl
+          return
+        } else {
+          throw new Error('Falha ao obter URL de consentimento')
+        }
+      }
+
       if (!res.ok) throw new Error(typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || 'Falha ao iniciar workflow'))
 
       const instanceId = data.instanceId || data?.data?.instanceId || data?.data?.id
