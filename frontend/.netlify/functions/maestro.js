@@ -219,14 +219,18 @@ exports.handler = async (event) => {
 
                 // Use axios to exchange code for token
                 const oauthUrl = `https://${cfg.oauthBasePath}/oauth/token`
-                const tokenResponse = await axios.post(oauthUrl, {
-                    grant_type: 'authorization_code',
-                    code: body.code,
-                    client_id: cfg.integrationKey,
-                    redirect_uri: 'https://crispy-octo-spoon.netlify.app/maestro-consent-callback'
-                }, {
+                
+                // Create form data for OAuth2
+                const formData = new URLSearchParams()
+                formData.append('grant_type', 'authorization_code')
+                formData.append('code', body.code)
+                formData.append('client_id', cfg.integrationKey)
+                formData.append('redirect_uri', 'https://crispy-octo-spoon.netlify.app/maestro-consent-callback')
+                
+                const tokenResponse = await axios.post(oauthUrl, formData, {
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json'
                     }
                 })
 
