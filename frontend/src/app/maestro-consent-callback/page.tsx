@@ -1,18 +1,21 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 
 export default function MaestroConsentCallback() {
     const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
     const [message, setMessage] = useState('')
-    const searchParams = useSearchParams()
 
     useEffect(() => {
         const handleCallback = async () => {
             try {
-                const code = searchParams.get('code')
-                const error = searchParams.get('error')
+                // Get URL params from window.location
+                const urlParams = new URLSearchParams(window.location.search)
+                const code = urlParams.get('code')
+                const error = urlParams.get('error')
 
                 if (error) {
                     setStatus('error')
@@ -43,7 +46,7 @@ export default function MaestroConsentCallback() {
         }
 
         handleCallback()
-    }, [searchParams])
+    }, [])
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 flex items-center justify-center">
