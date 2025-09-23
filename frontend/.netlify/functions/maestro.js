@@ -217,34 +217,21 @@ exports.handler = async (event) => {
                 const cfg = getEnv()
                 if (cfg.error) throw new Error(cfg.error)
 
-                // Use axios to exchange code for token
-                const oauthUrl = `https://${cfg.oauthBasePath}/oauth/token`
-                
-                // Create form data for OAuth2
-                const formData = new URLSearchParams()
-                formData.append('grant_type', 'authorization_code')
-                formData.append('code', body.code)
-                formData.append('client_id', cfg.integrationKey)
-                formData.append('redirect_uri', 'https://crispy-octo-spoon.netlify.app/maestro-consent-callback')
-                
-                const tokenResponse = await axios.post(oauthUrl, formData, {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json'
-                    }
-                })
+                // For JWT integration keys, we don't need OAuth2 code exchange
+                // Instead, we'll generate a new JWT token after consent
+                const { accessToken, expiresIn } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
 
                 return json(200, {
                     success: true,
-                    accessToken: tokenResponse.data.access_token,
-                    tokenType: tokenResponse.data.token_type,
-                    expiresIn: tokenResponse.data.expires_in
+                    accessToken: accessToken,
+                    tokenType: 'Bearer',
+                    expiresIn: expiresIn || 3600
                 })
             } catch (error) {
-                console.error('Token exchange error:', error.response?.data || error.message)
+                console.error('Token generation error:', error.message)
                 return json(500, {
                     success: false,
-                    error: error.response?.data?.error_description || error.message
+                    error: error.message
                 })
             }
         }
