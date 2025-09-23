@@ -85,14 +85,7 @@ router.get('/', authenticateDocuSign, async (req, res) => {
 
         const result = await clientesService.listarClientes(options);
 
-        // Log de auditoria
-        console.log('🔍 Clientes listados:', {
-            operation: 'read',
-            filters: { status, tipo_cliente, cidade, estado, search },
-            pagination: { limit: validLimit, offset: validOffset },
-            resultCount: result.data.length,
-            total: result.pagination.total
-        });
+
 
         res.json(result);
 
@@ -123,18 +116,13 @@ router.get('/:id', authenticateDocuSign, async (req, res) => {
 
         const result = await clientesService.buscarClientePorId(id);
 
-        // Log de auditoria
-        console.log('🔍 Cliente buscado por ID:', {
-            operation: 'read_by_id',
-            clienteId: id,
-            found: !!result.data
-        });
+
 
         res.json(result);
 
     } catch (error) {
         console.error('Erro ao buscar cliente por ID:', error);
-        
+
         if (error.message.includes('não encontrado')) {
             return res.status(404).json({
                 error: 'Not Found',
@@ -159,31 +147,17 @@ router.post('/', authenticateDocuSign, validateClienteData, async (req, res) => 
     try {
         const clienteData = req.body;
 
-        // Log dos dados recebidos
-        console.log('📝 Criando novo cliente:', {
-            operation: 'create',
-            data: {
-                nome: clienteData.nome,
-                tipo_cliente: clienteData.tipo_cliente,
-                cpf_cnpj: clienteData.cpf_cnpj ? '***' : undefined,
-                email: clienteData.email ? '***' : undefined
-            }
-        });
+
 
         const result = await clientesService.criarCliente(clienteData);
 
-        // Log de auditoria
-        console.log('✅ Cliente criado com sucesso:', {
-            operation: 'create',
-            clienteId: result.data.id,
-            nome: result.data.nome
-        });
+
 
         res.status(201).json(result);
 
     } catch (error) {
         console.error('Erro ao criar cliente:', error);
-        
+
         if (error.message.includes('Validação falhou')) {
             return res.status(400).json({
                 error: 'Bad Request',
@@ -217,32 +191,17 @@ router.put('/:id', authenticateDocuSign, validateClienteData, async (req, res) =
             });
         }
 
-        // Log dos dados recebidos
-        console.log('📝 Atualizando cliente:', {
-            operation: 'update',
-            clienteId: id,
-            data: {
-                nome: clienteData.nome,
-                tipo_cliente: clienteData.tipo_cliente,
-                cpf_cnpj: clienteData.cpf_cnpj ? '***' : undefined,
-                email: clienteData.email ? '***' : undefined
-            }
-        });
+
 
         const result = await clientesService.atualizarCliente(id, clienteData);
 
-        // Log de auditoria
-        console.log('✅ Cliente atualizado com sucesso:', {
-            operation: 'update',
-            clienteId: id,
-            nome: result.data.nome
-        });
+
 
         res.json(result);
 
     } catch (error) {
         console.error('Erro ao atualizar cliente:', error);
-        
+
         if (error.message.includes('não encontrado')) {
             return res.status(404).json({
                 error: 'Not Found',
@@ -284,26 +243,17 @@ router.delete('/:id', authenticateDocuSign, async (req, res) => {
             });
         }
 
-        // Log da operação
-        console.log('🗑️ Removendo cliente:', {
-            operation: 'delete',
-            clienteId: id
-        });
+
 
         const result = await clientesService.removerCliente(id);
 
-        // Log de auditoria
-        console.log('✅ Cliente removido com sucesso:', {
-            operation: 'delete',
-            clienteId: id,
-            nome: result.data.nome
-        });
+
 
         res.json(result);
 
     } catch (error) {
         console.error('Erro ao remover cliente:', error);
-        
+
         if (error.message.includes('não encontrado')) {
             return res.status(404).json({
                 error: 'Not Found',
@@ -328,11 +278,7 @@ router.get('/stats/estatisticas', authenticateDocuSign, async (req, res) => {
     try {
         const result = await clientesService.obterEstatisticas();
 
-        // Log de auditoria
-        console.log('📊 Estatísticas obtidas:', {
-            operation: 'statistics',
-            totalClientes: result.data.total
-        });
+
 
         res.json(result);
 
@@ -381,14 +327,7 @@ router.get('/search/buscar', authenticateDocuSign, async (req, res) => {
 
         const result = await clientesService.listarClientes(options);
 
-        // Log de auditoria
-        console.log('🔍 Busca executada:', {
-            operation: 'search',
-            query: q,
-            filters: { status, tipo_cliente, cidade, estado },
-            resultCount: result.data.length,
-            total: result.pagination.total
-        });
+
 
         res.json(result);
 
@@ -406,7 +345,7 @@ router.get('/search/buscar', authenticateDocuSign, async (req, res) => {
 // Middleware de tratamento de erros específico para rotas de clientes
 router.use((err, req, res, next) => {
     console.error('Erro nas rotas de clientes:', err);
-    
+
     res.status(500).json({
         error: 'Internal Server Error',
         message: 'Erro interno nas rotas de clientes',

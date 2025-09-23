@@ -102,7 +102,6 @@ exports.handler = async (event) => {
             .single();
 
         if (error) {
-            console.error('CreateRecord insert error:', error);
             const message = error.message || 'Failed to create record';
             const status = /uuid/i.test(message) ? 400 : 500;
             return { statusCode: status, headers, body: JSON.stringify({ error: message }) };
@@ -114,7 +113,6 @@ exports.handler = async (event) => {
         }
         return { statusCode: 200, headers, body: JSON.stringify(response) };
     } catch (e) {
-        console.error('CreateRecord unexpected error:', e);
         return { statusCode: 500, headers, body: JSON.stringify({ error: 'Unexpected error creating record' }) };
     }
 };

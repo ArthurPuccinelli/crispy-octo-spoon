@@ -7,6 +7,7 @@ import Image from 'next/image'
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [creatingEnvelope, setCreatingEnvelope] = useState(false)
+  const [startingLoanFlow, setStartingLoanFlow] = useState(false)
 
   const handlePixConhecaMais = async () => {
     if (creatingEnvelope) return
@@ -61,6 +62,43 @@ export default function Home() {
       alert(`Erro ao criar envelope: ${e?.message || 'desconhecido'}`)
     } finally {
       setCreatingEnvelope(false)
+    }
+  }
+
+  const handleLoansContrateAgora = async () => {
+    if (startingLoanFlow) return
+    setStartingLoanFlow(true)
+    try {
+      const res = await fetch('/.netlify/functions/maestro/trigger', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          workflowKey: 'emprestimos',
+          inputs: {}
+        })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || 'Falha ao iniciar workflow'))
+
+      const instanceId = data.instanceId || data?.data?.instanceId || data?.data?.id
+      if (!instanceId) throw new Error('instanceId não retornado')
+
+      const embedRes = await fetch('/.netlify/functions/maestro/embed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ instanceId })
+      })
+      const embedData = await embedRes.json()
+      if (!embedRes.ok) throw new Error(typeof embedData?.message === 'object' ? JSON.stringify(embedData.message) : (embedData?.message || 'Falha ao obter URL embed'))
+
+      const url = embedData.url || embedData?.data?.url
+      if (!url) throw new Error('URL de embed não retornada')
+
+      window.location.href = url
+    } catch (e: any) {
+      alert(`Erro ao iniciar fluxo de Empréstimos: ${e?.message || 'desconhecido'}`)
+    } finally {
+      setStartingLoanFlow(false)
     }
   }
 
@@ -251,12 +289,12 @@ export default function Home() {
                       Sem IOF
                     </div>
                   </div>
-                  <button className="w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-xl hover:from-cyan-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-cyan-500/25 animate-pulse">
+                  <button onClick={handleLoansContrateAgora} disabled={startingLoanFlow} className="w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-xl hover:from-cyan-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-cyan-500/25 animate-pulse disabled:opacity-60 disabled:cursor-not-allowed">
                     <span className="flex items-center justify-center">
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
-                      Conheça Mais
+                      {startingLoanFlow ? 'Iniciando...' : 'Contrate agora'}
                     </span>
                   </button>
                 </div>

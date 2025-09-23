@@ -1,0 +1,198 @@
+// Netlify Function: DocuSign Maestro (JWT auth + trigger/embed/pause/resume)
+// References:
+// - https://developers.docusign.com/docs/maestro-api/auth/
+// - https://developers.docusign.com/docs/maestro-api/how-to/trigger-workflow/
+// - https://developers.docusign.com/docs/maestro-api/maestro101/embed-workflow/
+// - https://developers.docusign.com/docs/maestro-api/how-to/pause-workflow/
+// - https://developers.docusign.com/docs/maestro-api/how-to/resume-workflow/
+// - https://github.com/docusign/sample-app-workflows-node
+
+const docusign = require('docusign-esign')
+
+const CORS_HEADERS = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Content-Type': 'application/json',
+}
+
+function json(statusCode, body) {
+    return { statusCode, headers: CORS_HEADERS, body: JSON.stringify(body) }
+}
+
+function getEnv() {
+    const {
+        DOCUSIGN_ACCOUNT_ID,
+        DOCUSIGN_USER_ID,
+        DOCUSIGN_INTEGRATION_KEY,
+        DOCUSIGN_IK,
+        DOCUSIGN_RSA_PRIVATE_KEY,
+        DOCUSIGN_RSA_PEM_AS_BASE64,
+        DOCUSIGN_AUTH_SERVER,
+        DOCUSIGN_OAUTH_BASE_PATH,
+        DOCUSIGN_IAM_SCOPES,
+        DOCUSIGN_MAESTRO_BASE_URL,
+        DOCUSIGN_MAESTRO_WORKFLOW_ID,
+    } = process.env
+
+    const integrationKey = DOCUSIGN_IK || DOCUSIGN_INTEGRATION_KEY
+    const oauthBasePath = DOCUSIGN_AUTH_SERVER || DOCUSIGN_OAUTH_BASE_PATH || 'account-d.docusign.com'
+
+    let privateKeyPem = null
+    if (DOCUSIGN_RSA_PEM_AS_BASE64) {
+        try { privateKeyPem = Buffer.from(DOCUSIGN_RSA_PEM_AS_BASE64, 'base64').toString('utf8') } catch (_) { privateKeyPem = null }
+    }
+    if (!privateKeyPem && DOCUSIGN_RSA_PRIVATE_KEY) {
+        privateKeyPem = DOCUSIGN_RSA_PRIVATE_KEY.replace(/\\n/g, '\n')
+    }
+
+    if (!DOCUSIGN_ACCOUNT_ID || !DOCUSIGN_USER_ID || !integrationKey || !privateKeyPem) {
+        return { error: 'DocuSign environment variables missing' }
+    }
+
+    return {
+        accountId: DOCUSIGN_ACCOUNT_ID,
+        userId: DOCUSIGN_USER_ID,
+        integrationKey,
+        privateKey: privateKeyPem,
+        oauthBasePath,
+        maestroBaseUrl: DOCUSIGN_MAESTRO_BASE_URL || 'https://api-d.docusign.net/maestro/v1',
+        workflowId: DOCUSIGN_MAESTRO_WORKFLOW_ID,
+        scopes: String(DOCUSIGN_IAM_SCOPES || 'signature impersonation').split(/[ ,]+/).filter(Boolean),
+    }
+}
+
+async function getJwtToken(scopes) {
+    const cfg = getEnv()
+    if (cfg.error) throw new Error(cfg.error)
+
+    const apiClient = new docusign.ApiClient()
+    apiClient.setOAuthBasePath(cfg.oauthBasePath)
+
+    const jwtLifeSec = 3600
+    const dsJWT = await apiClient.requestJWTUserToken(
+        cfg.integrationKey,
+        cfg.userId,
+        scopes || cfg.scopes,
+        Buffer.from(cfg.privateKey),
+        jwtLifeSec
+    )
+
+    return { accessToken: dsJWT.body.access_token, cfg }
+}
+
+function resolveWorkflowId(input) {
+    try {
+        const map = require('./config/maestro-workflows.json')
+        if (!input) return map?.emprestimos || null
+        // If input matches a UUID, use it directly; otherwise, use mapping key
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input)
+        if (isUuid) return input
+        return map?.[String(input)] || null
+    } catch (_) {
+        return input || null
+    }
+}
+
+async function maestroFetch(path, method, token, body) {
+    const { maestroBaseUrl } = getEnv()
+    const url = `${maestroBaseUrl}${path}`
+    const res = await fetch(url, {
+        method,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: body ? JSON.stringify(body) : undefined,
+    })
+    if (!res.ok) {
+        const errText = await res.text().catch(() => '')
+        throw new Error(`Maestro ${method} ${path} failed: ${res.status} ${errText}`)
+    }
+    return res.json()
+}
+
+exports.handler = async (event) => {
+    if (event.httpMethod === 'OPTIONS') return json(200, {})
+
+    const method = event.httpMethod
+    const path = (event.path || '').toLowerCase()
+
+    try {
+        // Diag
+        if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/diag')) {
+            const env = getEnv()
+            return json(200, {
+                hasAccountId: !!env.accountId,
+                hasWorkflowId: !!env.workflowId,
+                oauthBasePath: env.oauthBasePath,
+                maestroBaseUrl: env.maestroBaseUrl,
+            })
+        }
+
+        // Trigger workflow instance
+        if (method === 'POST' && path.endsWith('/maestro/trigger')) {
+            let body = {}
+            try { body = JSON.parse(event.body || '{}') } catch (_) { }
+
+            const { cfg, accessToken } = await getJwtToken(['signature', 'impersonation'])
+            const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
+            if (!workflowId) throw new Error('Missing workflowId')
+
+            // Per docs, POST /workflows/{workflowId}/instances
+            const startRequest = {
+                // Optional: inputs, metadata, callbackUrl, etc.
+                inputs: body.inputs || {},
+            }
+            const data = await maestroFetch(`/workflows/${workflowId}/instances`, 'POST', accessToken, startRequest)
+            return json(200, { instanceId: data?.instanceId || data?.id || null, data })
+        }
+
+        // Get embedded URL for an instance
+        if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/embed')) {
+            let params = {}
+            if (method === 'GET') {
+                const search = new URL(event.rawUrl || `http://x${event.path}${event.rawQuery ? '?' + event.rawQuery : ''}`)
+                params = Object.fromEntries(search.searchParams.entries())
+            } else {
+                try { params = JSON.parse(event.body || '{}') } catch (_) { }
+            }
+
+            const { accessToken } = await getJwtToken(['signature', 'impersonation'])
+            const instanceId = params.instanceId
+            if (!instanceId) throw new Error('Missing instanceId')
+
+            // Per docs, GET /workflows/instances/{instanceId}/embeddedUrl
+            const data = await maestroFetch(`/workflows/instances/${instanceId}/embeddedUrl`, 'GET', accessToken)
+            return json(200, { url: data?.url || data?.embeddedUrl || null, data })
+        }
+
+        // Pause instance
+        if (method === 'POST' && path.endsWith('/maestro/pause')) {
+            let body = {}
+            try { body = JSON.parse(event.body || '{}') } catch (_) { }
+            const { accessToken } = await getJwtToken(['signature', 'impersonation'])
+            if (!body.instanceId) throw new Error('Missing instanceId')
+            const data = await maestroFetch(`/workflows/instances/${body.instanceId}/pause`, 'POST', accessToken, {})
+            return json(200, { success: true, data })
+        }
+
+        // Resume instance
+        if (method === 'POST' && path.endsWith('/maestro/resume')) {
+            let body = {}
+            try { body = JSON.parse(event.body || '{}') } catch (_) { }
+            const { accessToken } = await getJwtToken(['signature', 'impersonation'])
+            if (!body.instanceId) throw new Error('Missing instanceId')
+            const data = await maestroFetch(`/workflows/instances/${body.instanceId}/resume`, 'POST', accessToken, {})
+            return json(200, { success: true, data })
+        }
+
+        return json(404, { error: 'Not Found' })
+    } catch (err) {
+        console.error('Maestro error:', err)
+        const message = err.response?.body || err.message || 'Unknown error'
+        return json(500, { error: 'MaestroError', message })
+    }
+}
+
+

@@ -1,6 +1,6 @@
 # 🍜 Crispy Octo Spoon
 
-Aplicação full-stack moderna construída com **Next.js** (React + TypeScript) no frontend e **Node.js** (Express) no backend.
+Aplicação moderna com **Next.js** (React + TypeScript) no frontend e backend servido via **Netlify Functions** (serverless). O antigo backend Express foi removido.
 
 ## 🚀 Tecnologias
 
@@ -11,13 +11,9 @@ Aplicação full-stack moderna construída com **Next.js** (React + TypeScript) 
 - **Tailwind CSS** - Framework CSS utilitário
 - **ESLint** - Linter para qualidade de código
 
-### Backend
-- **Node.js** - Runtime JavaScript
-- **Express** - Framework web
-- **CORS** - Cross-origin resource sharing
-- **Helmet** - Segurança HTTP
-- **Morgan** - Logger de requisições
-- **Nodemon** - Reinicialização automática em desenvolvimento
+### Serverless Backend
+- **Netlify Functions** - APIs (DocuSign DataIO, Clientes, JWT, etc.)
+- **Supabase JS** - Persistência de dados
 
 ## 📁 Estrutura do Projeto
 
@@ -30,12 +26,7 @@ crispy-octo-spoon/
 │   │   └── lib/       # Utilitários e configurações
 │   ├── public/        # Arquivos estáticos
 │   └── package.json
-├── backend/           # API Node.js
-│   ├── src/
-│   │   ├── routes/    # Rotas da API
-│   │   ├── controllers/# Controladores
-│   │   └── middleware/# Middlewares
-│   └── package.json
+├── frontend/.netlify/functions/  # Funções serverless (APIs)
 └── package.json       # Scripts principais
 ```
 
@@ -66,43 +57,28 @@ crispy-octo-spoon/
 
 ## 🚀 Executando o Projeto
 
-### Desenvolvimento (Frontend + Backend)
-```bash
-npm run dev
-```
-
-### Apenas Frontend
+### Desenvolvimento
 ```bash
 npm run dev:frontend
-```
-
-### Apenas Backend
-```bash
-npm run dev:backend
 ```
 
 ### Produção
 ```bash
 npm run build    # Build do frontend
-npm start        # Inicia o backend
 ```
 
 ## 🌐 URLs de Acesso
 
 - **Frontend**: http://localhost:3000
-- **Backend**: http://localhost:3001
-- **Health Check**: http://localhost:3001/health
-- **API Clientes**: http://localhost:3001/api/clientes
+- **APIs (serverless)**: `/.netlify/functions/*` (via Netlify Dev/Deploy)
 
 ## 📝 Scripts Disponíveis
 
-- `npm run dev` - Inicia frontend e backend em desenvolvimento
-- `npm run dev:frontend` - Inicia apenas o frontend
-- `npm run dev:backend` - Inicia apenas o backend
+- `npm run dev` - Inicia o frontend
 - `npm run build` - Build de produção do frontend
-- `npm run start` - Inicia o backend em produção
-- `npm run install:all` - Instala dependências de todos os projetos
-- `npm run clean` - Remove node_modules de todos os projetos
+- `npm run start` - Inicia o frontend em produção
+- `npm run install:all` - Instala dependências (root + frontend)
+- `npm run clean` - Remove node_modules (root + frontend)
 
 ## 🔧 Desenvolvimento
 
@@ -111,7 +87,6 @@ npm start        # Inicia o backend
 - O Next.js recarrega automaticamente
 - Tailwind CSS está configurado e funcionando
 
-### Backend
-- Edite arquivos em `backend/src/`
-- Nodemon reinicia automaticamente
-- API REST disponível em `/api/*`
+### Funções Netlify
+- Edite arquivos em `frontend/.netlify/functions/*`
+- Use `netlify dev` em `frontend/.netlify/functions` para testar localmente
