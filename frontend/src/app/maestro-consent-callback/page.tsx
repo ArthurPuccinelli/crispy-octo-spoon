@@ -29,19 +29,37 @@ export default function MaestroConsentCallback() {
                     return
                 }
 
-                // For JWT integration, we don't need to exchange code
-                // Just mark consent as completed and redirect
-                setStatus('success')
-                setMessage('Consentimento concedido com sucesso! Redirecionando...')
-
-                // Store a flag that consent was given
+            // Exchange authorization code for access token
+            try {
+              const tokenRes = await fetch('/.netlify/functions/maestro/token-exchange', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+              })
+              
+              const tokenData = await tokenRes.json()
+              
+              if (tokenRes.ok && tokenData.success) {
+                // Store the access token
+                localStorage.setItem('docusign_access_token', tokenData.accessToken)
+                localStorage.setItem('docusign_token_expires', String(Date.now() + (tokenData.expiresIn * 1000)))
                 localStorage.setItem('docusign_consent_given', 'true')
                 localStorage.setItem('docusign_consent_time', String(Date.now()))
-
+                
+                setStatus('success')
+                setMessage('Consentimento concedido com sucesso! Redirecionando...')
+                
                 // Redirect back to home page after 2 seconds
                 setTimeout(() => {
-                    window.location.href = '/'
+                  window.location.href = '/'
                 }, 2000)
+              } else {
+                throw new Error(tokenData.error || 'Erro ao trocar código de autorização')
+              }
+            } catch (tokenError: any) {
+              setStatus('error')
+              setMessage(`Erro ao trocar código: ${tokenError.message}`)
+            }
 
             } catch (error: any) {
                 setStatus('error')

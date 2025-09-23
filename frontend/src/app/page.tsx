@@ -82,6 +82,12 @@ export default function Home() {
       // Check for consent required error or HTML response (indicates consent needed)
       if (!res.ok && (data?.error === 'consent_required' || data?.message?.error === 'consent_required' || 
           (data?.data && typeof data.data === 'string' && data.data.includes('<!DOCTYPE html>')))) {
+        // Clear any existing tokens
+        localStorage.removeItem('docusign_access_token')
+        localStorage.removeItem('docusign_token_expires')
+        localStorage.removeItem('docusign_consent_given')
+        localStorage.removeItem('docusign_consent_time')
+        
         // Get consent URL
         const consentRes = await fetch('/.netlify/functions/maestro/consent', {
           method: 'GET',

@@ -200,7 +200,7 @@ exports.handler = async (event) => {
             }
         }
 
-        // Exchange authorization code for access token
+        // Exchange authorization code for access token (OAuth2 flow)
         if (method === 'POST' && path.endsWith('/maestro/token-exchange')) {
             try {
                 let body = {}
@@ -209,21 +209,34 @@ exports.handler = async (event) => {
                 const cfg = getEnv()
                 if (cfg.error) throw new Error(cfg.error)
 
-                // For JWT integration keys, we don't need OAuth2 code exchange
-                // Instead, we'll generate a new JWT token after consent
-                const { accessToken, expiresIn } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
+                // Exchange authorization code for access token
+                const tokenUrl = `https://${cfg.oauthBasePath}/oauth/token`
+                
+                const formData = new URLSearchParams()
+                formData.append('grant_type', 'authorization_code')
+                formData.append('code', body.code)
+                formData.append('client_id', cfg.integrationKey)
+                formData.append('redirect_uri', 'https://crispy-octo-spoon.netlify.app/maestro-consent-callback')
+                
+                const tokenResponse = await axios.post(tokenUrl, formData, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json'
+                    }
+                })
 
                 return json(200, {
                     success: true,
-                    accessToken: accessToken,
-                    tokenType: 'Bearer',
-                    expiresIn: expiresIn || 3600
+                    accessToken: tokenResponse.data.access_token,
+                    tokenType: tokenResponse.data.token_type,
+                    expiresIn: tokenResponse.data.expires_in,
+                    refreshToken: tokenResponse.data.refresh_token
                 })
             } catch (error) {
-                console.error('Token generation error:', error.message)
+                console.error('Token exchange error:', error.response?.data || error.message)
                 return json(500, {
                     success: false,
-                    error: error.message
+                    error: error.response?.data?.error_description || error.message
                 })
             }
         }
@@ -235,8 +248,27 @@ exports.handler = async (event) => {
 
             console.log('Trigger request body:', body)
             
-            // Always use JWT for Maestro API
-            const { accessToken, cfg } = await getJwtToken(['signature', 'impersonation'])
+            // Check if Authorization header is provided (OAuth2 token)
+            const auth = event.headers.authorization || event.headers.Authorization
+            let accessToken = null
+            let cfg = null
+            
+            if (auth?.startsWith('Bearer ')) {
+                // Use provided OAuth2 token
+                accessToken = auth.slice(7)
+                cfg = getEnv()
+                if (cfg.error) throw new Error(cfg.error)
+            } else {
+                // Try JWT first, fallback to consent if needed
+                try {
+                    const jwtResult = await getJwtToken(['signature', 'impersonation'])
+                    accessToken = jwtResult.accessToken
+                    cfg = jwtResult.cfg
+                } catch (jwtError) {
+                    // JWT failed, need consent
+                    return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
+                }
+            }
             
             const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
             
