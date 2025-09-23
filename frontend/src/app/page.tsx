@@ -73,7 +73,7 @@ export default function Home() {
       const storedToken = localStorage.getItem('docusign_access_token')
       const tokenExpires = localStorage.getItem('docusign_token_expires')
 
-      let headers = { 'Content-Type': 'application/json' }
+      let headers: Record<string, string> = { 'Content-Type': 'application/json' }
       if (storedToken && tokenExpires && Date.now() < parseInt(tokenExpires)) {
         headers['Authorization'] = `Bearer ${storedToken}`
       }
