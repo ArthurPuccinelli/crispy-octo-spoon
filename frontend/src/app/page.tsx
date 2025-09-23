@@ -6,6 +6,60 @@ import Image from 'next/image'
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false)
+  const [creatingEnvelope, setCreatingEnvelope] = useState(false)
+
+  const handlePixConhecaMais = async () => {
+    if (creatingEnvelope) return
+    setCreatingEnvelope(true)
+    try {
+      // Documento HTML simples com âncora de assinatura
+      const html = `<!DOCTYPE html><html><body><h1>Teste PIX - Fontara</h1><p>Por favor, assine abaixo.</p><p>Assinatura: <span style="color:transparent">/sign_here/</span></p></body></html>`
+      const base64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
+
+      const res = await fetch('/.netlify/functions/docusign-actions/envelopes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          emailSubject: 'Envelope de Teste - PIX',
+          emailBlurb: 'Teste de criação de envelope via botão PIX',
+          status: 'created',
+          documents: [
+            { name: 'pix-teste.html', fileExtension: 'html', base64 }
+          ],
+          recipients: {
+            signers: [
+              {
+                email: 'signer@example.com',
+                name: 'Signer Teste',
+                routingOrder: 1,
+                tabs: {
+                  signHereTabs: [
+                    {
+                      anchorString: '/sign_here/',
+                      anchorUnits: 'pixels',
+                      anchorXOffset: '0',
+                      anchorYOffset: '0'
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        })
+      })
+
+      const data = await res.json()
+      if (!res.ok) {
+        alert(`Falha ao criar envelope: ${data?.message || data?.error || 'erro desconhecido'}`)
+      } else {
+        alert(`Envelope criado (rascunho). ID: ${data.envelopeId || 'desconhecido'}`)
+      }
+    } catch (e: any) {
+      alert(`Erro ao criar envelope: ${e?.message || 'desconhecido'}`)
+    } finally {
+      setCreatingEnvelope(false)
+    }
+  }
 
   useEffect(() => {
     setIsLoaded(true)
@@ -282,12 +336,12 @@ export default function Home() {
                       Completamente gratuito
                     </div>
                   </div>
-                  <button className="w-full px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-orange-500/25 animate-pulse">
+                  <button onClick={handlePixConhecaMais} disabled={creatingEnvelope} className="w-full px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-orange-500/25 animate-pulse disabled:opacity-60 disabled:cursor-not-allowed">
                     <span className="flex items-center justify-center">
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
-                      Conheça Mais
+                      {creatingEnvelope ? 'Criando envelope...' : 'Conheça Mais'}
                     </span>
                   </button>
                 </div>
