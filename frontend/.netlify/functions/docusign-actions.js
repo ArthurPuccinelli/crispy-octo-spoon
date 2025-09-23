@@ -103,6 +103,14 @@ async function createEnvelope(accessToken, cfg, payload) {
     apiClient.setOAuthBasePath(cfg.oauthBasePath)
     apiClient.addDefaultHeader('Authorization', `Bearer ${accessToken}`)
 
+    // Descobrir baseUri correto da conta e configurar basePath da API REST
+    const userInfo = await apiClient.getUserInfo(accessToken)
+    const targetAccount = userInfo?.accounts?.find(a => a.accountId === cfg.accountId) || userInfo?.accounts?.[0]
+    if (!targetAccount || !targetAccount.baseUri) {
+        throw new Error('Unable to resolve account baseUri from DocuSign user info')
+    }
+    apiClient.setBasePath(`${targetAccount.baseUri}/restapi`)
+
     const envelopesApi = new docusign.EnvelopesApi(apiClient)
 
     const dsDocs = documents.map((doc, idx) => ({
