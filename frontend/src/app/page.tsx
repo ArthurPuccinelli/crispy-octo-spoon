@@ -79,8 +79,9 @@ export default function Home() {
       })
       const data = await res.json()
       
-      // Check for consent required error
-      if (!res.ok && (data?.error === 'consent_required' || data?.message?.error === 'consent_required')) {
+      // Check for consent required error or HTML response (indicates consent needed)
+      if (!res.ok && (data?.error === 'consent_required' || data?.message?.error === 'consent_required' || 
+          (data?.data && typeof data.data === 'string' && data.data.includes('<!DOCTYPE html>')))) {
         // Get consent URL
         const consentRes = await fetch('/.netlify/functions/maestro/consent', {
           method: 'GET',
