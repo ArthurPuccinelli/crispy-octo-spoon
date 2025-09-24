@@ -354,11 +354,10 @@ exports.handler = async (event) => {
             // Prefer official trigger endpoint (proven working via curl)
             const { maestroBaseUrl } = getEnv()
             const triggerUrl = `${maestroBaseUrl}/accounts/${cfg.accountId}/workflows/${workflowId}/actions/trigger`
+            // Per API error [Body] Unknown parameter: 'body', send fields at root
             const triggerBody = {
-                body: {
-                    instance_name: instanceName,
-                    trigger_inputs: triggerInputs
-                }
+                instance_name: instanceName,
+                trigger_inputs: triggerInputs
             }
             let responseData
             try {
