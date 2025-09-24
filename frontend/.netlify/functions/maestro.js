@@ -51,13 +51,19 @@ function getEnv() {
         return { error: 'DocuSign environment variables missing' }
     }
 
+    // Normalize Maestro base URL to always include /v1
+    let maestroBaseUrl = DOCUSIGN_MAESTRO_BASE_URL || 'https://api-d.docusign.com/v1'
+    if (!/\/v1\/?$/.test(maestroBaseUrl)) {
+        maestroBaseUrl = maestroBaseUrl.replace(/\/$/, '') + '/v1'
+    }
+
     return {
         accountId: DOCUSIGN_ACCOUNT_ID,
         userId: DOCUSIGN_USER_ID,
         integrationKey,
         privateKey: privateKeyPem,
         oauthBasePath,
-        maestroBaseUrl: DOCUSIGN_MAESTRO_BASE_URL || 'https://api-d.docusign.net/maestro/v1',
+        maestroBaseUrl,
         workflowId: DOCUSIGN_MAESTRO_WORKFLOW_ID,
         scopes: String(DOCUSIGN_IAM_SCOPES || 'signature impersonation').split(/[ ,]+/).filter(Boolean),
     }
