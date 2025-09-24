@@ -300,12 +300,48 @@ exports.handler = async (event) => {
             console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
+            // Fetch trigger requirements to validate/build inputs
+            let requirements = null
+            try {
+                requirements = await maestroFetch(`/accounts/${cfg.accountId}/workflows/${workflowId}/trigger-requirements`, 'GET', accessToken)
+                console.log('Trigger requirements:', requirements)
+            } catch (e) {
+                console.log('Could not fetch trigger requirements, will attempt with provided inputs. Error:', e?.message)
+            }
+
             // Build request body
             const instanceName = body.instanceName || `Fontara Emprestimos - ${new Date().toISOString()}`
-            // If no inputs provided, send a minimal example matching your working curl
-            const triggerInputs = (body.inputs && Object.keys(body.inputs).length > 0)
-                ? body.inputs
-                : { TriggerInput: 'exemplo_trigger_input' }
+            let triggerInputs = (body.inputs && Object.keys(body.inputs).length > 0) ? body.inputs : {}
+
+            // If we have a schema and inputs are missing, synthesize minimal valid inputs
+            if (requirements && Array.isArray(requirements.trigger_input_schema)) {
+                const filled = { ...triggerInputs }
+                for (const field of requirements.trigger_input_schema) {
+                    const name = field?.field_name
+                    const type = String(field?.field_data_type || '').toLowerCase()
+                    if (!name) continue
+                    if (filled[name] === undefined) {
+                        switch (type) {
+                            case 'date':
+                                filled[name] = new Date().toISOString().split('T')[0]
+                                break
+                            case 'number':
+                                filled[name] = 0
+                                break
+                            case 'boolean':
+                                filled[name] = false
+                                break
+                            default:
+                                filled[name] = 'example'
+                        }
+                    }
+                }
+                triggerInputs = filled
+            }
+            // If still empty (no schema), fall back to example key used in working curl
+            if (!triggerInputs || Object.keys(triggerInputs).length === 0) {
+                triggerInputs = { TriggerInput: 'exemplo_trigger_input' }
+            }
             const startRequest = {
                 instanceName,
                 triggerInputs
@@ -321,14 +357,22 @@ exports.handler = async (event) => {
                     trigger_inputs: triggerInputs
                 }
             }
-            const triggerResponse = await axios.post(triggerUrl, triggerBody, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            const responseData = triggerResponse.data
+            let responseData
+            try {
+                const triggerResponse = await axios.post(triggerUrl, triggerBody, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                responseData = triggerResponse.data
+            } catch (err) {
+                const status = err.response?.status
+                const data = err.response?.data
+                console.error('Trigger error details:', { status, data, triggerUrl, triggerBody })
+                throw new Error(data?.error || err.message || 'Trigger failed')
+            }
             console.log('Workflow triggered via actions/trigger, response:', responseData)
 
             if (!responseData) {
