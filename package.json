@@ -1,7 +1,7 @@
 {
   "name": "crispy-octo-spoon",
   "version": "1.0.0",
-  "description": "Aplicação full-stack com Next.js e Node.js",
+  "description": "Aplicação full-stack com Next.js",
   "main": "index.js",
   "scripts": {
     "dev": "cd frontend && npm run dev",
@@ -12,10 +12,8 @@
   },
   "keywords": [
     "nextjs",
-    "nodejs",
     "react",
-    "express",
-    "fullstack"
+    "frontend"
   ],
   "author": "",
   "license": "ISC",

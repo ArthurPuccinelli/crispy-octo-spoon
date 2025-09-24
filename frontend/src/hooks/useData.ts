@@ -71,7 +71,7 @@ export const useServicosContratados = () => {
         try {
             setLoading(true)
             const { data, error: supabaseError } = await supabase
-                .from('servicos_contratados')
+                .from('contratos')
                 .select(`
           *,
           cliente:clientes(*),

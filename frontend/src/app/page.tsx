@@ -8,6 +8,8 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [creatingEnvelope, setCreatingEnvelope] = useState(false)
   const [startingLoanFlow, setStartingLoanFlow] = useState(false)
+  const [showPixEnvelope, setShowPixEnvelope] = useState(false)
+  const [pixEnvelopeUrl, setPixEnvelopeUrl] = useState('')
 
   const handlePixConhecaMais = async () => {
     if (creatingEnvelope) return
@@ -23,7 +25,7 @@ export default function Home() {
         body: JSON.stringify({
           emailSubject: 'Envelope de Teste - PIX',
           emailBlurb: 'Teste de criação de envelope via botão PIX',
-          status: 'created',
+          status: 'sent', // Mudando para 'sent' para permitir assinatura
           documents: [
             { name: 'pix-teste.html', fileExtension: 'html', base64 }
           ],
@@ -56,7 +58,25 @@ export default function Home() {
         const msg = typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || data?.error)
         alert(`Falha ao criar envelope: ${msg || 'erro desconhecido'}`)
       } else {
-        alert(`Envelope criado (rascunho). ID: ${data.envelopeId || 'desconhecido'}`)
+        const envelopeId = data.envelopeId || data?.data?.envelopeId
+
+        // Obter URL de embed para o envelope
+        const embedRes = await fetch('/.netlify/functions/docusign-actions/envelopes/embed', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            envelopeId,
+            returnUrl: window.location.href
+          })
+        })
+
+        const embedData = await embedRes.json()
+        if (embedRes.ok && embedData.url) {
+          setPixEnvelopeUrl(embedData.url)
+          setShowPixEnvelope(true)
+        } else {
+          alert(`Envelope criado (ID: ${envelopeId}), mas falha ao obter URL de embed`)
+        }
       }
     } catch (e: any) {
       alert(`Erro ao criar envelope: ${e?.message || 'desconhecido'}`)
@@ -78,23 +98,23 @@ export default function Home() {
         })
       })
       const data = await res.json()
-      
+
       // Check for consent required error or HTML response (indicates consent needed)
-      if (!res.ok && (data?.error === 'consent_required' || data?.message?.error === 'consent_required' || 
-          (data?.data && typeof data.data === 'string' && data.data.includes('<!DOCTYPE html>')))) {
-        
+      if (!res.ok && (data?.error === 'consent_required' || data?.message?.error === 'consent_required' ||
+        (data?.data && typeof data.data === 'string' && data.data.includes('<!DOCTYPE html>')))) {
+
         // Check if consent was recently given
         const consentGiven = localStorage.getItem('docusign_consent_given')
         const consentTime = localStorage.getItem('docusign_consent_time')
         const now = Date.now()
-        
+
         if (consentGiven && consentTime && (now - parseInt(consentTime)) < 300000) { // 5 minutes
           // Consent was given recently, try again with fresh JWT
           console.log('Consent was given recently, retrying...')
           // Clear old consent flag and try again
           localStorage.removeItem('docusign_consent_given')
           localStorage.removeItem('docusign_consent_time')
-          
+
           // Retry the request
           const retryRes = await fetch('/.netlify/functions/maestro/trigger', {
             method: 'POST',
@@ -105,7 +125,7 @@ export default function Home() {
             })
           })
           const retryData = await retryRes.json()
-          
+
           if (retryRes.ok && retryData.instanceId) {
             // Success! Get embed URL
             const embedRes = await fetch(`/.netlify/functions/maestro/embed?instanceId=${retryData.instanceId}`, {
@@ -113,7 +133,7 @@ export default function Home() {
               headers: { 'Content-Type': 'application/json' }
             })
             const embedData = await embedRes.json()
-            
+
             if (embedRes.ok && embedData.embedUrl) {
               window.open(embedData.embedUrl, '_blank')
               return
@@ -122,13 +142,13 @@ export default function Home() {
             }
           }
         }
-        
+
         // Clear any existing tokens and get consent
         localStorage.removeItem('docusign_access_token')
         localStorage.removeItem('docusign_token_expires')
         localStorage.removeItem('docusign_consent_given')
         localStorage.removeItem('docusign_consent_time')
-        
+
         // Get consent URL
         const consentRes = await fetch('/.netlify/functions/maestro/consent', {
           method: 'GET',
@@ -143,7 +163,7 @@ export default function Home() {
           throw new Error('Falha ao obter URL de consentimento')
         }
       }
-      
+
       if (!res.ok) throw new Error(typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || 'Falha ao iniciar workflow'))
 
       const instanceId = data.instanceId || data?.data?.instanceId || data?.data?.id
@@ -568,6 +588,38 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Modal do Envelope PIX */}
+      {showPixEnvelope && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="relative w-full h-full max-w-6xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
+            {/* Header do Modal */}
+            <div className="flex items-center justify-between p-6 bg-gradient-to-r from-orange-500 to-red-500 text-white">
+              <h2 className="text-2xl font-bold">Envelope PIX - Fontara</h2>
+              <button
+                onClick={() => setShowPixEnvelope(false)}
+                className="p-2 hover:bg-white/20 rounded-full transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Iframe do Envelope */}
+            <div className="h-[calc(100%-80px)]">
+              {pixEnvelopeUrl && (
+                <iframe
+                  src={pixEnvelopeUrl}
+                  className="w-full h-full border-0"
+                  title="Envelope PIX - DocuSign"
+                  allow="camera; microphone; fullscreen"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -139,6 +139,36 @@ async function createEnvelope(accessToken, cfg, payload) {
     return results
 }
 
+async function createEmbeddedEnvelope(accessToken, cfg, envelopeId, returnUrl) {
+    const apiClient = new docusign.ApiClient()
+    apiClient.setOAuthBasePath(cfg.oauthBasePath)
+    apiClient.addDefaultHeader('Authorization', `Bearer ${accessToken}`)
+
+    // Descobrir baseUri correto da conta e configurar basePath da API REST
+    const userInfo = await apiClient.getUserInfo(accessToken)
+    const targetAccount = userInfo?.accounts?.find(a => a.accountId === cfg.accountId) || userInfo?.accounts?.[0]
+    if (!targetAccount || !targetAccount.baseUri) {
+        throw new Error('Unable to resolve account baseUri from DocuSign user info')
+    }
+    apiClient.setBasePath(`${targetAccount.baseUri}/restapi`)
+
+    const envelopesApi = new docusign.EnvelopesApi(apiClient)
+
+    // Criar recipient view para embed
+    const recipientViewRequest = new docusign.RecipientViewRequest()
+    recipientViewRequest.authenticationMethod = 'none'
+    recipientViewRequest.recipientId = '1' // Primeiro signatário
+    recipientViewRequest.returnUrl = returnUrl || 'https://example.com'
+    recipientViewRequest.userName = 'Signer Teste'
+    recipientViewRequest.email = 'signer@example.com'
+
+    const results = await envelopesApi.createRecipientView(cfg.accountId, envelopeId, {
+        recipientViewRequest
+    })
+
+    return results
+}
+
 exports.handler = async (event) => {
     // CORS preflight
     if (event.httpMethod === 'OPTIONS') {
@@ -191,6 +221,30 @@ exports.handler = async (event) => {
 
             const result = await createEnvelope(accessToken, cfg, body)
             return json(200, { envelopeId: result.envelopeId, status: result.status })
+        }
+
+        if (method === 'POST' && path.endsWith('/docusign-actions/envelopes/embed')) {
+            let body = {}
+            try { body = JSON.parse(event.body || '{}') } catch (_) { }
+
+            const { envelopeId, returnUrl } = body
+            if (!envelopeId) {
+                return json(400, { error: 'envelopeId is required' })
+            }
+
+            // Token pode ser enviado pelo cliente para reuso ou será gerado aqui
+            const auth = event.headers.authorization || event.headers.Authorization
+            let token = null
+            if (auth?.startsWith('Bearer ')) token = auth.slice(7)
+
+            const { accessToken, cfg } = token
+                ? { accessToken: token, cfg: getEnv() }
+                : await getJwtToken()
+
+            if (cfg.error) throw new Error(cfg.error)
+
+            const result = await createEmbeddedEnvelope(accessToken, cfg, envelopeId, returnUrl)
+            return json(200, { url: result.url })
         }
 
         return json(404, { error: 'Not Found' })

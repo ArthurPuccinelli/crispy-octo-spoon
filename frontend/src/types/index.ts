@@ -31,10 +31,10 @@ export interface ServicoContratado {
     id: string
     cliente_id: string
     produto_id: string
-    data_contratacao: string
-    data_proxima_cobranca: string
+    data_inicio: string
+    data_fim?: string | null
     valor_contratado: number
-    status: 'ativo' | 'cancelado' | 'suspenso'
+    status: 'ativo' | 'cancelado' | 'suspenso' | 'expirado'
     created_at: string
     updated_at: string
     // Campos expandidos para exibição

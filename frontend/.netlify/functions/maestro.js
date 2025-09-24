@@ -76,33 +76,20 @@ async function getJwtToken(scopes) {
         scopes: scopes || cfg.scopes
     })
 
-    try {
-        const apiClient = new docusign.ApiClient()
-        apiClient.setOAuthBasePath(cfg.oauthBasePath)
+    const apiClient = new docusign.ApiClient()
+    apiClient.setOAuthBasePath(cfg.oauthBasePath)
 
-        // Usar 10 minutos como no exemplo oficial
-        const jwtLifeSec = 600
-        const dsJWT = await apiClient.requestJWTUserToken(
-            cfg.integrationKey,
-            cfg.userId,
-            scopes || cfg.scopes,
-            Buffer.from(cfg.privateKey),
-            jwtLifeSec
-        )
+    const jwtLifeSec = 3600
+    const dsJWT = await apiClient.requestJWTUserToken(
+        cfg.integrationKey,
+        cfg.userId,
+        scopes || cfg.scopes,
+        Buffer.from(cfg.privateKey),
+        jwtLifeSec
+    )
 
-        console.log('JWT token obtained successfully')
-        return { accessToken: dsJWT.body.access_token, cfg }
-    } catch (error) {
-        console.error('JWT authentication failed:', error.response?.body || error.message)
-        
-        // Verificar se é erro de consent_required como no exemplo
-        const body = error?.response?.body || error?.response?.data
-        if (body?.error === 'consent_required') {
-            throw new Error('consent_required')
-        }
-        
-        throw error
-    }
+    console.log('JWT token obtained successfully')
+    return { accessToken: dsJWT.body.access_token, cfg }
 }
 
 function resolveWorkflowId(input) {
@@ -286,14 +273,8 @@ exports.handler = async (event) => {
                         response: jwtError.response?.data,
                         status: jwtError.response?.status
                     })
-                    
-                    // Verificar se é erro de consent_required
-                    if (jwtError.message === 'consent_required') {
-                        return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
-                    }
-                    
-                    // Outros erros
-                    throw jwtError
+                    // JWT failed, need consent
+                    return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
                 }
             }
 
@@ -302,31 +283,45 @@ exports.handler = async (event) => {
             console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
-            // Step 1: Build request body for workflow instance creation
+            // Step 1: Get workflow details to obtain triggerURL
+            console.log('Getting workflow details...')
+            const workflowDetails = await maestroFetch(`/workflows/${workflowId}`, 'GET', accessToken)
+            console.log('Workflow details:', workflowDetails)
+
+            if (!workflowDetails || !workflowDetails.triggerUrl) {
+                throw new Error('Workflow triggerUrl not found')
+            }
+
+            // Step 2: Build request body with starting variables
             const startRequest = {
-                inputs: body.inputs || {},
+                startingVariables: body.inputs || {},
+                participants: body.participants || [],
                 metadata: body.metadata || {}
             }
             console.log('Starting workflow with request:', startRequest)
 
-            // Step 2: POST to create workflow instance using Maestro API
-            const data = await maestroFetch(`/workflows/${workflowId}/instances`, 'POST', accessToken, startRequest)
-            console.log('Workflow started, response:', data)
+            // Step 3: POST to the specific triggerURL
+            const triggerResponse = await axios.post(workflowDetails.triggerUrl, startRequest, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
 
-            // Check if response is HTML (indicates consent required)
-            if (typeof data === 'string' && data.includes('<!DOCTYPE html>')) {
-                return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
-            }
+            console.log('Workflow triggered, response:', triggerResponse.data)
 
-            // Step 3: Verify response and return instance details
-            if (!data) {
+            // Step 4: Verify response and return instance details
+            const responseData = triggerResponse.data
+            if (!responseData) {
                 throw new Error('No response from workflow trigger')
             }
 
             return json(200, {
-                instanceId: data.instanceId || data.id || null,
-                status: data.status,
-                data: data
+                instanceId: responseData.instanceId || responseData.id || null,
+                status: responseData.status,
+                triggerUrl: workflowDetails.triggerUrl,
+                data: responseData
             })
         }
 
