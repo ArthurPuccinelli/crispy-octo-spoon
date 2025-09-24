@@ -185,11 +185,12 @@ exports.handler = async (event) => {
                 if (cfg.error) throw new Error(cfg.error)
 
                 // For JWT integration keys, use the consent URL directly
-                const consentUrl = `https://${cfg.oauthBasePath}/oauth/auth?response_type=code&scope=signature%20impersonation&client_id=${cfg.integrationKey}&redirect_uri=https://crispy-octo-spoon.netlify.app/maestro-consent-callback`
+                // Include aow_manage scope for Maestro API
+                const consentUrl = `https://${cfg.oauthBasePath}/oauth/auth?response_type=code&scope=signature%20impersonation%20aow_manage&client_id=${cfg.integrationKey}&redirect_uri=https://crispy-octo-spoon.netlify.app/maestro-consent-callback`
 
                 return json(200, {
                     consentUrl,
-                    scopes: ['signature', 'impersonation'],
+                    scopes: ['signature', 'impersonation', 'aow_manage'],
                     redirectUri: 'https://crispy-octo-spoon.netlify.app/maestro-consent-callback'
                 })
             } catch (error) {
