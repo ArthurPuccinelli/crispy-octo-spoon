@@ -77,6 +77,7 @@ npm run build    # Build do frontend
 
 - **Frontend**: http://localhost:3000
 - **APIs (serverless)**: `/.netlify/functions/*` (via Netlify Dev/Deploy)
+- DocuSign Maestro env vars (in Netlify): `DOCUSIGN_BASE_PATH`, `DOCUSIGN_ACCOUNT_ID`, `DOCUSIGN_INTEGRATION_KEY`, `DOCUSIGN_USER_ID`, `DOCUSIGN_PRIVATE_KEY`, `DOCUSIGN_REDIRECT_URI`, `DOCUSIGN_MAESTRO_WORKFLOW_EMPRESTIMOS_ID`
 
 ## 📝 Scripts Disponíveis
 

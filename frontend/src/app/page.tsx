@@ -92,10 +92,7 @@ export default function Home() {
       const res = await fetch('/.netlify/functions/maestro/trigger', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          workflowKey: 'emprestimos',
-          inputs: {}
-        })
+        body: JSON.stringify({ inputs: {} })
       })
       const data = await res.json()
 
@@ -119,10 +116,7 @@ export default function Home() {
           const retryRes = await fetch('/.netlify/functions/maestro/trigger', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              workflowKey: 'emprestimos',
-              inputs: {}
-            })
+            body: JSON.stringify({ inputs: {} })
           })
           const retryData = await retryRes.json()
 
@@ -167,20 +161,11 @@ export default function Home() {
       if (!res.ok) throw new Error(typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || 'Falha ao iniciar workflow'))
 
       const instanceId = data.instanceId || data?.data?.instanceId || data?.data?.id
-      if (!instanceId) throw new Error('instanceId não retornado')
+      const workflowInstanceUrl = data.workflowInstanceUrl || data?.data?.workflowInstanceUrl || data?.instanceUrl || data?.data?.instanceUrl
+      if (!instanceId || !workflowInstanceUrl) throw new Error('Dados do workflow não retornados')
 
-      const embedRes = await fetch('/.netlify/functions/maestro/embed', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ instanceId })
-      })
-      const embedData = await embedRes.json()
-      if (!embedRes.ok) throw new Error(typeof embedData?.message === 'object' ? JSON.stringify(embedData.message) : (embedData?.message || 'Falha ao obter URL embed'))
-
-      const url = embedData.url || embedData?.data?.url
-      if (!url) throw new Error('URL de embed não retornada')
-
-      window.location.href = url
+      // Abra diretamente a URL do Maestro (embed)
+      window.location.href = workflowInstanceUrl
     } catch (e: any) {
       alert(`Erro ao iniciar fluxo de Empréstimos: ${e?.message || 'desconhecido'}`)
     } finally {

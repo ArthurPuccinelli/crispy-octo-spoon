@@ -23,7 +23,7 @@
 # Redirects for SPA routing
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/"
   status = 200
   force = false
 
