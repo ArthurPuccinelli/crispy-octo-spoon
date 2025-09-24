@@ -149,12 +149,23 @@ exports.handler = async (event) => {
         if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/diag')) {
             const env = getEnv()
             const workflowMap = resolveWorkflowId('emprestimos')
+            let knownWorkflowIds = []
+            try {
+                const { accessToken } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
+                const list = await maestroFetch(`/accounts/${env.accountId}/workflows?status=active`, 'GET', accessToken)
+                if (Array.isArray(list?.items)) {
+                    knownWorkflowIds = list.items.map(w => w?.id || w?.workflowId).filter(Boolean)
+                }
+            } catch (e) {
+                // ignore listing errors in diag
+            }
             return json(200, {
                 hasAccountId: !!env.accountId,
                 hasWorkflowId: !!env.workflowId,
                 oauthBasePath: env.oauthBasePath,
                 maestroBaseUrl: env.maestroBaseUrl,
                 workflowMap: workflowMap,
+                knownWorkflowIds,
                 envError: env.error
             })
         }
