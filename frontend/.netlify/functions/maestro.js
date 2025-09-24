@@ -296,7 +296,10 @@ exports.handler = async (event) => {
 
             // Build request body
             const instanceName = body.instanceName || `Fontara Emprestimos - ${new Date().toISOString()}`
-            const triggerInputs = body.inputs || {}
+            // If no inputs provided, send a minimal example matching your working curl
+            const triggerInputs = (body.inputs && Object.keys(body.inputs).length > 0)
+                ? body.inputs
+                : { TriggerInput: 'exemplo_trigger_input' }
             const startRequest = {
                 instanceName,
                 triggerInputs
