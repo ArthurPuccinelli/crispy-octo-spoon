@@ -12,7 +12,9 @@ const nowInSeconds = () => Math.floor(Date.now() / 1000)
 
 const handler: Handler = async (event) => {
     try {
-        if (event.httpMethod !== 'POST') {
+        // Allow GET for diagnostics without creating a separate endpoint
+        const isDiagnose = event.httpMethod === 'GET' && event.queryStringParameters?.diagnose === '1'
+        if (event.httpMethod !== 'POST' && !isDiagnose) {
             return { statusCode: 405, body: JSON.stringify({ message: 'Method Not Allowed' }) }
         }
 
@@ -95,7 +97,7 @@ const handler: Handler = async (event) => {
         }
 
         // Optional diagnostics mode: return the list without triggering
-        if (event.queryStringParameters && event.queryStringParameters.diagnose === '1') {
+        if (isDiagnose) {
             return {
                 statusCode: 200,
                 headers: { 'Content-Type': 'application/json' },
