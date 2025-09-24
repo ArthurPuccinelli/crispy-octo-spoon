@@ -84,17 +84,6 @@ const handler: Handler = async (event) => {
                 const wf = listData.items.find((w: any) => w?.id === workflowId || w?.workflowId === workflowId)
                 triggerUrl = wf?.url || wf?.triggerUrl || wf?.triggerURL || wf?.links?.trigger || undefined
             }
-
-            // If not found in list, try fetching the workflow directly
-            if (!triggerUrl) {
-                const wfResp = await fetch(`${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows/${workflowId}`, {
-                    headers: { Authorization: `Bearer ${accessToken}` }
-                })
-                const wfData = await wfResp.json().catch(() => ({}))
-                if (wfResp.ok) {
-                    triggerUrl = wfData?.url || wfData?.triggerUrl || wfData?.triggerURL || wfData?.links?.trigger
-                }
-            }
         } catch (_) {
             // Non-fatal; we'll fallback to instances endpoint below
         }
@@ -129,7 +118,13 @@ const handler: Handler = async (event) => {
         if (!triggerResp.ok) {
             // Improve diagnostics for consent or missing trigger URL
             const message = triggerData?.message || triggerData?.error || triggerData?.raw || 'Failed to trigger workflow'
-            return { statusCode: triggerResp.status, body: JSON.stringify({ message }) }
+            const diagnostics = {
+                accountId: DOCUSIGN_ACCOUNT_ID,
+                maestroBase,
+                workflowId,
+                usedTriggerUrl: !!triggerUrl
+            }
+            return { statusCode: triggerResp.status, body: JSON.stringify({ message, diagnostics }) }
         }
 
         // Harmonize fields
@@ -149,7 +144,7 @@ const handler: Handler = async (event) => {
         }
 
         if (!workflowInstanceUrl) {
-            return { statusCode: 500, body: JSON.stringify({ message: 'Workflow triggerUrl not found' }) }
+            return { statusCode: 500, body: JSON.stringify({ message: 'Workflow triggerUrl not found', diagnostics: { accountId: DOCUSIGN_ACCOUNT_ID, maestroBase, workflowId } }) }
         }
 
         return {
