@@ -311,31 +311,24 @@ exports.handler = async (event) => {
             }
             console.log('Starting workflow with request:', startRequest)
 
-            // Step 3: Trigger via discovered trigger URL or fallback to instances endpoint
-            let responseData = null
-            if (discoveredTriggerUrl) {
-                const triggerResponse = await axios.post(discoveredTriggerUrl, startRequest, {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                })
-                responseData = triggerResponse.data
-                console.log('Workflow triggered via triggerUrl, response:', responseData)
-            } else {
-                const { maestroBaseUrl } = getEnv()
-                const fallbackUrl = `${maestroBaseUrl}/accounts/${cfg.accountId}/workflows/${workflowId}/instances`
-                const triggerResponse = await axios.post(fallbackUrl, startRequest, {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                })
-                responseData = triggerResponse.data
-                console.log('Workflow triggered via instances fallback, response:', responseData)
+            // Step 3: Prefer official trigger endpoint (proven working via curl)
+            const { maestroBaseUrl } = getEnv()
+            const triggerUrl = `${maestroBaseUrl}/accounts/${cfg.accountId}/workflows/${workflowId}/actions/trigger`
+            const triggerBody = {
+                body: {
+                    instance_name: instanceName,
+                    trigger_inputs: triggerInputs
+                }
             }
+            const triggerResponse = await axios.post(triggerUrl, triggerBody, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            const responseData = triggerResponse.data
+            console.log('Workflow triggered via actions/trigger, response:', responseData)
 
             if (!responseData) {
                 throw new Error('No response from workflow trigger')
@@ -344,7 +337,7 @@ exports.handler = async (event) => {
             return json(200, {
                 instanceId: responseData.instanceId || responseData.id || null,
                 status: responseData.status,
-                triggerUrl: discoveredTriggerUrl || null,
+                workflowInstanceUrl: responseData.workflowInstanceUrl || responseData.instanceUrl || responseData.url || null,
                 data: responseData
             })
         }
