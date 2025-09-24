@@ -89,7 +89,7 @@ export default function Home() {
     if (startingLoanFlow) return
     setStartingLoanFlow(true)
     try {
-      const res = await fetch('/.netlify/functions/maestro/trigger', {
+      const res = await fetch('/.netlify/functions/maestro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ inputs: {} })
@@ -113,27 +113,17 @@ export default function Home() {
           localStorage.removeItem('docusign_consent_time')
 
           // Retry the request
-          const retryRes = await fetch('/.netlify/functions/maestro/trigger', {
+          const retryRes = await fetch('/.netlify/functions/maestro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ inputs: {} })
           })
           const retryData = await retryRes.json()
 
-          if (retryRes.ok && retryData.instanceId) {
-            // Success! Get embed URL
-            const embedRes = await fetch(`/.netlify/functions/maestro/embed?instanceId=${retryData.instanceId}`, {
-              method: 'GET',
-              headers: { 'Content-Type': 'application/json' }
-            })
-            const embedData = await embedRes.json()
-
-            if (embedRes.ok && embedData.embedUrl) {
-              window.open(embedData.embedUrl, '_blank')
-              return
-            } else {
-              throw new Error('Falha ao obter URL de embed')
-            }
+          if (retryRes.ok && (retryData.workflowInstanceUrl || retryData?.data?.workflowInstanceUrl || retryData?.instanceUrl)) {
+            const url = retryData.workflowInstanceUrl || retryData?.data?.workflowInstanceUrl || retryData?.instanceUrl
+            window.location.href = url
+            return
           }
         }
 
@@ -144,7 +134,7 @@ export default function Home() {
         localStorage.removeItem('docusign_consent_time')
 
         // Get consent URL
-        const consentRes = await fetch('/.netlify/functions/maestro/consent', {
+        const consentRes = await fetch('/.netlify/functions/maestro?action=consent', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         })
