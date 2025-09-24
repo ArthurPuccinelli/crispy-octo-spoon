@@ -164,7 +164,25 @@ const handler: Handler = async (event) => {
             body: JSON.stringify({ instanceId, workflowInstanceUrl, data: triggerData })
         }
     } catch (error: any) {
-        return { statusCode: 500, body: JSON.stringify({ message: error.message || 'Internal error' }) }
+        const {
+            DOCUSIGN_ACCOUNT_ID,
+            DOCUSIGN_MAESTRO_BASE_URL,
+            DOCUSIGN_AUTH_SERVER,
+            DOCUSIGN_BASE_PATH
+        } = process.env as Record<string, string | undefined>
+        const rawMaestroBase = DOCUSIGN_MAESTRO_BASE_URL || 'https://api-d.docusign.com/v1'
+        const maestroBase = rawMaestroBase.endsWith('/v1') ? rawMaestroBase : (rawMaestroBase.endsWith('/') ? `${rawMaestroBase}v1` : `${rawMaestroBase}/v1`)
+        return {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: error?.message || 'Internal error',
+                diagnostics: {
+                    accountId: DOCUSIGN_ACCOUNT_ID,
+                    maestroBase,
+                    authServer: DOCUSIGN_AUTH_SERVER || DOCUSIGN_BASE_PATH
+                }
+            })
+        }
     }
 }
 
