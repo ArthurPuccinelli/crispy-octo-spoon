@@ -70,13 +70,15 @@ const handler: Handler = async (event) => {
 
         const accessToken = tokenData.access_token as string
 
-        const maestroBase = DOCUSIGN_MAESTRO_BASE_URL || 'https://api-d.docusign.com/v1'
+        const rawMaestroBase = DOCUSIGN_MAESTRO_BASE_URL || 'https://api-d.docusign.com/v1'
+        const maestroBase = rawMaestroBase.endsWith('/v1') ? rawMaestroBase : (rawMaestroBase.endsWith('/') ? `${rawMaestroBase}v1` : `${rawMaestroBase}/v1`)
 
         // Step 1: Try to retrieve workflow trigger URL from the list/definition
         let triggerUrl: string | undefined
         try {
             // Fetch active workflows
-            const listResp = await fetch(`${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows?status=active`, {
+            const listUrl = `${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows?status=active`
+            const listResp = await fetch(listUrl, {
                 headers: { Authorization: `Bearer ${accessToken}` }
             })
             const listData = await listResp.json().catch(() => ({}))
@@ -101,7 +103,8 @@ const handler: Handler = async (event) => {
             })
         } else {
             // Fallback path
-            triggerResp = await fetch(`${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows/${workflowId}/instances`, {
+            const fallbackUrl = `${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows/${workflowId}/instances`
+            triggerResp = await fetch(fallbackUrl, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
