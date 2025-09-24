@@ -89,7 +89,7 @@ export default function Home() {
     if (startingLoanFlow) return
     setStartingLoanFlow(true)
     try {
-      const res = await fetch('/.netlify/functions/maestro', {
+      const res = await fetch('/.netlify/functions/maestro/trigger', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ inputs: {} })
@@ -113,7 +113,7 @@ export default function Home() {
           localStorage.removeItem('docusign_consent_time')
 
           // Retry the request
-          const retryRes = await fetch('/.netlify/functions/maestro', {
+          const retryRes = await fetch('/.netlify/functions/maestro/trigger', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ inputs: {} })
@@ -134,7 +134,7 @@ export default function Home() {
         localStorage.removeItem('docusign_consent_time')
 
         // Get consent URL
-        const consentRes = await fetch('/.netlify/functions/maestro?action=consent', {
+        const consentRes = await fetch('/.netlify/functions/maestro/consent', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         })
