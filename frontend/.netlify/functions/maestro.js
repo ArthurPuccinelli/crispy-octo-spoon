@@ -283,36 +283,49 @@ exports.handler = async (event) => {
             console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
-            // Step 1: Get workflow details to obtain triggerURL
+            // Step 1: Get workflow details (account-scoped) to obtain trigger URL (if available)
             console.log('Getting workflow details...')
-            const workflowDetails = await maestroFetch(`/workflows/${workflowId}`, 'GET', accessToken)
+            const workflowDetails = await maestroFetch(`/accounts/${cfg.accountId}/workflows/${workflowId}`, 'GET', accessToken)
             console.log('Workflow details:', workflowDetails)
 
-            if (!workflowDetails || !workflowDetails.triggerUrl) {
-                throw new Error('Workflow triggerUrl not found')
-            }
+            // Normalize potential trigger URL fields from response
+            const discoveredTriggerUrl = workflowDetails?.url || workflowDetails?.triggerUrl || workflowDetails?.triggerURL || (workflowDetails?.links && workflowDetails.links.trigger)
 
-            // Step 2: Build request body with starting variables
+            // Step 2: Build request body
+            const instanceName = body.instanceName || `Fontara Emprestimos - ${new Date().toISOString()}`
+            const triggerInputs = body.inputs || {}
             const startRequest = {
-                startingVariables: body.inputs || {},
-                participants: body.participants || [],
-                metadata: body.metadata || {}
+                instanceName,
+                triggerInputs
             }
             console.log('Starting workflow with request:', startRequest)
 
-            // Step 3: POST to the specific triggerURL
-            const triggerResponse = await axios.post(workflowDetails.triggerUrl, startRequest, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
+            // Step 3: Trigger via discovered trigger URL or fallback to instances endpoint
+            let responseData = null
+            if (discoveredTriggerUrl) {
+                const triggerResponse = await axios.post(discoveredTriggerUrl, startRequest, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                responseData = triggerResponse.data
+                console.log('Workflow triggered via triggerUrl, response:', responseData)
+            } else {
+                const { maestroBaseUrl } = getEnv()
+                const fallbackUrl = `${maestroBaseUrl}/accounts/${cfg.accountId}/workflows/${workflowId}/instances`
+                const triggerResponse = await axios.post(fallbackUrl, startRequest, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                responseData = triggerResponse.data
+                console.log('Workflow triggered via instances fallback, response:', responseData)
+            }
 
-            console.log('Workflow triggered, response:', triggerResponse.data)
-
-            // Step 4: Verify response and return instance details
-            const responseData = triggerResponse.data
             if (!responseData) {
                 throw new Error('No response from workflow trigger')
             }
@@ -320,7 +333,7 @@ exports.handler = async (event) => {
             return json(200, {
                 instanceId: responseData.instanceId || responseData.id || null,
                 status: responseData.status,
-                triggerUrl: workflowDetails.triggerUrl,
+                triggerUrl: discoveredTriggerUrl || null,
                 data: responseData
             })
         }
