@@ -294,15 +294,7 @@ exports.handler = async (event) => {
             console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
-            // Step 1: Get workflow details (account-scoped) to obtain trigger URL (if available)
-            console.log('Getting workflow details...')
-            const workflowDetails = await maestroFetch(`/accounts/${cfg.accountId}/workflows/${workflowId}`, 'GET', accessToken)
-            console.log('Workflow details:', workflowDetails)
-
-            // Normalize potential trigger URL fields from response
-            const discoveredTriggerUrl = workflowDetails?.url || workflowDetails?.triggerUrl || workflowDetails?.triggerURL || (workflowDetails?.links && workflowDetails.links.trigger)
-
-            // Step 2: Build request body
+            // Build request body
             const instanceName = body.instanceName || `Fontara Emprestimos - ${new Date().toISOString()}`
             const triggerInputs = body.inputs || {}
             const startRequest = {
@@ -311,7 +303,7 @@ exports.handler = async (event) => {
             }
             console.log('Starting workflow with request:', startRequest)
 
-            // Step 3: Prefer official trigger endpoint (proven working via curl)
+            // Prefer official trigger endpoint (proven working via curl)
             const { maestroBaseUrl } = getEnv()
             const triggerUrl = `${maestroBaseUrl}/accounts/${cfg.accountId}/workflows/${workflowId}/actions/trigger`
             const triggerBody = {
@@ -335,9 +327,9 @@ exports.handler = async (event) => {
             }
 
             return json(200, {
-                instanceId: responseData.instanceId || responseData.id || null,
+                instanceId: responseData.instanceId || responseData.instance_id || responseData.id || null,
                 status: responseData.status,
-                workflowInstanceUrl: responseData.workflowInstanceUrl || responseData.instanceUrl || responseData.url || null,
+                workflowInstanceUrl: responseData.workflowInstanceUrl || responseData.instance_url || responseData.instanceUrl || responseData.url || null,
                 data: responseData
             })
         }
