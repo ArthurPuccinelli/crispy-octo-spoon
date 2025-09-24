@@ -315,12 +315,15 @@ exports.handler = async (event) => {
 
             // If we have a schema and inputs are missing, synthesize minimal valid inputs
             if (requirements && Array.isArray(requirements.trigger_input_schema)) {
-                const filled = { ...triggerInputs }
+                // Only include fields defined by the schema (avoid extra keys that can cause 400)
+                const filled = {}
                 for (const field of requirements.trigger_input_schema) {
                     const name = field?.field_name
                     const type = String(field?.field_data_type || '').toLowerCase()
                     if (!name) continue
-                    if (filled[name] === undefined) {
+                    if (triggerInputs[name] !== undefined) {
+                        filled[name] = triggerInputs[name]
+                    } else {
                         switch (type) {
                             case 'date':
                                 filled[name] = new Date().toISOString().split('T')[0]
@@ -371,7 +374,7 @@ exports.handler = async (event) => {
                 const status = err.response?.status
                 const data = err.response?.data
                 console.error('Trigger error details:', { status, data, triggerUrl, triggerBody })
-                throw new Error(data?.error || err.message || 'Trigger failed')
+                return json(status || 500, { error: 'MaestroError', message: data?.error || 'Invalid request', details: data, triggerUrl, triggerBody })
             }
             console.log('Workflow triggered via actions/trigger, response:', responseData)
 
