@@ -75,14 +75,18 @@ const handler: Handler = async (event) => {
 
         // Step 1: Try to retrieve workflow trigger URL from the list/definition
         let triggerUrl: string | undefined
+        let listUrl: string | undefined
+        let fallbackUrl: string | undefined
+        let knownWorkflowIds: string[] | undefined
         try {
             // Fetch active workflows
-            const listUrl = `${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows?status=active`
+            listUrl = `${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows?status=active`
             const listResp = await fetch(listUrl, {
                 headers: { Authorization: `Bearer ${accessToken}` }
             })
             const listData = await listResp.json().catch(() => ({}))
             if (listResp.ok && Array.isArray(listData?.items)) {
+                knownWorkflowIds = listData.items.map((w: any) => w?.id || w?.workflowId).filter(Boolean)
                 const wf = listData.items.find((w: any) => w?.id === workflowId || w?.workflowId === workflowId)
                 triggerUrl = wf?.url || wf?.triggerUrl || wf?.triggerURL || wf?.links?.trigger || undefined
             }
@@ -103,7 +107,7 @@ const handler: Handler = async (event) => {
             })
         } else {
             // Fallback path
-            const fallbackUrl = `${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows/${workflowId}/instances`
+            fallbackUrl = `${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows/${workflowId}/instances`
             triggerResp = await fetch(fallbackUrl, {
                 method: 'POST',
                 headers: {
@@ -125,7 +129,11 @@ const handler: Handler = async (event) => {
                 accountId: DOCUSIGN_ACCOUNT_ID,
                 maestroBase,
                 workflowId,
-                usedTriggerUrl: !!triggerUrl
+                usedTriggerUrl: !!triggerUrl,
+                listUrl,
+                triggerUrl,
+                fallbackUrl,
+                knownWorkflowIds
             }
             return { statusCode: triggerResp.status, body: JSON.stringify({ message, diagnostics }) }
         }
@@ -147,7 +155,7 @@ const handler: Handler = async (event) => {
         }
 
         if (!workflowInstanceUrl) {
-            return { statusCode: 500, body: JSON.stringify({ message: 'Workflow triggerUrl not found', diagnostics: { accountId: DOCUSIGN_ACCOUNT_ID, maestroBase, workflowId } }) }
+            return { statusCode: 500, body: JSON.stringify({ message: 'Workflow triggerUrl not found', diagnostics: { accountId: DOCUSIGN_ACCOUNT_ID, maestroBase, workflowId, listUrl, knownWorkflowIds } }) }
         }
 
         return {
