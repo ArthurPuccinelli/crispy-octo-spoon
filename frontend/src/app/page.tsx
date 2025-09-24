@@ -10,6 +10,8 @@ export default function Home() {
   const [startingLoanFlow, setStartingLoanFlow] = useState(false)
   const [showPixEnvelope, setShowPixEnvelope] = useState(false)
   const [pixEnvelopeUrl, setPixEnvelopeUrl] = useState('')
+  const [showMaestro, setShowMaestro] = useState(false)
+  const [maestroUrl, setMaestroUrl] = useState('')
 
   const handlePixConhecaMais = async () => {
     if (creatingEnvelope) return
@@ -149,7 +151,7 @@ export default function Home() {
       }
 
       if (!res.ok) {
-        console.error('Maestro trigger failed', data)
+        // show diagnostics via alert only
         const diag = data?.diagnostics ? `\nDiagnostics: ${JSON.stringify(data.diagnostics)}` : ''
         throw new Error(((typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || 'Falha ao iniciar workflow'))) + diag)
       }
@@ -161,8 +163,9 @@ export default function Home() {
         throw new Error('Dados do workflow não retornados' + diag)
       }
 
-      // Abra diretamente a URL do Maestro (embed)
-      window.location.href = workflowInstanceUrl
+      // Abrir embed em modal (iframe)
+      setMaestroUrl(workflowInstanceUrl)
+      setShowMaestro(true)
     } catch (e: any) {
       alert(`Erro ao iniciar fluxo de Empréstimos: ${e?.message || 'desconhecido'}`)
     } finally {
@@ -595,6 +598,35 @@ export default function Home() {
                   src={pixEnvelopeUrl}
                   className="w-full h-full border-0"
                   title="Envelope PIX - DocuSign"
+                  allow="camera; microphone; fullscreen"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal do Maestro */}
+      {showMaestro && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="relative w-full h-full max-w-6xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-6 bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
+              <h2 className="text-2xl font-bold">Fluxo de Empréstimo - Maestro</h2>
+              <button
+                onClick={() => setShowMaestro(false)}
+                className="p-2 hover:bg-white/20 rounded-full transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="h-[calc(100%-80px)]">
+              {maestroUrl && (
+                <iframe
+                  src={maestroUrl}
+                  className="w-full h-full border-0"
+                  title="Workflow Maestro - DocuSign"
                   allow="camera; microphone; fullscreen"
                 />
               )}

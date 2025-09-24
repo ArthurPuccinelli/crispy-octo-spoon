@@ -73,14 +73,7 @@ async function getJwtToken(scopes) {
     const cfg = getEnv()
     if (cfg.error) throw new Error(cfg.error)
 
-    console.log('Getting JWT token with config:', {
-        hasAccountId: !!cfg.accountId,
-        hasUserId: !!cfg.userId,
-        hasIntegrationKey: !!cfg.integrationKey,
-        hasPrivateKey: !!cfg.privateKey,
-        oauthBasePath: cfg.oauthBasePath,
-        scopes: scopes || cfg.scopes
-    })
+    // Generate JWT access token
 
     const apiClient = new docusign.ApiClient()
     apiClient.setOAuthBasePath(cfg.oauthBasePath)
@@ -94,7 +87,6 @@ async function getJwtToken(scopes) {
         jwtLifeSec
     )
 
-    console.log('JWT token obtained successfully')
     return { accessToken: dsJWT.body.access_token, cfg }
 }
 
@@ -151,49 +143,7 @@ exports.handler = async (event) => {
     const path = (event.path || '').toLowerCase()
 
     try {
-        // Diag
-        if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/diag')) {
-            const env = getEnv()
-            const workflowMap = resolveWorkflowId('emprestimos')
-            let knownWorkflowIds = []
-            try {
-                const { accessToken } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
-                const list = await maestroFetch(`/accounts/${env.accountId}/workflows?status=active`, 'GET', accessToken)
-                if (Array.isArray(list?.items)) {
-                    knownWorkflowIds = list.items.map(w => w?.id || w?.workflowId).filter(Boolean)
-                }
-            } catch (e) {
-                // ignore listing errors in diag
-            }
-            return json(200, {
-                hasAccountId: !!env.accountId,
-                hasWorkflowId: !!env.workflowId,
-                oauthBasePath: env.oauthBasePath,
-                maestroBaseUrl: env.maestroBaseUrl,
-                workflowMap: workflowMap,
-                knownWorkflowIds,
-                envError: env.error
-            })
-        }
-
-        // Test JWT auth only
-        if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/test-auth')) {
-            try {
-                const { accessToken, cfg } = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
-                return json(200, {
-                    success: true,
-                    hasToken: !!accessToken,
-                    tokenLength: accessToken?.length || 0,
-                    accountId: cfg.accountId,
-                    userId: cfg.userId
-                })
-            } catch (error) {
-                return json(500, {
-                    success: false,
-                    error: error.message
-                })
-            }
-        }
+        // (Diagnostics removed)
 
         // Get consent URL for JWT (simplified)
         if ((method === 'GET' || method === 'POST') && path.endsWith('/maestro/consent')) {
@@ -264,7 +214,7 @@ exports.handler = async (event) => {
             let body = {}
             try { body = JSON.parse(event.body || '{}') } catch (_) { }
 
-            console.log('Trigger request body:', body)
+            // Trigger workflow instance
 
             // Check if Authorization header is provided (OAuth2 token)
             const auth = event.headers.authorization || event.headers.Authorization
@@ -279,17 +229,10 @@ exports.handler = async (event) => {
             } else {
                 // Try JWT with Maestro scopes
                 try {
-                    console.log('Attempting JWT generation with scopes: signature, impersonation, aow_manage')
                     const jwtResult = await getJwtToken(['signature', 'impersonation', 'aow_manage'])
                     accessToken = jwtResult.accessToken
                     cfg = jwtResult.cfg
-                    console.log('JWT generated successfully, token length:', accessToken?.length)
                 } catch (jwtError) {
-                    console.log('JWT failed, need consent. Error details:', {
-                        message: jwtError.message,
-                        response: jwtError.response?.data,
-                        status: jwtError.response?.status
-                    })
                     // JWT failed, need consent
                     return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
                 }
@@ -297,17 +240,11 @@ exports.handler = async (event) => {
 
             const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
 
-            console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
             // Fetch trigger requirements to validate/build inputs
             let requirements = null
-            try {
-                requirements = await maestroFetch(`/accounts/${cfg.accountId}/workflows/${workflowId}/trigger-requirements`, 'GET', accessToken)
-                console.log('Trigger requirements:', requirements)
-            } catch (e) {
-                console.log('Could not fetch trigger requirements, will attempt with provided inputs. Error:', e?.message)
-            }
+            try { requirements = await maestroFetch(`/accounts/${cfg.accountId}/workflows/${workflowId}/trigger-requirements`, 'GET', accessToken) } catch (_) { }
 
             // Build request body
             const instanceName = body.instanceName || `Fontara Emprestimos - ${new Date().toISOString()}`
@@ -349,7 +286,7 @@ exports.handler = async (event) => {
                 instanceName,
                 triggerInputs
             }
-            console.log('Starting workflow with request:', startRequest)
+            // Build trigger request
 
             // Prefer official trigger endpoint (proven working via curl)
             const { maestroBaseUrl } = getEnv()
@@ -368,16 +305,13 @@ exports.handler = async (event) => {
                     'X-DocuSign-AccountId': cfg.accountId,
                     'User-Agent': 'FontaraApp/1.0 (+https://crispy-octo-spoon.netlify.app)'
                 }
-                console.log('Trigger request', { triggerUrl, headers, triggerBody })
                 const triggerResponse = await axios.post(triggerUrl, triggerBody, { headers })
                 responseData = triggerResponse.data
             } catch (err) {
                 const status = err.response?.status
                 const data = err.response?.data
-                console.error('Trigger error details:', { status, data, triggerUrl, triggerBody })
                 return json(status || 500, { error: 'MaestroError', message: data?.error || 'Invalid request', details: data, triggerUrl, triggerBody })
             }
-            console.log('Workflow triggered via actions/trigger, response:', responseData)
 
             if (!responseData) {
                 throw new Error('No response from workflow trigger')
