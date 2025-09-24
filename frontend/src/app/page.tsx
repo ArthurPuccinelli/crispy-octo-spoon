@@ -158,11 +158,18 @@ export default function Home() {
         }
       }
 
-      if (!res.ok) throw new Error(typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || 'Falha ao iniciar workflow'))
+      if (!res.ok) {
+        console.error('Maestro trigger failed', data)
+        const diag = data?.diagnostics ? `\nDiagnostics: ${JSON.stringify(data.diagnostics)}` : ''
+        throw new Error(((typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || 'Falha ao iniciar workflow'))) + diag)
+      }
 
       const instanceId = data.instanceId || data?.data?.instanceId || data?.data?.id
       const workflowInstanceUrl = data.workflowInstanceUrl || data?.data?.workflowInstanceUrl || data?.instanceUrl || data?.data?.instanceUrl
-      if (!instanceId || !workflowInstanceUrl) throw new Error('Dados do workflow não retornados')
+      if (!instanceId || !workflowInstanceUrl) {
+        const diag = data?.diagnostics ? `\nDiagnostics: ${JSON.stringify(data.diagnostics)}` : ''
+        throw new Error('Dados do workflow não retornados' + diag)
+      }
 
       // Abra diretamente a URL do Maestro (embed)
       window.location.href = workflowInstanceUrl
