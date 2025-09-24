@@ -76,20 +76,33 @@ async function getJwtToken(scopes) {
         scopes: scopes || cfg.scopes
     })
 
-    const apiClient = new docusign.ApiClient()
-    apiClient.setOAuthBasePath(cfg.oauthBasePath)
+    try {
+        const apiClient = new docusign.ApiClient()
+        apiClient.setOAuthBasePath(cfg.oauthBasePath)
 
-    const jwtLifeSec = 3600
-    const dsJWT = await apiClient.requestJWTUserToken(
-        cfg.integrationKey,
-        cfg.userId,
-        scopes || cfg.scopes,
-        Buffer.from(cfg.privateKey),
-        jwtLifeSec
-    )
+        // Usar 10 minutos como no exemplo oficial
+        const jwtLifeSec = 600
+        const dsJWT = await apiClient.requestJWTUserToken(
+            cfg.integrationKey,
+            cfg.userId,
+            scopes || cfg.scopes,
+            Buffer.from(cfg.privateKey),
+            jwtLifeSec
+        )
 
-    console.log('JWT token obtained successfully')
-    return { accessToken: dsJWT.body.access_token, cfg }
+        console.log('JWT token obtained successfully')
+        return { accessToken: dsJWT.body.access_token, cfg }
+    } catch (error) {
+        console.error('JWT authentication failed:', error.response?.body || error.message)
+        
+        // Verificar se é erro de consent_required como no exemplo
+        const body = error?.response?.body || error?.response?.data
+        if (body?.error === 'consent_required') {
+            throw new Error('consent_required')
+        }
+        
+        throw error
+    }
 }
 
 function resolveWorkflowId(input) {
@@ -273,8 +286,14 @@ exports.handler = async (event) => {
                         response: jwtError.response?.data,
                         status: jwtError.response?.status
                     })
-                    // JWT failed, need consent
-                    return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
+                    
+                    // Verificar se é erro de consent_required
+                    if (jwtError.message === 'consent_required') {
+                        return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
+                    }
+                    
+                    // Outros erros
+                    throw jwtError
                 }
             }
 
