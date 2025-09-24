@@ -50,10 +50,16 @@ crispy-octo-spoon/
 
 3. **Configure as variáveis de ambiente**
    ```bash
-   # Backend
-   cp backend/env.example backend/.env
-   # Edite backend/.env conforme necessário
+   # Opção 1: Script automático (recomendado)
+   ./setup-local-env.sh
+   
+   # Opção 2: Manual
+   cd frontend
+   cp env.local.template .env.local
+   # Edite .env.local com suas configurações
    ```
+   
+   📚 **Documentação completa**: [ENV_VARIABLES_GUIDE.md](./ENV_VARIABLES_GUIDE.md)
 
 ## 🚀 Executando o Projeto
 
