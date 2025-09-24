@@ -248,12 +248,12 @@ exports.handler = async (event) => {
             try { body = JSON.parse(event.body || '{}') } catch (_) { }
 
             console.log('Trigger request body:', body)
-            
+
             // Check if Authorization header is provided (OAuth2 token)
             const auth = event.headers.authorization || event.headers.Authorization
             let accessToken = null
             let cfg = null
-            
+
             if (auth?.startsWith('Bearer ')) {
                 // Use provided OAuth2 token
                 accessToken = auth.slice(7)
@@ -277,9 +277,9 @@ exports.handler = async (event) => {
                     return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
                 }
             }
-            
+
             const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
-            
+
             console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
@@ -289,25 +289,25 @@ exports.handler = async (event) => {
                 metadata: body.metadata || {}
             }
             console.log('Starting workflow with request:', startRequest)
-            
+
             // Step 2: POST to create workflow instance using Maestro API
             const data = await maestroFetch(`/workflows/${workflowId}/instances`, 'POST', accessToken, startRequest)
             console.log('Workflow started, response:', data)
-            
+
             // Check if response is HTML (indicates consent required)
             if (typeof data === 'string' && data.includes('<!DOCTYPE html>')) {
                 return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
             }
-            
+
             // Step 3: Verify response and return instance details
             if (!data) {
                 throw new Error('No response from workflow trigger')
             }
-            
-            return json(200, { 
-                instanceId: data.instanceId || data.id || null, 
+
+            return json(200, {
+                instanceId: data.instanceId || data.id || null,
                 status: data.status,
-                data: data 
+                data: data
             })
         }
 
