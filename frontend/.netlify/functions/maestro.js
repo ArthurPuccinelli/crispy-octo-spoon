@@ -362,13 +362,15 @@ exports.handler = async (event) => {
             }
             let responseData
             try {
-                const triggerResponse = await axios.post(triggerUrl, triggerBody, {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                })
+                const headers = {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-DocuSign-AccountId': cfg.accountId,
+                    'User-Agent': 'FontaraApp/1.0 (+https://crispy-octo-spoon.netlify.app)'
+                }
+                console.log('Trigger request', { triggerUrl, headers, triggerBody })
+                const triggerResponse = await axios.post(triggerUrl, triggerBody, { headers })
                 responseData = triggerResponse.data
             } catch (err) {
                 const status = err.response?.status
