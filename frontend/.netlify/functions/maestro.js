@@ -247,7 +247,7 @@ exports.handler = async (event) => {
             try { body = JSON.parse(event.body || '{}') } catch (_) { }
 
             console.log('Trigger request body:', body)
-
+            
             // Check if Authorization header is provided (OAuth2 token)
             const auth = event.headers.authorization || event.headers.Authorization
             let accessToken = null
@@ -270,27 +270,52 @@ exports.handler = async (event) => {
                     return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
                 }
             }
-
+            
             const workflowId = resolveWorkflowId(body.workflow || body.workflowKey || body.workflowId || cfg.workflowId)
-
+            
             console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
-            // Per docs, POST /workflows/{workflowId}/instances
+            // Step 1: Get workflow details to obtain triggerURL
+            console.log('Getting workflow details...')
+            const workflowDetails = await maestroFetch(`/workflows/${workflowId}`, 'GET', accessToken)
+            console.log('Workflow details:', workflowDetails)
+            
+            if (!workflowDetails || !workflowDetails.triggerUrl) {
+                throw new Error('Workflow triggerUrl not found')
+            }
+            
+            // Step 2: Build request body with starting variables
             const startRequest = {
-                // Optional: inputs, metadata, callbackUrl, etc.
-                inputs: body.inputs || {},
+                startingVariables: body.inputs || {},
+                participants: body.participants || [],
+                metadata: body.metadata || {}
             }
             console.log('Starting workflow with request:', startRequest)
-            const data = await maestroFetch(`/workflows/${workflowId}/instances`, 'POST', accessToken, startRequest)
-            console.log('Workflow started, response:', data)
-
-            // Check if response is HTML (indicates consent required)
-            if (typeof data === 'string' && data.includes('<!DOCTYPE html>')) {
-                return json(401, { error: 'consent_required', message: 'User consent required for Maestro API' })
+            
+            // Step 3: POST to the specific triggerURL
+            const triggerResponse = await axios.post(workflowDetails.triggerUrl, startRequest, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            
+            console.log('Workflow triggered, response:', triggerResponse.data)
+            
+            // Step 4: Verify response and return instance details
+            const responseData = triggerResponse.data
+            if (!responseData) {
+                throw new Error('No response from workflow trigger')
             }
-
-            return json(200, { instanceId: data?.instanceId || data?.id || null, data })
+            
+            return json(200, { 
+                instanceId: responseData.instanceId || responseData.id || null, 
+                status: responseData.status,
+                triggerUrl: workflowDetails.triggerUrl,
+                data: responseData 
+            })
         }
 
         // Get embedded URL for an instance
