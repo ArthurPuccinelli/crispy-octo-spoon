@@ -94,6 +94,23 @@ const handler: Handler = async (event) => {
             // Non-fatal; we'll fallback to instances endpoint below
         }
 
+        // Optional diagnostics mode: return the list without triggering
+        if (event.queryStringParameters && event.queryStringParameters.diagnose === '1') {
+            return {
+                statusCode: 200,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    diagnostics: {
+                        accountId: DOCUSIGN_ACCOUNT_ID,
+                        maestroBase,
+                        listUrl,
+                        knownWorkflowIds,
+                        requestedWorkflowId: workflowId
+                    }
+                })
+            }
+        }
+
         // Step 2: If we have a triggerUrl, use it; otherwise, fallback to instances endpoint
         let triggerResp: Response
         if (triggerUrl) {
