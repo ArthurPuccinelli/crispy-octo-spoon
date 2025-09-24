@@ -283,45 +283,26 @@ exports.handler = async (event) => {
             console.log('Resolved workflowId:', workflowId)
             if (!workflowId) throw new Error('Missing workflowId')
 
-            // Step 1: Get workflow details to obtain triggerURL
-            console.log('Getting workflow details...')
-            const workflowDetails = await maestroFetch(`/workflows/${workflowId}`, 'GET', accessToken)
-            console.log('Workflow details:', workflowDetails)
-            
-            if (!workflowDetails || !workflowDetails.triggerUrl) {
-                throw new Error('Workflow triggerUrl not found')
-            }
-            
-            // Step 2: Build request body with starting variables
+            // Step 1: Build request body for workflow instance creation
             const startRequest = {
-                startingVariables: body.inputs || {},
-                participants: body.participants || [],
+                inputs: body.inputs || {},
                 metadata: body.metadata || {}
             }
             console.log('Starting workflow with request:', startRequest)
             
-            // Step 3: POST to the specific triggerURL
-            const triggerResponse = await axios.post(workflowDetails.triggerUrl, startRequest, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
+            // Step 2: POST to create workflow instance using Maestro API
+            const data = await maestroFetch(`/workflows/${workflowId}/instances`, 'POST', accessToken, startRequest)
+            console.log('Workflow started, response:', data)
             
-            console.log('Workflow triggered, response:', triggerResponse.data)
-            
-            // Step 4: Verify response and return instance details
-            const responseData = triggerResponse.data
-            if (!responseData) {
+            // Step 3: Verify response and return instance details
+            if (!data) {
                 throw new Error('No response from workflow trigger')
             }
             
             return json(200, { 
-                instanceId: responseData.instanceId || responseData.id || null, 
-                status: responseData.status,
-                triggerUrl: workflowDetails.triggerUrl,
-                data: responseData 
+                instanceId: data.instanceId || data.id || null, 
+                status: data.status,
+                data: data 
             })
         }
 
