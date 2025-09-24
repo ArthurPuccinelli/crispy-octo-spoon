@@ -70,25 +70,87 @@ const handler: Handler = async (event) => {
 
         const accessToken = tokenData.access_token as string
 
-        // Trigger Maestro workflow instance
         const maestroBase = DOCUSIGN_MAESTRO_BASE_URL || 'https://api-d.docusign.com/v1'
-        const triggerResp = await fetch(`${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows/${workflowId}/instances`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ instanceName, triggerInputs: inputs })
-        })
-        const triggerData = await triggerResp.json().catch(() => ({}))
+
+        // Step 1: Try to retrieve workflow trigger URL from the list/definition
+        let triggerUrl: string | undefined
+        try {
+            // Fetch active workflows
+            const listResp = await fetch(`${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows?status=active`, {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            })
+            const listData = await listResp.json().catch(() => ({}))
+            if (listResp.ok && Array.isArray(listData?.items)) {
+                const wf = listData.items.find((w: any) => w?.id === workflowId || w?.workflowId === workflowId)
+                triggerUrl = wf?.url || wf?.triggerUrl || wf?.triggerURL || wf?.links?.trigger || undefined
+            }
+
+            // If not found in list, try fetching the workflow directly
+            if (!triggerUrl) {
+                const wfResp = await fetch(`${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows/${workflowId}`, {
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                })
+                const wfData = await wfResp.json().catch(() => ({}))
+                if (wfResp.ok) {
+                    triggerUrl = wfData?.url || wfData?.triggerUrl || wfData?.triggerURL || wfData?.links?.trigger
+                }
+            }
+        } catch (_) {
+            // Non-fatal; we'll fallback to instances endpoint below
+        }
+
+        // Step 2: If we have a triggerUrl, use it; otherwise, fallback to instances endpoint
+        let triggerResp: Response
+        if (triggerUrl) {
+            triggerResp = await fetch(triggerUrl, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ instanceName, triggerInputs: inputs })
+            })
+        } else {
+            // Fallback path
+            triggerResp = await fetch(`${maestroBase}/accounts/${DOCUSIGN_ACCOUNT_ID}/workflows/${workflowId}/instances`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ instanceName, triggerInputs: inputs })
+            })
+        }
+
+        const rawText = await triggerResp.text()
+        let triggerData: any = {}
+        try { triggerData = JSON.parse(rawText) } catch { triggerData = { raw: rawText } }
 
         if (!triggerResp.ok) {
-            return { statusCode: triggerResp.status, body: JSON.stringify({ message: triggerData }) }
+            // Improve diagnostics for consent or missing trigger URL
+            const message = triggerData?.message || triggerData?.error || triggerData?.raw || 'Failed to trigger workflow'
+            return { statusCode: triggerResp.status, body: JSON.stringify({ message }) }
         }
 
         // Harmonize fields
         const instanceId = triggerData.instanceId || triggerData.id
         const workflowInstanceUrl = triggerData.workflowInstanceUrl || triggerData.instanceUrl
+
+        if (!workflowInstanceUrl && triggerUrl) {
+            // If API returns envelope-like payload, try to extract link
+            const maybeUrl = triggerData?.url || triggerData?.links?.instance || undefined
+            if (maybeUrl) {
+                return {
+                    statusCode: 200,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ instanceId, workflowInstanceUrl: maybeUrl, data: triggerData })
+                }
+            }
+        }
+
+        if (!workflowInstanceUrl) {
+            return { statusCode: 500, body: JSON.stringify({ message: 'Workflow triggerUrl not found' }) }
+        }
 
         return {
             statusCode: 200,
