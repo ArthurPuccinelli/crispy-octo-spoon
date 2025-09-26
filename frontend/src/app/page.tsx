@@ -17,6 +17,7 @@ export default function Home() {
   const [advancedEmail, setAdvancedEmail] = useState('')
   const [advancedCpf, setAdvancedCpf] = useState('')
   const [advancedPhone, setAdvancedPhone] = useState('')
+  const [advancedSubmitting, setAdvancedSubmitting] = useState(false)
 
   const handlePixConhecaMais = async () => {
     if (creatingEnvelope) return
@@ -670,20 +671,88 @@ export default function Home() {
             <div className="p-6">
               <h2 className="text-2xl font-bold mb-4 text-slate-800">Assinatura Avançada</h2>
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault()
                   const form = e.currentTarget as HTMLFormElement
                   if (!form.checkValidity()) {
                     form.reportValidity()
                     return
                   }
-                  // Por enquanto, apenas exibe os dados coletados
-                  alert(`Nome: ${advancedName}\nEmail: ${advancedEmail}\nCPF: ${advancedCpf}\nTelefone: ${advancedPhone}`)
-                  setShowAdvancedSignature(false)
-                  setAdvancedName('')
-                  setAdvancedEmail('')
-                  setAdvancedCpf('')
-                  setAdvancedPhone('')
+                  try {
+                    setAdvancedSubmitting(true)
+                    const cleanCpf = advancedCpf.replace(/[^0-9]/g, '')
+
+                    // Documento simples HTML (substituir por DOCX base64 se desejado)
+                    const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p></body></html>`
+                    const documentBase64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
+
+                    const payload = {
+                      emailSubject: 'Exemplo de Envio via API com Assinatura Avançada',
+                      emailBlurb: 'Por favor assine o documento clicando no botão acima. Este email foi gerado através de uma chamada API.',
+                      status: 'sent',
+                      documents: [
+                        { name: 'Contrato de Fornecimento', fileExtension: 'html', base64: documentBase64 }
+                      ],
+                      recipients: {
+                        signers: [
+                          {
+                            email: advancedEmail,
+                            name: advancedName,
+                            recipientId: '1',
+                            recipientSignatureProviders: [
+                              {
+                                signatureProviderName: 'tsp_confia_br_advanced_dev',
+                                signatureProviderOptions: { oneTimePassword: cleanCpf }
+                              }
+                            ],
+                            routingOrder: '1',
+                            tabs: {
+                              fullNameTabs: [
+                                { documentId: '1', pageNumber: '1', xPosition: '152', yPosition: '412' }
+                              ],
+                              signHereTabs: [
+                                { documentId: '1', pageNumber: '1', xPosition: '160', yPosition: '360' }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+
+                    const res = await fetch('/.netlify/functions/docusign-actions/envelopes', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify(payload)
+                    })
+                    const data = await res.json()
+                    if (!res.ok) {
+                      const msg = typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || data?.error)
+                      throw new Error(msg || 'Falha ao criar envelope')
+                    }
+
+                    const envelopeId = data.envelopeId || data?.data?.envelopeId
+                    if (!envelopeId) throw new Error('EnvelopeId não retornado')
+
+                    const embedRes = await fetch('/.netlify/functions/docusign-actions/envelopes/embed', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ envelopeId, returnUrl: window.location.href })
+                    })
+                    const embedData = await embedRes.json()
+                    if (!embedRes.ok || !embedData.url) throw new Error('Falha ao obter URL de assinatura')
+
+                    window.open(embedData.url, '_blank', 'noopener,noreferrer')
+
+                    setShowAdvancedSignature(false)
+                    setAdvancedName('')
+                    setAdvancedEmail('')
+                    setAdvancedCpf('')
+                    setAdvancedPhone('')
+                  } catch (err: any) {
+                    alert(`Erro: ${err?.message || 'desconhecido'}`)
+                  } finally {
+                    setAdvancedSubmitting(false)
+                  }
                 }}
                 className="space-y-4"
               >
@@ -715,12 +784,12 @@ export default function Home() {
                     type="tel"
                     inputMode="numeric"
                     pattern="^[1-9]\\d{10,14}$"
-                    title="Informe apenas dígitos com DDI (ex.: 5541998903708). Entre 11 e 15 dígitos."
+                    title="Informe apenas dígitos com DDI (ex.: 5511999999999). Entre 11 e 15 dígitos."
                     value={advancedPhone}
                     onChange={(e) => setAdvancedPhone(e.target.value.replace(/[^0-9]/g, ''))}
                     required
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    placeholder="5541998903708"
+                    placeholder="5511999999999"
                   />
                 </div>
                 <div>
@@ -728,11 +797,13 @@ export default function Home() {
                   <input
                     type="text"
                     inputMode="numeric"
+                    pattern="^\\d{11}$"
+                    title="Informe 11 dígitos numéricos (sem pontos ou hifens)."
                     value={advancedCpf}
-                    onChange={(e) => setAdvancedCpf(e.target.value)}
+                    onChange={(e) => setAdvancedCpf(e.target.value.replace(/[^0-9]/g, ''))}
                     required
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    placeholder="000.000.000-00"
+                    placeholder="00000000000"
                   />
                 </div>
                 <div className="flex justify-end space-x-3 pt-2">
@@ -745,9 +816,10 @@ export default function Home() {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow"
+                    disabled={advancedSubmitting}
+                    className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    Continuar
+                    {advancedSubmitting ? 'Enviando...' : 'Continuar'}
                   </button>
                 </div>
               </form>
