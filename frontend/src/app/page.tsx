@@ -40,8 +40,8 @@ export default function Home() {
     if (creatingEnvelope) return
     setCreatingEnvelope(true)
     try {
-      // Documento HTML simples com âncora de assinatura \\saes\\
-      const html = `<!DOCTYPE html><html><body><h1>Teste PIX - Fontara</h1><p>Por favor, assine abaixo.</p><p>Assinatura: <span style=\"color:transparent\">\\saes\\</span></p></body></html>`
+      // Documento HTML simples com âncora de assinatura \\saes\\ (texto branco 1px para garantir presença na conversão)
+      const html = `<!DOCTYPE html><html><body><h1>Teste PIX - Fontara</h1><p>Por favor, assine abaixo.</p><p>Assinatura: <span style=\"color:#ffffff; font-size:1px\">\\saes\\</span></p></body></html>`
       const base64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
 
       const res = await fetch('/.netlify/functions/docusign-actions/envelopes', {
