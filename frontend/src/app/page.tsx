@@ -12,6 +12,11 @@ export default function Home() {
   const [pixEnvelopeUrl, setPixEnvelopeUrl] = useState('')
   const [showMaestro, setShowMaestro] = useState(false)
   const [maestroUrl, setMaestroUrl] = useState('')
+  const [showAdvancedSignature, setShowAdvancedSignature] = useState(false)
+  const [advancedName, setAdvancedName] = useState('')
+  const [advancedEmail, setAdvancedEmail] = useState('')
+  const [advancedCpf, setAdvancedCpf] = useState('')
+  const [advancedPhone, setAdvancedPhone] = useState('')
 
   const handlePixConhecaMais = async () => {
     if (creatingEnvelope) return
@@ -546,7 +551,13 @@ export default function Home() {
               </div>
 
               {/* Assinatura Avançada */}
-              <div className="group bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-orange-400/50 transition-all duration-500 hover:scale-105">
+              <div
+                className="group bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-orange-400/50 transition-all duration-500 hover:scale-105 cursor-pointer"
+                onClick={() => setShowAdvancedSignature(true)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowAdvancedSignature(true) } }}
+              >
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-pink-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 20.25h6a2.25 2.25 0 002.25-2.25V8.25a2.25 2.25 0 00-2.25-2.25h-6M9.75 17.25H6A2.25 2.25 0 013.75 15V6A2.25 2.25 0 016 3.75h6A2.25 2.25 0 0114.25 6v9a2.25 2.25 0 01-2.25 2.25H9.75zM8.25 12.75h3M8.25 9.75h3" />
@@ -638,6 +649,108 @@ export default function Home() {
                   allow="camera; microphone; fullscreen"
                 />
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Assinatura Avançada */}
+      {showAdvancedSignature && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <button
+              onClick={() => setShowAdvancedSignature(false)}
+              className="absolute top-3 right-3 z-10 p-2 bg-black/10 hover:bg-black/20 text-black rounded-full transition-colors"
+              aria-label="Fechar"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-4 text-slate-800">Assinatura Avançada</h2>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  const form = e.currentTarget as HTMLFormElement
+                  if (!form.checkValidity()) {
+                    form.reportValidity()
+                    return
+                  }
+                  // Por enquanto, apenas exibe os dados coletados
+                  alert(`Nome: ${advancedName}\nEmail: ${advancedEmail}\nCPF: ${advancedCpf}\nTelefone: ${advancedPhone}`)
+                  setShowAdvancedSignature(false)
+                  setAdvancedName('')
+                  setAdvancedEmail('')
+                  setAdvancedCpf('')
+                  setAdvancedPhone('')
+                }}
+                className="space-y-4"
+              >
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Nome</label>
+                  <input
+                    type="text"
+                    value={advancedName}
+                    onChange={(e) => setAdvancedName(e.target.value)}
+                    required
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    placeholder="Seu nome completo"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                  <input
+                    type="email"
+                    value={advancedEmail}
+                    onChange={(e) => setAdvancedEmail(e.target.value)}
+                    required
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    placeholder="voce@exemplo.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Telefone</label>
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="^[1-9]\\d{10,14}$"
+                    title="Informe apenas dígitos com DDI (ex.: 5541998903708). Entre 11 e 15 dígitos."
+                    value={advancedPhone}
+                    onChange={(e) => setAdvancedPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                    required
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    placeholder="5541998903708"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">CPF</label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={advancedCpf}
+                    onChange={(e) => setAdvancedCpf(e.target.value)}
+                    required
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    placeholder="000.000.000-00"
+                  />
+                </div>
+                <div className="flex justify-end space-x-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowAdvancedSignature(false)}
+                    className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow"
+                  >
+                    Continuar
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
