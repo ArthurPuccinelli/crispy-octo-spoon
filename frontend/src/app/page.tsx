@@ -738,8 +738,8 @@ export default function Home() {
                       }
                     }
 
-                    // Documento simples HTML (substituir por DOCX base64 se desejado)
-                    const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p></body></html>`
+                    // Documento HTML com âncora de assinatura /sn1/
+                    const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p><p style="color:white;">/sn1/</p></body></html>`
                     const documentBase64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
 
                     // Base do payload comum
@@ -766,11 +766,8 @@ export default function Home() {
                         ],
                         routingOrder: '1',
                         tabs: {
-                          fullNameTabs: [
-                            { documentId: '1', pageNumber: '1', xPosition: '152', yPosition: '412' }
-                          ],
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', xPosition: '160', yPosition: '360' }
+                            { documentId: '1', pageNumber: '1', anchorString: '/sn1/', anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0' }
                           ]
                         }
                       })
@@ -780,6 +777,7 @@ export default function Home() {
                       const number = cleanPhone.substring(2)
                       payload.recipients.signers.push({
                         name: advancedName,
+                        email: advancedEmail,
                         recipientId: '1',
                         routingOrder: '1',
                         deliveryMethod: 'whatsapp',
@@ -791,11 +789,8 @@ export default function Home() {
                           }
                         ],
                         tabs: {
-                          fullNameTabs: [
-                            { documentId: '1', pageNumber: '1', xPosition: '152', yPosition: '412' }
-                          ],
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', xPosition: '160', yPosition: '360' }
+                            { documentId: '1', pageNumber: '1', anchorString: '/sn1/', anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0' }
                           ]
                         }
                       })
