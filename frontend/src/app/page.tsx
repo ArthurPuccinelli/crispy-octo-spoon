@@ -738,8 +738,8 @@ export default function Home() {
                       }
                     }
 
-                    // Documento HTML com âncora de assinatura /sn1/
-                    const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p><p style="color:white;">/sn1/</p></body></html>`
+                    // Documento HTML com âncora de assinatura \n\
+                    const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p><p style="color:white;">\\n\\</p></body></html>`
                     const documentBase64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
 
                     // Base do payload comum
@@ -767,7 +767,7 @@ export default function Home() {
                         routingOrder: '1',
                         tabs: {
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', anchorString: '/sn1/', anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0' }
+                            { documentId: '1', pageNumber: '1', anchorString: "\\n\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0' }
                           ]
                         }
                       })
@@ -790,7 +790,7 @@ export default function Home() {
                         ],
                         tabs: {
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', anchorString: '/sn1/', anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0' }
+                            { documentId: '1', pageNumber: '1', anchorString: "\\n\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0' }
                           ]
                         }
                       })
@@ -818,9 +818,10 @@ export default function Home() {
                       })
                       const embedData = await embedRes.json()
                       if (!embedRes.ok || !embedData.url) throw new Error('Falha ao obter URL de assinatura')
+                      alert(`Envelope criado com sucesso. ID: ${envelopeId}`)
                       window.open(embedData.url, '_blank', 'noopener,noreferrer')
                     } else {
-                      alert('Envelope criado com sucesso. Você receberá o link pelo WhatsApp informado.')
+                      alert(`Envelope criado com sucesso. ID: ${envelopeId}. Você receberá o link pelo WhatsApp informado.`)
                     }
 
                     setShowAdvancedSignature(false)
