@@ -20,6 +20,49 @@ export default function Home() {
   const [advancedSubmitting, setAdvancedSubmitting] = useState(false)
   const [advancedDeliveryMethod, setAdvancedDeliveryMethod] = useState<'now' | 'whatsapp'>('now')
 
+  // Função para criar documento HTML de demonstração com âncora \saes\
+  const createDemoDocument = (name: string, email: string, cpf: string, phone?: string) => {
+    const phoneText = phone ? `<p><strong>Telefone:</strong> ${phone}</p>` : ''
+    return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Contrato de Fornecimento - Fontara</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+    .header { text-align: center; margin-bottom: 30px; }
+    .content { margin: 20px 0; }
+    .signature-area { margin-top: 50px; text-align: center; }
+    .anchor { color: #ffffff; font-size: 1px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>CONTRATO DE FORNECIMENTO</h1>
+    <h2>Fontara Financial</h2>
+  </div>
+  
+  <div class="content">
+    <p><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+    <p><strong>Nome:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>CPF:</strong> ${cpf}</p>
+    ${phoneText}
+    
+    <h3>Termos e Condições:</h3>
+    <p>Este contrato estabelece os termos de fornecimento de serviços financeiros pela Fontara Financial.</p>
+    <p>O cliente concorda com todos os termos e condições estabelecidos neste documento.</p>
+    <p>Este documento foi gerado automaticamente através de nossa plataforma de assinatura eletrônica.</p>
+  </div>
+  
+  <div class="signature-area">
+    <p><strong>Assinatura do Cliente:</strong></p>
+    <span class="anchor">\\saes\\</span>
+  </div>
+</body>
+</html>`
+  }
+
   const validateCpf = (cpfRaw: string): boolean => {
     const cpf = cpfRaw.replace(/[^0-9]/g, '')
     if (!cpf || cpf.length !== 11) return false
@@ -40,8 +83,8 @@ export default function Home() {
     if (creatingEnvelope) return
     setCreatingEnvelope(true)
     try {
-      // Documento HTML simples com âncora de assinatura \\saes\\ (texto branco 1px para garantir presença na conversão)
-      const html = `<!DOCTYPE html><html><body><h1>Teste PIX - Fontara</h1><p>Por favor, assine abaixo.</p><p>Assinatura: <span style=\"color:#ffffff; font-size:1px\">\\saes\\</span></p></body></html>`
+      // Usar documento de demonstração com âncora \\saes\\
+      const html = createDemoDocument('Teste PIX', 'teste@fontara.com', '00000000000')
       const base64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
 
       const res = await fetch('/.netlify/functions/docusign-actions/envelopes', {
@@ -741,8 +784,8 @@ export default function Home() {
                       }
                     }
 
-                    // Documento HTML com âncora de assinatura \\saes\\ (texto branco 1px para garantir presença na conversão)
-                    const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p><p style="color:#ffffff; font-size:1px">\\saes\\</p></body></html>`
+                    // Usar documento de demonstração com âncora \\saes\\
+                    const html = createDemoDocument(advancedName, advancedEmail, cleanCpf, advancedDeliveryMethod === 'whatsapp' ? advancedPhone : undefined)
                     const documentBase64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
 
                     // Base do payload comum
