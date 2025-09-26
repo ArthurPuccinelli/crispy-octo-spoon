@@ -742,37 +742,63 @@ export default function Home() {
                     const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p></body></html>`
                     const documentBase64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
 
-                    const payload = {
+                    // Base do payload comum
+                    const payload: any = {
                       emailSubject: 'Exemplo de Envio via API com Assinatura Avançada',
                       emailBlurb: 'Por favor assine o documento clicando no botão acima. Este email foi gerado através de uma chamada API.',
                       status: 'sent',
                       documents: [
                         { name: 'Contrato de Fornecimento', fileExtension: 'html', base64: documentBase64 }
                       ],
-                      recipients: {
-                        signers: [
+                      recipients: { signers: [] as any[] }
+                    }
+
+                    if (advancedDeliveryMethod === 'now') {
+                      payload.recipients.signers.push({
+                        email: advancedEmail,
+                        name: advancedName,
+                        recipientId: '1',
+                        recipientSignatureProviders: [
                           {
-                            email: advancedEmail,
-                            name: advancedName,
-                            recipientId: '1',
-                            recipientSignatureProviders: [
-                              {
-                                signatureProviderName: 'tsp_confia_br_advanced_dev',
-                                signatureProviderOptions: { oneTimePassword: cleanCpf }
-                              }
-                            ],
-                            routingOrder: '1',
-                            tabs: {
-                              fullNameTabs: [
-                                { documentId: '1', pageNumber: '1', xPosition: '152', yPosition: '412' }
-                              ],
-                              signHereTabs: [
-                                { documentId: '1', pageNumber: '1', xPosition: '160', yPosition: '360' }
-                              ]
-                            }
+                            signatureProviderName: 'tsp_confia_br_advanced_dev',
+                            signatureProviderOptions: { oneTimePassword: cleanCpf }
                           }
-                        ]
-                      }
+                        ],
+                        routingOrder: '1',
+                        tabs: {
+                          fullNameTabs: [
+                            { documentId: '1', pageNumber: '1', xPosition: '152', yPosition: '412' }
+                          ],
+                          signHereTabs: [
+                            { documentId: '1', pageNumber: '1', xPosition: '160', yPosition: '360' }
+                          ]
+                        }
+                      })
+                    } else {
+                      // WhatsApp: separar DDI e número
+                      const countryCode = cleanPhone.substring(0, 2)
+                      const number = cleanPhone.substring(2)
+                      payload.recipients.signers.push({
+                        name: advancedName,
+                        recipientId: '1',
+                        routingOrder: '1',
+                        deliveryMethod: 'whatsapp',
+                        phoneNumber: { countryCode, number },
+                        recipientSignatureProviders: [
+                          {
+                            signatureProviderName: 'tsp_confia_br_advanced_dev',
+                            signatureProviderOptions: { oneTimePassword: cleanCpf }
+                          }
+                        ],
+                        tabs: {
+                          fullNameTabs: [
+                            { documentId: '1', pageNumber: '1', xPosition: '152', yPosition: '412' }
+                          ],
+                          signHereTabs: [
+                            { documentId: '1', pageNumber: '1', xPosition: '160', yPosition: '360' }
+                          ]
+                        }
+                      })
                     }
 
                     const res = await fetch('/.netlify/functions/docusign-actions/envelopes', {
