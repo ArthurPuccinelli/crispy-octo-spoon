@@ -869,10 +869,7 @@ export default function Home() {
                     <input
                       type="tel"
                       inputMode="numeric"
-                      pattern="^[1-9]\\d{10,14}$"
-                      minLength={11}
-                      maxLength={15}
-                      title="Informe apenas dígitos com DDI (ex.: 5511999999999). Entre 11 e 15 dígitos."
+                      aria-label="Telefone com DDI (11 a 15 dígitos)"
                       value={advancedPhone}
                       onChange={(e) => {
                         const digits = e.target.value.replace(/[^0-9]/g, '')
@@ -889,8 +886,7 @@ export default function Home() {
                   <input
                     type="text"
                     inputMode="numeric"
-                    pattern="^\\d{11}$"
-                    title="Informe 11 dígitos numéricos (sem pontos ou hifens)."
+                    aria-label="CPF com 11 dígitos"
                     value={advancedCpf}
                     onChange={(e) => {
                       const digits = e.target.value.replace(/[^0-9]/g, '')
