@@ -741,8 +741,8 @@ export default function Home() {
                       }
                     }
 
-                    // Documento HTML com âncora de assinatura \n\
-                    const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p><p style="color:white;">\\n\\</p></body></html>`
+                    // Documento HTML com âncora de assinatura \\saes\\ (texto branco 1px para garantir presença na conversão)
+                    const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p><p style="color:#ffffff; font-size:1px">\\saes\\</p></body></html>`
                     const documentBase64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
 
                     // Base do payload comum
@@ -770,7 +770,7 @@ export default function Home() {
                         routingOrder: '1',
                         tabs: {
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', anchorString: "\\n\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: false, anchorCaseSensitive: false }
+                            { documentId: '1', pageNumber: '1', anchorString: "\\saes\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: false, anchorCaseSensitive: false }
                           ]
                         }
                       })
@@ -793,7 +793,7 @@ export default function Home() {
                         ],
                         tabs: {
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', anchorString: "\\n\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: false, anchorCaseSensitive: false }
+                            { documentId: '1', pageNumber: '1', anchorString: "\\saes\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: false, anchorCaseSensitive: false }
                           ]
                         }
                       })
