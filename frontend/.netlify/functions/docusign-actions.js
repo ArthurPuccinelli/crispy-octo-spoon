@@ -121,11 +121,9 @@ async function createEnvelope(accessToken, cfg, payload) {
     }))
 
     const dsSigners = recipients.signers.map((s, idx) => ({
-        email: s.email,
-        name: s.name,
+        ...s,
         recipientId: String(idx + 1),
         routingOrder: String(s.routingOrder || idx + 1),
-        tabs: s.tabs || undefined, // permitir tabs pré-montadas
     }))
 
     const envelopeDefinition = new docusign.EnvelopeDefinition()
