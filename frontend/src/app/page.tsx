@@ -505,7 +505,7 @@ export default function Home() {
             </div>
 
             {/* Features Grid */}
-            <div className={`grid md:grid-cols-3 gap-8 max-w-6xl mx-auto transition-all duration-1000 delay-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className={`grid md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto transition-all duration-1000 delay-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               {/* Segurança */}
               <div className="group bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
                 <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -542,6 +542,19 @@ export default function Home() {
                 <h3 className="text-xl font-bold text-white mb-3">Suporte 24/7</h3>
                 <p className="text-white/60 leading-relaxed">
                   Atendimento especializado disponível 24 horas por dia, 7 dias por semana
+                </p>
+              </div>
+
+              {/* Assinatura Avançada */}
+              <div className="group bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-orange-400/50 transition-all duration-500 hover:scale-105">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-pink-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 20.25h6a2.25 2.25 0 002.25-2.25V8.25a2.25 2.25 0 00-2.25-2.25h-6M9.75 17.25H6A2.25 2.25 0 013.75 15V6A2.25 2.25 0 016 3.75h6A2.25 2.25 0 0114.25 6v9a2.25 2.25 0 01-2.25 2.25H9.75zM8.25 12.75h3M8.25 9.75h3" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Assinatura Avançada</h3>
+                <p className="text-white/60 leading-relaxed">
+                  Assinatura eletrônica com múltiplos signatários, templates e trilha de auditoria.
                 </p>
               </div>
             </div>
