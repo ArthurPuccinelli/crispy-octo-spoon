@@ -18,6 +18,23 @@ export default function Home() {
   const [advancedCpf, setAdvancedCpf] = useState('')
   const [advancedPhone, setAdvancedPhone] = useState('')
   const [advancedSubmitting, setAdvancedSubmitting] = useState(false)
+  const [advancedDeliveryMethod, setAdvancedDeliveryMethod] = useState<'now' | 'whatsapp'>('now')
+
+  const validateCpf = (cpfRaw: string): boolean => {
+    const cpf = cpfRaw.replace(/[^0-9]/g, '')
+    if (!cpf || cpf.length !== 11) return false
+    if (/^(\d)\1{10}$/.test(cpf)) return false
+    let sum = 0
+    for (let i = 0; i < 9; i++) sum += parseInt(cpf.charAt(i)) * (10 - i)
+    let rev = 11 - (sum % 11)
+    if (rev === 10 || rev === 11) rev = 0
+    if (rev !== parseInt(cpf.charAt(9))) return false
+    sum = 0
+    for (let i = 0; i < 10; i++) sum += parseInt(cpf.charAt(i)) * (11 - i)
+    rev = 11 - (sum % 11)
+    if (rev === 10 || rev === 11) rev = 0
+    return rev === parseInt(cpf.charAt(10))
+  }
 
   const handlePixConhecaMais = async () => {
     if (creatingEnvelope) return
@@ -670,6 +687,31 @@ export default function Home() {
             </button>
             <div className="p-6">
               <h2 className="text-2xl font-bold mb-4 text-slate-800">Assinatura Avançada</h2>
+              {/* Opções de entrega */}
+              <div className="mb-4 flex items-center space-x-6">
+                <label className="inline-flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="delivery_method"
+                    value="now"
+                    checked={advancedDeliveryMethod === 'now'}
+                    onChange={() => setAdvancedDeliveryMethod('now')}
+                    className="h-4 w-4 text-emerald-600"
+                  />
+                  <span className="text-slate-700">Assinar agora</span>
+                </label>
+                <label className="inline-flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="delivery_method"
+                    value="whatsapp"
+                    checked={advancedDeliveryMethod === 'whatsapp'}
+                    onChange={() => setAdvancedDeliveryMethod('whatsapp')}
+                    className="h-4 w-4 text-emerald-600"
+                  />
+                  <span className="text-slate-700">Receber por WhatsApp</span>
+                </label>
+              </div>
               <form
                 onSubmit={async (e) => {
                   e.preventDefault()
@@ -681,6 +723,20 @@ export default function Home() {
                   try {
                     setAdvancedSubmitting(true)
                     const cleanCpf = advancedCpf.replace(/[^0-9]/g, '')
+                    const cleanPhone = advancedPhone.replace(/[^0-9]/g, '')
+
+                    if (!validateCpf(cleanCpf)) {
+                      alert('CPF inválido. Verifique os 11 dígitos e tente novamente.')
+                      return
+                    }
+                    if (advancedDeliveryMethod === 'whatsapp') {
+                      // Telefone obrigatório apenas para WhatsApp
+                      const phoneRegex = /^[1-9]\d{10,14}$/
+                      if (!phoneRegex.test(cleanPhone)) {
+                        alert('Telefone inválido. Use apenas dígitos com DDI (ex.: 5511999999999).')
+                        return
+                      }
+                    }
 
                     // Documento simples HTML (substituir por DOCX base64 se desejado)
                     const html = `<!DOCTYPE html><html><body><h1>Contrato de Fornecimento</h1><p>Nome: ${advancedName}</p><p>Email: ${advancedEmail}</p><p>CPF: ${cleanCpf}</p><p>Telefone: ${advancedPhone}</p></body></html>`
@@ -733,15 +789,18 @@ export default function Home() {
                     const envelopeId = data.envelopeId || data?.data?.envelopeId
                     if (!envelopeId) throw new Error('EnvelopeId não retornado')
 
-                    const embedRes = await fetch('/.netlify/functions/docusign-actions/envelopes/embed', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ envelopeId, returnUrl: window.location.href })
-                    })
-                    const embedData = await embedRes.json()
-                    if (!embedRes.ok || !embedData.url) throw new Error('Falha ao obter URL de assinatura')
-
-                    window.open(embedData.url, '_blank', 'noopener,noreferrer')
+                    if (advancedDeliveryMethod === 'now') {
+                      const embedRes = await fetch('/.netlify/functions/docusign-actions/envelopes/embed', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ envelopeId, returnUrl: window.location.href })
+                      })
+                      const embedData = await embedRes.json()
+                      if (!embedRes.ok || !embedData.url) throw new Error('Falha ao obter URL de assinatura')
+                      window.open(embedData.url, '_blank', 'noopener,noreferrer')
+                    } else {
+                      alert('Envelope criado com sucesso. Você receberá o link pelo WhatsApp informado.')
+                    }
 
                     setShowAdvancedSignature(false)
                     setAdvancedName('')
@@ -778,20 +837,27 @@ export default function Home() {
                     placeholder="voce@exemplo.com"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Telefone</label>
-                  <input
-                    type="tel"
-                    inputMode="numeric"
-                    pattern="^[1-9]\\d{10,14}$"
-                    title="Informe apenas dígitos com DDI (ex.: 5511999999999). Entre 11 e 15 dígitos."
-                    value={advancedPhone}
-                    onChange={(e) => setAdvancedPhone(e.target.value.replace(/[^0-9]/g, ''))}
-                    required
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    placeholder="5511999999999"
-                  />
-                </div>
+                {advancedDeliveryMethod === 'whatsapp' && (
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Telefone</label>
+                    <input
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="^[1-9]\\d{10,14}$"
+                      minLength={11}
+                      maxLength={15}
+                      title="Informe apenas dígitos com DDI (ex.: 5511999999999). Entre 11 e 15 dígitos."
+                      value={advancedPhone}
+                      onChange={(e) => {
+                        const digits = e.target.value.replace(/[^0-9]/g, '')
+                        setAdvancedPhone(digits.slice(0, 15))
+                      }}
+                      required={advancedDeliveryMethod === 'whatsapp'}
+                      className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      placeholder="5511999999999"
+                    />
+                  </div>
+                )}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">CPF</label>
                   <input
@@ -800,7 +866,11 @@ export default function Home() {
                     pattern="^\\d{11}$"
                     title="Informe 11 dígitos numéricos (sem pontos ou hifens)."
                     value={advancedCpf}
-                    onChange={(e) => setAdvancedCpf(e.target.value.replace(/[^0-9]/g, ''))}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/[^0-9]/g, '')
+                      setAdvancedCpf(digits.slice(0, 11))
+                    }}
+                    maxLength={11}
                     required
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     placeholder="00000000000"
