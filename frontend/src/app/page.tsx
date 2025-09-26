@@ -40,8 +40,8 @@ export default function Home() {
     if (creatingEnvelope) return
     setCreatingEnvelope(true)
     try {
-      // Documento HTML simples com âncora de assinatura
-      const html = `<!DOCTYPE html><html><body><h1>Teste PIX - Fontara</h1><p>Por favor, assine abaixo.</p><p>Assinatura: <span style="color:transparent">/sign_here/</span></p></body></html>`
+      // Documento HTML simples com âncora de assinatura \\saes\\
+      const html = `<!DOCTYPE html><html><body><h1>Teste PIX - Fontara</h1><p>Por favor, assine abaixo.</p><p>Assinatura: <span style=\"color:transparent\">\\saes\\</span></p></body></html>`
       const base64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(html))) : ''
 
       const res = await fetch('/.netlify/functions/docusign-actions/envelopes', {
@@ -65,10 +65,13 @@ export default function Home() {
                     {
                       documentId: '1',
                       pageNumber: '1',
-                      anchorString: '/sign_here/',
+                      anchorString: "\\saes\\",
                       anchorUnits: 'pixels',
                       anchorXOffset: '0',
-                      anchorYOffset: '0'
+                      anchorYOffset: '0',
+                      anchorIgnoreIfNotPresent: true,
+                      anchorMatchWholeWord: false,
+                      anchorCaseSensitive: false
                     }
                   ]
                 }
@@ -767,7 +770,7 @@ export default function Home() {
                         routingOrder: '1',
                         tabs: {
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', anchorString: "\\n\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0' }
+                            { documentId: '1', pageNumber: '1', anchorString: "\\n\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: false, anchorCaseSensitive: false }
                           ]
                         }
                       })
@@ -790,7 +793,7 @@ export default function Home() {
                         ],
                         tabs: {
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', anchorString: "\\n\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0' }
+                            { documentId: '1', pageNumber: '1', anchorString: "\\n\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: false, anchorCaseSensitive: false }
                           ]
                         }
                       })
