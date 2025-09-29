@@ -62,7 +62,7 @@ export default function GestaoClientesPage() {
         <div className="p-6">
             {/* Header */}
             <div className="mb-8">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between flex-wrap gap-4">
                     <div>
                         <nav className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
                             <Link href="/admin" className="hover:text-teal-600">Dashboard</Link>
@@ -74,7 +74,7 @@ export default function GestaoClientesPage() {
                     </div>
                     <button
                         onClick={() => setShowForm(true)}
-                        className="px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all duration-200 shadow-lg"
+                        className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all duration-200 shadow-lg"
                     >
                         + Novo Cliente
                     </button>
@@ -166,8 +166,8 @@ export default function GestaoClientesPage() {
                     <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50">
                         <h3 className="text-lg font-semibold text-gray-900">Lista de Clientes</h3>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
+                    <div className="overflow-x-auto -mx-4 sm:mx-0">
+                        <table className="min-w-[720px] sm:min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
