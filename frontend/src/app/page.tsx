@@ -113,8 +113,8 @@ export default function Home() {
                       anchorXOffset: '0',
                       anchorYOffset: '0',
                       anchorIgnoreIfNotPresent: true,
-                      anchorMatchWholeWord: false,
-                      anchorCaseSensitive: false
+                      anchorMatchWholeWord: true,
+                      anchorCaseSensitive: true
                     }
                   ]
                 }
@@ -813,7 +813,7 @@ export default function Home() {
                         routingOrder: '1',
                         tabs: {
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', anchorString: "\\saes\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: false, anchorCaseSensitive: false }
+                            { documentId: '1', pageNumber: '1', anchorString: "\\saes\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: true, anchorCaseSensitive: true }
                           ]
                         }
                       })
@@ -836,7 +836,7 @@ export default function Home() {
                         ],
                         tabs: {
                           signHereTabs: [
-                            { documentId: '1', pageNumber: '1', anchorString: "\\saes\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: false, anchorCaseSensitive: false }
+                            { documentId: '1', pageNumber: '1', anchorString: "\\saes\\", anchorUnits: 'pixels', anchorXOffset: '0', anchorYOffset: '0', anchorIgnoreIfNotPresent: true, anchorMatchWholeWord: true, anchorCaseSensitive: true }
                           ]
                         }
                       })
