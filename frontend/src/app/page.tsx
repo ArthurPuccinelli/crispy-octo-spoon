@@ -34,7 +34,7 @@ export default function Home() {
     .header { text-align: center; margin-bottom: 30px; }
     .content { margin: 20px 0; }
     .signature-area { margin-top: 50px; text-align: center; }
-    .anchor { color: #000000; font-size: 16px; font-weight: bold; }
+    .anchor { color: #ffffff; font-size: 1px; }
   </style>
 </head>
 <body>
