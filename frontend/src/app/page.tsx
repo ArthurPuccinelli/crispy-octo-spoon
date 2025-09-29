@@ -818,6 +818,7 @@ export default function Home() {
                     setAdvancedSubmitting(true)
                     const cleanCpf = advancedCpf.replace(/[^0-9]/g, '')
                     const cleanPhone = advancedPhone.replace(/[^0-9]/g, '')
+                    let normalizedPhone = cleanPhone
 
                     if (!validateCpf(cleanCpf)) {
                       alert('CPF inválido. Verifique os 11 dígitos e tente novamente.')
@@ -825,18 +826,15 @@ export default function Home() {
                     }
                     if (advancedDeliveryMethod !== 'now') {
                       // Telefone obrigatório para WhatsApp ou SMS (Brasil, E.164 sem símbolos)
-                      let normalized = cleanPhone
-                      if (!normalized.startsWith('55') && (normalized.length >= 10 && normalized.length <= 11)) {
-                        normalized = `55${normalized}`
+                      if (!normalizedPhone.startsWith('55') && (normalizedPhone.length >= 10 && normalizedPhone.length <= 11)) {
+                        normalizedPhone = `55${normalizedPhone}`
                       }
                       const brE164 = /^55\d{10,13}$/
-                      if (!brE164.test(normalized)) {
+                      if (!brE164.test(normalizedPhone)) {
                         alert('Telefone inválido. Use DDI Brasil 55 + número (ex.: 5511999999999).')
                         return
                       }
-                      // usa o normalizado a partir daqui
-                      // @ts-ignore
-                      cleanPhone = normalized
+                      // usa normalizedPhone a partir daqui
                     }
 
                     // Usar documento de demonstração com âncora \\saes\\
@@ -876,7 +874,7 @@ export default function Home() {
                     } else {
                       // WhatsApp ou SMS: separar DDI e número (suportado: BR -> 55)
                       const countryCode = '55'
-                      const number = cleanPhone.substring(countryCode.length)
+                      const number = normalizedPhone.substring(countryCode.length)
                       payload.recipients.signers.push({
                         name: advancedName,
                         email: advancedEmail,
