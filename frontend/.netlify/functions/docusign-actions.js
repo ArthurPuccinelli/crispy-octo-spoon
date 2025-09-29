@@ -125,6 +125,7 @@ async function createEnvelope(accessToken, cfg, payload) {
         name: s.name,
         recipientId: String(idx + 1),
         routingOrder: String(s.routingOrder || idx + 1),
+        clientUserId: s.clientUserId || undefined, // necessário para embedded signing
         tabs: s.tabs || undefined, // permitir tabs pré-montadas
     }))
 
@@ -139,7 +140,7 @@ async function createEnvelope(accessToken, cfg, payload) {
     return results
 }
 
-async function createEmbeddedEnvelope(accessToken, cfg, envelopeId, returnUrl) {
+async function createEmbeddedEnvelope(accessToken, cfg, envelopeId, returnUrl, signer) {
     const apiClient = new docusign.ApiClient()
     apiClient.setOAuthBasePath(cfg.oauthBasePath)
     apiClient.addDefaultHeader('Authorization', `Bearer ${accessToken}`)
@@ -157,10 +158,11 @@ async function createEmbeddedEnvelope(accessToken, cfg, envelopeId, returnUrl) {
     // Criar recipient view para embed
     const recipientViewRequest = new docusign.RecipientViewRequest()
     recipientViewRequest.authenticationMethod = 'none'
-    recipientViewRequest.recipientId = '1' // Primeiro signatário
     recipientViewRequest.returnUrl = returnUrl || 'https://example.com'
-    recipientViewRequest.userName = 'Signer Teste'
-    recipientViewRequest.email = 'signer@example.com'
+    // DocuSign Embedded Signing requires clientUserId to match signer in the envelope
+    recipientViewRequest.clientUserId = signer?.clientUserId || '1'
+    recipientViewRequest.userName = signer?.userName || signer?.name || 'Signer Teste'
+    recipientViewRequest.email = signer?.email || 'signer@example.com'
 
     const results = await envelopesApi.createRecipientView(cfg.accountId, envelopeId, {
         recipientViewRequest
@@ -227,7 +229,7 @@ exports.handler = async (event) => {
             let body = {}
             try { body = JSON.parse(event.body || '{}') } catch (_) { }
 
-            const { envelopeId, returnUrl } = body
+            const { envelopeId, returnUrl, signer } = body
             if (!envelopeId) {
                 return json(400, { error: 'envelopeId is required' })
             }
@@ -243,7 +245,7 @@ exports.handler = async (event) => {
 
             if (cfg.error) throw new Error(cfg.error)
 
-            const result = await createEmbeddedEnvelope(accessToken, cfg, envelopeId, returnUrl)
+            const result = await createEmbeddedEnvelope(accessToken, cfg, envelopeId, returnUrl, signer)
             return json(200, { url: result.url })
         }
 

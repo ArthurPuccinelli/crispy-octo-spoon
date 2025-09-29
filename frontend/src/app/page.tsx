@@ -103,6 +103,7 @@ export default function Home() {
                 email: 'signer@example.com',
                 name: 'Signer Teste',
                 routingOrder: 1,
+                clientUserId: '1000',
                 tabs: {
                   signHereTabs: [
                     {
@@ -137,7 +138,12 @@ export default function Home() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             envelopeId,
-            returnUrl: window.location.href
+            returnUrl: window.location.href,
+            signer: {
+              clientUserId: '1000',
+              userName: 'Signer Teste',
+              email: 'signer@example.com'
+            }
           })
         })
 
@@ -804,6 +810,7 @@ export default function Home() {
                         email: advancedEmail,
                         name: advancedName,
                         recipientId: '1',
+                        clientUserId: 'ADV-1',
                         recipientSignatureProviders: [
                           {
                             signatureProviderName: 'tsp_confia_br_advanced_dev',
@@ -860,7 +867,15 @@ export default function Home() {
                       const embedRes = await fetch('/.netlify/functions/docusign-actions/envelopes/embed', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ envelopeId, returnUrl: window.location.href })
+                        body: JSON.stringify({
+                          envelopeId,
+                          returnUrl: window.location.href,
+                          signer: {
+                            clientUserId: 'ADV-1',
+                            userName: advancedName,
+                            email: advancedEmail
+                          }
+                        })
                       })
                       const embedData = await embedRes.json()
                       if (!embedRes.ok || !embedData.url) throw new Error('Falha ao obter URL de assinatura')
