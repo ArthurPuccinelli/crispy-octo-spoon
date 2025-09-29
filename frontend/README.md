@@ -2,6 +2,17 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Local environment variables
+
+Create a `.env.local` file in `frontend/` with the following variables:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+These are client-side safe and are required for the app to run locally. The file `.env.local` is ignored by git.
+
 First, run the development server:
 
 ```bash

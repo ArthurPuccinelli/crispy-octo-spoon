@@ -1,18 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // Ensure environment variables are available at build time
-    env: {
-        NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-        NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    },
-
-    // Enable experimental features if needed
+    // NEXT_PUBLIC_* vars are automatically exposed to the client in Next.js.
+    // Keep config minimal and correct the external package name.
     experimental: {
-        // Enable if you need server components with client-side data fetching
-        serverComponentsExternalPackages: ['@supabase/supabasejs'],
+        serverComponentsExternalPackages: ['@supabase/supabase-js'],
     },
-
-    // Output configuration for static export (if needed)
     output: 'standalone',
 };
 

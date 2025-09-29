@@ -3,48 +3,12 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
-// Create a mock client during build time if env vars are not available
-const createSupabaseClient = () => {
-  if (!supabaseUrl || !supabaseAnonKey) {
-    // Return a mock client during build time
-    console.warn('⚠️ Supabase environment variables not found. Using mock client for build.')
-    console.warn('🔧 Please check Netlify environment variables configuration.')
-    console.warn('📋 Required variables: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY')
-
-    // Create a more compatible mock client
-    const mockTable = () => ({
-      select: (columns: string = '*') => ({
-        eq: (column: string, value: any) => ({
-          order: (column: string, options: any) => Promise.resolve({ data: [], error: null }),
-          then: (callback: any) => Promise.resolve({ data: [], error: null }).then(callback)
-        }),
-        order: (column: string, options: any) => Promise.resolve({ data: [], error: null }),
-        then: (callback: any) => Promise.resolve({ data: [], error: null }).then(callback)
-      }),
-      insert: (data: any) => Promise.resolve({ data: null, error: null }),
-      update: (data: any) => ({
-        eq: (column: string, value: any) => Promise.resolve({ data: null, error: null })
-      }),
-      delete: () => ({
-        eq: (column: string, value: any) => Promise.resolve({ data: null, error: null })
-      })
-    })
-
-    return {
-      from: mockTable,
-      // Add other Supabase methods that might be used
-      auth: {
-        signIn: () => Promise.resolve({ data: null, error: null }),
-        signOut: () => Promise.resolve({ data: null, error: null }),
-        getUser: () => Promise.resolve({ data: null, error: null })
-      }
-    } as any
-  }
-
-  return createClient(supabaseUrl, supabaseAnonKey)
+// Create the Supabase client; fail fast if envs are missing during runtime
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase env vars. Define NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local')
 }
 
-export const supabase = createSupabaseClient()
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 // Utility function for formatting currency
 export const formatCurrency = (value: number): string => {
