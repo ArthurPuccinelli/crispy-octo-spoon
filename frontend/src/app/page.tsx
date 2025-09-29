@@ -18,7 +18,7 @@ export default function Home() {
   const [advancedCpf, setAdvancedCpf] = useState('')
   const [advancedPhone, setAdvancedPhone] = useState('')
   const [advancedSubmitting, setAdvancedSubmitting] = useState(false)
-  const [advancedDeliveryMethod, setAdvancedDeliveryMethod] = useState<'now' | 'whatsapp'>('now')
+  const [advancedDeliveryMethod, setAdvancedDeliveryMethod] = useState<'now' | 'whatsapp' | 'sms'>('now')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Função para criar documento HTML de demonstração com âncora \saes\
@@ -793,6 +793,17 @@ export default function Home() {
                     className="h-4 w-4 text-emerald-600"
                   />
                   <span className="text-slate-700">Receber por WhatsApp</span>
+                </label>
+                <label className="inline-flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="delivery_method"
+                    value="sms"
+                    checked={advancedDeliveryMethod === 'sms'}
+                    onChange={() => setAdvancedDeliveryMethod('sms')}
+                    className="h-4 w-4 text-emerald-600"
+                  />
+                  <span className="text-slate-700">Receber por SMS</span>
                 </label>
               </div>
               <form
