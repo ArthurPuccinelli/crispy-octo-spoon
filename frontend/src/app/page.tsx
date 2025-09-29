@@ -823,13 +823,20 @@ export default function Home() {
                       alert('CPF inválido. Verifique os 11 dígitos e tente novamente.')
                       return
                     }
-                    if (advancedDeliveryMethod === 'whatsapp') {
-                      // Telefone obrigatório apenas para WhatsApp (Brasil, E.164 sem símbolos)
+                    if (advancedDeliveryMethod !== 'now') {
+                      // Telefone obrigatório para WhatsApp ou SMS (Brasil, E.164 sem símbolos)
+                      let normalized = cleanPhone
+                      if (!normalized.startsWith('55') && (normalized.length >= 10 && normalized.length <= 11)) {
+                        normalized = `55${normalized}`
+                      }
                       const brE164 = /^55\d{10,13}$/
-                      if (!brE164.test(cleanPhone)) {
+                      if (!brE164.test(normalized)) {
                         alert('Telefone inválido. Use DDI Brasil 55 + número (ex.: 5511999999999).')
                         return
                       }
+                      // usa o normalizado a partir daqui
+                      // @ts-ignore
+                      cleanPhone = normalized
                     }
 
                     // Usar documento de demonstração com âncora \\saes\\
@@ -839,7 +846,7 @@ export default function Home() {
                     // Base do payload comum
                     const payload: any = {
                       emailSubject: 'Exemplo de Envio via API com Assinatura Avançada',
-                      emailBlurb: 'Por favor assine o documento clicando no botão acima. Este email foi gerado através de uma chamada API.',
+                      emailBlurb: 'Documento de demonstração Fontara Financial.',
                       status: 'sent',
                       documents: [
                         { name: 'Contrato de Fornecimento', fileExtension: 'html', base64: documentBase64 }
@@ -867,7 +874,7 @@ export default function Home() {
                         }
                       })
                     } else {
-                      // WhatsApp: separar DDI e número (suportado: BR -> 55)
+                      // WhatsApp ou SMS: separar DDI e número (suportado: BR -> 55)
                       const countryCode = '55'
                       const number = cleanPhone.substring(countryCode.length)
                       payload.recipients.signers.push({
@@ -875,7 +882,7 @@ export default function Home() {
                         email: advancedEmail,
                         recipientId: '1',
                         routingOrder: '1',
-                        deliveryMethod: 'whatsapp',
+                        deliveryMethod: advancedDeliveryMethod === 'sms' ? 'sms' : 'whatsapp',
                         phoneNumber: { countryCode, number },
                         recipientSignatureProviders: [
                           {
@@ -924,7 +931,8 @@ export default function Home() {
                       alert(`Envelope criado com sucesso. ID: ${envelopeId}`)
                       window.open(embedData.url, '_blank', 'noopener,noreferrer')
                     } else {
-                      alert(`Envelope criado com sucesso. ID: ${envelopeId}. Você receberá o link pelo WhatsApp informado.`)
+                      const channel = advancedDeliveryMethod === 'sms' ? 'SMS' : 'WhatsApp'
+                      alert(`Envelope criado com sucesso. ID: ${envelopeId}. Você receberá o link por ${channel} no telefone informado.`)
                     }
 
                     setShowAdvancedSignature(false)
@@ -962,19 +970,24 @@ export default function Home() {
                     placeholder="voce@exemplo.com"
                   />
                 </div>
-                {advancedDeliveryMethod === 'whatsapp' && (
+                {(advancedDeliveryMethod === 'whatsapp' || advancedDeliveryMethod === 'sms') && (
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Telefone</label>
                     <input
                       type="tel"
                       inputMode="numeric"
-                      aria-label="Telefone com DDI Brasil em formato E.164 (ex.: 5511999999999)"
+                      aria-label="Telefone com DDI Brasil em formato E.164 para WhatsApp ou SMS (ex.: 5511999999999)"
                       value={advancedPhone}
                       onChange={(e) => {
-                        const digits = e.target.value.replace(/[^0-9]/g, '')
+                        // Normaliza entrada: somente dígitos, no máx. 15
+                        let digits = e.target.value.replace(/[^0-9]/g, '')
+                        // Se usuário digitou 10-11 dígitos sem DDI, prefixamos 55 para BR
+                        if (!digits.startsWith('55') && (digits.length >= 10 && digits.length <= 11)) {
+                          digits = `55${digits}`
+                        }
                         setAdvancedPhone(digits.slice(0, 15))
                       }}
-                      required={advancedDeliveryMethod === 'whatsapp'}
+                      required={advancedDeliveryMethod === 'whatsapp' || advancedDeliveryMethod === 'sms'}
                       className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       placeholder="5511999999999"
                     />
