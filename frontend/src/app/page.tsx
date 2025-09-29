@@ -813,10 +813,10 @@ export default function Home() {
                       return
                     }
                     if (advancedDeliveryMethod === 'whatsapp') {
-                      // Telefone obrigatório apenas para WhatsApp
-                      const phoneRegex = /^[1-9]\d{10,14}$/
-                      if (!phoneRegex.test(cleanPhone)) {
-                        alert('Telefone inválido. Use apenas dígitos com DDI (ex.: 5511999999999).')
+                      // Telefone obrigatório apenas para WhatsApp (Brasil, E.164 sem símbolos)
+                      const brE164 = /^55\d{10,13}$/
+                      if (!brE164.test(cleanPhone)) {
+                        alert('Telefone inválido. Use DDI Brasil 55 + número (ex.: 5511999999999).')
                         return
                       }
                     }
@@ -856,9 +856,9 @@ export default function Home() {
                         }
                       })
                     } else {
-                      // WhatsApp: separar DDI e número
-                      const countryCode = cleanPhone.substring(0, 2)
-                      const number = cleanPhone.substring(2)
+                      // WhatsApp: separar DDI e número (suportado: BR -> 55)
+                      const countryCode = '55'
+                      const number = cleanPhone.substring(countryCode.length)
                       payload.recipients.signers.push({
                         name: advancedName,
                         email: advancedEmail,
@@ -957,7 +957,7 @@ export default function Home() {
                     <input
                       type="tel"
                       inputMode="numeric"
-                      aria-label="Telefone com DDI (11 a 15 dígitos)"
+                      aria-label="Telefone com DDI Brasil em formato E.164 (ex.: 5511999999999)"
                       value={advancedPhone}
                       onChange={(e) => {
                         const digits = e.target.value.replace(/[^0-9]/g, '')
