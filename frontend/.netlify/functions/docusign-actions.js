@@ -127,6 +127,10 @@ async function createEnvelope(accessToken, cfg, payload) {
         routingOrder: String(s.routingOrder || idx + 1),
         clientUserId: s.clientUserId || undefined, // necessário para embedded signing
         tabs: s.tabs || undefined, // permitir tabs pré-montadas
+        // Forward advanced signature and delivery options when provided by the client
+        recipientSignatureProviders: s.recipientSignatureProviders || undefined,
+        deliveryMethod: s.deliveryMethod || undefined,
+        phoneNumber: s.phoneNumber || undefined,
     }))
 
     const envelopeDefinition = new docusign.EnvelopeDefinition()
