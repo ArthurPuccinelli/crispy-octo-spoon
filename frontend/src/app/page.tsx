@@ -19,6 +19,7 @@ export default function Home() {
   const [advancedPhone, setAdvancedPhone] = useState('')
   const [advancedSubmitting, setAdvancedSubmitting] = useState(false)
   const [advancedDeliveryMethod, setAdvancedDeliveryMethod] = useState<'now' | 'whatsapp'>('now')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Função para criar documento HTML de demonstração com âncora \saes\
   const createDemoDocument = (name: string, email: string, cpf: string, phone?: string) => {
@@ -278,6 +279,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            {/* Desktop nav */}
             <nav className="hidden md:flex items-center space-x-6">
               <a href="/" className="text-white/80 hover:text-white transition-all duration-300 hover:scale-105 text-sm">Início</a>
               <a href="/clientes" className="text-white/80 hover:text-white transition-all duration-300 hover:scale-105 text-sm">Clientes</a>
@@ -286,8 +288,37 @@ export default function Home() {
                 Abra sua conta
               </button>
             </nav>
+            {/* Mobile menu button */}
+            <button
+              type="button"
+              aria-label="Abrir menu"
+              aria-expanded={isMobileMenuOpen}
+              onClick={() => setIsMobileMenuOpen(v => !v)}
+              className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-white/80 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            >
+              <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
           </div>
         </div>
+        {/* Mobile nav panel */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t border-white/10 bg-black/30">
+            <div className="px-4 py-3 space-y-1">
+              <a href="/" className="block px-3 py-2 rounded-md text-base font-medium text-white/80 hover:text-white hover:bg-white/10">Início</a>
+              <a href="/clientes" className="block px-3 py-2 rounded-md text-base font-medium text-white/80 hover:text-white hover:bg-white/10">Clientes</a>
+              <a href="/admin" className="block px-3 py-2 rounded-md text-base font-medium text-white/80 hover:text-white hover:bg-white/10">Administração</a>
+              <button className="w-full mt-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-semibold rounded-lg hover:from-teal-600 hover:to-cyan-600 transition-colors">
+                Abra sua conta
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
