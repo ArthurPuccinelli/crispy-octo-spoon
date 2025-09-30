@@ -3,6 +3,10 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
+
+const BackgroundScene = dynamic(() => import('../components/three/BackgroundScene'), { ssr: false })
+import Tilt3D from '../components/ui/Tilt3D'
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -19,6 +23,8 @@ export default function Home() {
   const [advancedPhone, setAdvancedPhone] = useState('')
   const [advancedSubmitting, setAdvancedSubmitting] = useState(false)
   const [advancedDeliveryMethod, setAdvancedDeliveryMethod] = useState<'now' | 'whatsapp' | 'sms'>('now')
+  const [phoneError, setPhoneError] = useState('')
+  const [cpfError, setCpfError] = useState('')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Função para criar documento HTML de demonstração com âncora \saes\
@@ -78,6 +84,30 @@ export default function Home() {
     rev = 11 - (sum % 11)
     if (rev === 10 || rev === 11) rev = 0
     return rev === parseInt(cpf.charAt(10))
+  }
+
+  const validatePhone = (phone: string): string => {
+    if (!phone) return ''
+    const digits = phone.replace(/[^0-9]/g, '')
+    let normalized = digits
+    if (!normalized.startsWith('55') && (normalized.length >= 10 && normalized.length <= 11)) {
+      normalized = `55${normalized}`
+    }
+    const brE164 = /^55\d{10,13}$/
+    if (!brE164.test(normalized)) {
+      return 'Telefone inválido. Use DDI Brasil 55 + número (ex.: 5511999999999)'
+    }
+    return ''
+  }
+
+  const validateCpfRealTime = (cpf: string): string => {
+    if (!cpf) return ''
+    const cleanCpf = cpf.replace(/[^0-9]/g, '')
+    if (cleanCpf.length < 11) return ''
+    if (!validateCpf(cleanCpf)) {
+      return 'CPF inválido'
+    }
+    return ''
   }
 
   const handlePixConhecaMais = async () => {
@@ -254,7 +284,8 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 overflow-hidden">
+      <BackgroundScene />
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -346,7 +377,7 @@ export default function Home() {
             {/* Produtos e Serviços Financeiros */}
             <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               {/* Conta Digital */}
-              <div className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-teal-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-teal-500/25">
+              <Tilt3D className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-teal-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-teal-500/25">
                 <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-cyan-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-20 h-20 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -387,10 +418,10 @@ export default function Home() {
                     </span>
                   </button>
                 </div>
-              </div>
+              </Tilt3D>
 
               {/* Investimentos */}
-              <div className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-emerald-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/25">
+              <Tilt3D className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-emerald-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/25">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -431,10 +462,10 @@ export default function Home() {
                     </span>
                   </button>
                 </div>
-              </div>
+              </Tilt3D>
 
               {/* Empréstimos */}
-              <div className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25">
+              <Tilt3D className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-cyan-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/25">
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -475,7 +506,7 @@ export default function Home() {
                     </span>
                   </button>
                 </div>
-              </div>
+              </Tilt3D>
 
               {/* Seguros */}
               <div className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-purple-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25">
@@ -522,7 +553,7 @@ export default function Home() {
               </div>
 
               {/* PIX */}
-              <div className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-orange-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/25">
+              <Tilt3D className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-orange-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-orange-500/25">
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -563,10 +594,10 @@ export default function Home() {
                     </span>
                   </button>
                 </div>
-              </div>
+              </Tilt3D>
 
               {/* Cartão de Crédito */}
-              <div className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-indigo-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/25">
+              <Tilt3D className="group relative bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-indigo-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/25">
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-20 h-20 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -607,7 +638,7 @@ export default function Home() {
                     </span>
                   </button>
                 </div>
-              </div>
+              </Tilt3D>
             </div>
 
             {/* Features Grid */}
@@ -938,6 +969,8 @@ export default function Home() {
                     setAdvancedEmail('')
                     setAdvancedCpf('')
                     setAdvancedPhone('')
+                    setPhoneError('')
+                    setCpfError('')
                   } catch (err: any) {
                     alert(`Erro: ${err?.message || 'desconhecido'}`)
                   } finally {
@@ -983,12 +1016,18 @@ export default function Home() {
                         if (!digits.startsWith('55') && (digits.length >= 10 && digits.length <= 11)) {
                           digits = `55${digits}`
                         }
-                        setAdvancedPhone(digits.slice(0, 15))
+                        const phone = digits.slice(0, 15)
+                        setAdvancedPhone(phone)
+                        setPhoneError(validatePhone(phone))
                       }}
                       required={advancedDeliveryMethod === 'whatsapp' || advancedDeliveryMethod === 'sms'}
-                      className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${phoneError ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-emerald-500'
+                        }`}
                       placeholder="5511999999999"
                     />
+                    {phoneError && (
+                      <p className="mt-1 text-sm text-red-600">{phoneError}</p>
+                    )}
                   </div>
                 )}
                 <div>
@@ -1000,13 +1039,19 @@ export default function Home() {
                     value={advancedCpf}
                     onChange={(e) => {
                       const digits = e.target.value.replace(/[^0-9]/g, '')
-                      setAdvancedCpf(digits.slice(0, 11))
+                      const cpf = digits.slice(0, 11)
+                      setAdvancedCpf(cpf)
+                      setCpfError(validateCpfRealTime(cpf))
                     }}
                     maxLength={11}
                     required
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${cpfError ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-emerald-500'
+                      }`}
                     placeholder="00000000000"
                   />
+                  {cpfError && (
+                    <p className="mt-1 text-sm text-red-600">{cpfError}</p>
+                  )}
                 </div>
                 <div className="flex justify-end space-x-3 pt-2">
                   <button
@@ -1018,7 +1063,7 @@ export default function Home() {
                   </button>
                   <button
                     type="submit"
-                    disabled={advancedSubmitting}
+                    disabled={advancedSubmitting || phoneError !== '' || cpfError !== ''}
                     className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {advancedSubmitting ? 'Enviando...' : 'Continuar'}
