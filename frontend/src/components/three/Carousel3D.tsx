@@ -3,7 +3,7 @@
 import * as THREE from 'three'
 import { useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Environment, Image, ScrollControls, Text, useScroll, useTexture } from '@react-three/drei'
+import { Environment, Image, ScrollControls, Text, useScroll } from '@react-three/drei'
 import { easing } from 'maath'
 import './Util'
 
@@ -108,25 +108,6 @@ function Card({ url, title, accent, theme, ...props }: { url: string; title: str
     )
 }
 
-function Banner({ colorFrom, colorTo, ...props }: { colorFrom?: string; colorTo?: string } & any) {
-    const ref = useRef<any>(null)
-    const texture = useTexture('/work_.png')
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-    const scroll = useScroll()
-    useFrame((_, delta) => {
-        if (!ref.current) return
-        ref.current.material.time.value += Math.abs(scroll.delta) * 4
-        ref.current.material.map.offset.x += delta / 2
-    })
-    return (
-        <mesh ref={ref} {...props}>
-            <cylinderGeometry args={[1.6, 1.6, 0.14, 128, 16, true]} />
-            {/* @ts-ignore - provided via extend in Util.ts */}
-            <meshSineMaterial map={texture} map-anisotropy={16} map-repeat={[30, 1]} side={THREE.DoubleSide} toneMapped={false} />
-        </mesh>
-    )
-}
-
 export default function Carousel3D({ theme }: { theme?: CarouselTheme }) {
     const t: CarouselTheme = {
         accentColor: theme?.accentColor ?? '#14b8a6',
@@ -146,7 +127,6 @@ export default function Carousel3D({ theme }: { theme?: CarouselTheme }) {
                 <Rig rotation={[0, 0, 0.15]}>
                     <Carousel theme={t} />
                 </Rig>
-                <Banner colorFrom={t.gradientFrom} colorTo={t.gradientTo} position={[0, -0.15, 0]} />
             </ScrollControls>
             <Environment preset="dawn" background blur={0.5} />
         </Canvas>
