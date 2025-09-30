@@ -14,6 +14,7 @@ type CarouselTheme = {
     gradientFrom?: string
     gradientTo?: string
     hoverScale?: number
+    baseScale?: number
     bendRadius?: number
     zoom?: { hovered: number; idle: number }
 }
@@ -77,10 +78,11 @@ function Card({ url, title, accent, theme, ...props }: { url: string; title: str
     const pointerOut = () => setHovered(false)
     useFrame((_, delta) => {
         if (!ref.current) return
-        const hoverScale = theme.hoverScale ?? 1.15
+        const hoverScale = theme.hoverScale ?? 1.05
+        const baseScale = theme.baseScale ?? 0.75
         const bend = hovered ? (theme.bendRadius ?? 0.25) : 0.1
         const zoom = hovered ? (theme.zoom?.hovered ?? 1) : (theme.zoom?.idle ?? 1.5)
-        easing.damp3(ref.current.scale as any, hovered ? hoverScale : 1, 0.1, delta)
+        easing.damp3(ref.current.scale as any, hovered ? baseScale * hoverScale : baseScale, 0.15, delta)
         easing.damp(ref.current.material as any, 'radius', bend, 0.2, delta)
         easing.damp(ref.current.material as any, 'zoom', zoom, 0.2, delta)
     })
@@ -89,12 +91,12 @@ function Card({ url, title, accent, theme, ...props }: { url: string; title: str
             <AccentFrame color={accent ?? theme.accentColor ?? '#10b981'} />
             <Image ref={ref} url={url} transparent side={THREE.DoubleSide} onPointerOver={pointerOver} onPointerOut={pointerOut}>
                 {/* @ts-ignore - provided via extend in Util.ts */}
-                <bentPlaneGeometry args={[0.1, 1, 1, 20, 20]} />
+                <bentPlaneGeometry args={[0.1, 0.9, 0.9, 20, 20]} />
             </Image>
             <Text
-                position={[0, -0.85, 0.06]}
-                fontSize={0.12}
-                color={accent ?? theme.accentColor ?? '#10b981'}
+                position={[0, -0.62, 0.08]}
+                fontSize={0.14}
+                color={"#ffffff"}
                 anchorX="center"
                 anchorY="middle"
                 outlineWidth={0.005}
@@ -130,7 +132,8 @@ export default function Carousel3D({ theme }: { theme?: CarouselTheme }) {
         accentColor: theme?.accentColor ?? '#14b8a6',
         gradientFrom: theme?.gradientFrom ?? '#14b8a6',
         gradientTo: theme?.gradientTo ?? '#06b6d4',
-        hoverScale: theme?.hoverScale ?? 1.12,
+        hoverScale: theme?.hoverScale ?? 1.05,
+        baseScale: theme?.baseScale ?? 0.75,
         bendRadius: theme?.bendRadius ?? 0.22,
         zoom: theme?.zoom ?? { hovered: 1, idle: 1.45 },
         images: theme?.images

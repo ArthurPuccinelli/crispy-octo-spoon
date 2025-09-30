@@ -371,7 +371,8 @@ export default function Home() {
             accentColor: '#14b8a6', // teal-500
             gradientFrom: '#14b8a6',
             gradientTo: '#06b6d4',
-            hoverScale: 1.18,
+            hoverScale: 1.05,
+            baseScale: 0.75,
             bendRadius: 0.26,
             zoom: { hovered: 0.95, idle: 1.35 },
             images: [],
