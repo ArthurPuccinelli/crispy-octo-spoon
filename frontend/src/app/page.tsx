@@ -374,6 +374,7 @@ export default function Home() {
             hoverScale: 1.18,
             bendRadius: 0.26,
             zoom: { hovered: 0.95, idle: 1.35 },
+            images: [],
             cards: [
               { image: '/img1_.jpg', title: 'Conta Digital', color: '#14b8a6' },      // teal-500
               { image: '/img2_.jpg', title: 'Investimentos', color: '#10b981' },     // emerald-500

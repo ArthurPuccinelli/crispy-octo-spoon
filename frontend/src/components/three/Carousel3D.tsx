@@ -32,22 +32,24 @@ function Rig(props: any) {
     return <group ref={ref} {...props} />
 }
 
-function Carousel({ radius = 1.4, count = 8, theme }: { radius?: number; count?: number; theme: CarouselTheme }) {
+function Carousel({ radius = 1.4, count, theme }: { radius?: number; count?: number; theme: CarouselTheme }) {
     const imgs = theme.images && theme.images.length > 0 ? theme.images : Array.from({ length: 10 }, (_, i) => `/img${i + 1}_.jpg`)
-    const cards = theme.cards && theme.cards.length > 0
+    const fallbackCount = typeof count === 'number' && count > 0 ? count : imgs.length
+    const cards: { image: string; title: string; color?: string }[] = theme.cards && theme.cards.length > 0
         ? theme.cards
-        : Array.from({ length: count }, (_, i) => ({ image: imgs[i % imgs.length], title: `Card ${i + 1}` }))
+        : Array.from({ length: fallbackCount }, (_, i) => ({ image: imgs[i % imgs.length], title: `Card ${i + 1}` }))
+    const total = typeof count === 'number' && count > 0 ? count : cards.length
     return (
         <>
-            {Array.from({ length: count }, (_, i) => (
+            {Array.from({ length: total } as { length: number }, (_, i) => (
                 <Card
                     key={i}
                     url={cards[i % cards.length].image}
                     title={cards[i % cards.length].title}
                     accent={cards[i % cards.length].color ?? theme.accentColor}
                     theme={theme}
-                    position={[Math.sin((i / count) * Math.PI * 2) * radius, 0, Math.cos((i / count) * Math.PI * 2) * radius] as any}
-                    rotation={[0, Math.PI + (i / count) * Math.PI * 2, 0] as any}
+                    position={[Math.sin((i / total) * Math.PI * 2) * radius, 0, Math.cos((i / total) * Math.PI * 2) * radius] as any}
+                    rotation={[0, Math.PI + (i / total) * Math.PI * 2, 0] as any}
                 />
             ))}
         </>
@@ -57,16 +59,11 @@ function Carousel({ radius = 1.4, count = 8, theme }: { radius?: number; count?:
 function AccentFrame({ color }: { color: string }) {
     // Moldura levemente maior atrás do card para reforçar identidade visual
     return (
-        <group position={[0, 0, -0.01]}>
+        <mesh position={[0, 0, -0.02]}>
             {/* @ts-ignore - provided via extend in Util.ts */}
-            <bentPlaneGeometry args={[0.1, 1.05, 1.05, 20, 20]} />
-            {/* plane via mesh + basic material com cor de acento */}
-            <mesh>
-                {/* @ts-ignore - provided via extend in Util.ts */}
-                <bentPlaneGeometry args={[0.1, 1.05, 1.05, 20, 20]} />
-                <meshBasicMaterial color={color} transparent opacity={0.15} />
-            </mesh>
-        </group>
+            <bentPlaneGeometry args={[0.1, 1.06, 1.06, 20, 20]} />
+            <meshBasicMaterial color={color} transparent opacity={0.25} />
+        </mesh>
     )
 }
 
@@ -95,7 +92,7 @@ function Card({ url, title, accent, theme, ...props }: { url: string; title: str
                 <bentPlaneGeometry args={[0.1, 1, 1, 20, 20]} />
             </Image>
             <Text
-                position={[0, -0.85, 0]}
+                position={[0, -0.85, 0.06]}
                 fontSize={0.12}
                 color={accent ?? theme.accentColor ?? '#10b981'}
                 anchorX="center"
