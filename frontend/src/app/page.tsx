@@ -374,9 +374,17 @@ export default function Home() {
             hoverScale: 1.18,
             bendRadius: 0.26,
             zoom: { hovered: 0.95, idle: 1.35 },
-            images: [
-              '/img1_.jpg', '/img2_.jpg', '/img3_.jpg', '/img4_.jpg', '/img5_.jpg',
-              '/img6_.jpg', '/img7_.jpg', '/img8_.jpg', '/img9_.jpg', '/img10_.jpg'
+            cards: [
+              { image: '/img1_.jpg', title: 'Conta Digital', color: '#14b8a6' },      // teal-500
+              { image: '/img2_.jpg', title: 'Investimentos', color: '#10b981' },     // emerald-500
+              { image: '/img3_.jpg', title: 'PIX Ilimitado', color: '#f97316' },     // orange-500
+              { image: '/img4_.jpg', title: 'Cartão de Crédito', color: '#6366f1' }, // indigo-500
+              { image: '/img5_.jpg', title: 'Seguros', color: '#a855f7' },           // purple-500
+              { image: '/img6_.jpg', title: 'Câmbio', color: '#06b6d4' },            // cyan-500
+              { image: '/img7_.jpg', title: 'Empréstimos', color: '#3b82f6' },       // blue-500
+              { image: '/img8_.jpg', title: 'Open Finance', color: '#0ea5e9' },      // sky-500
+              { image: '/img9_.jpg', title: 'Gestão de Risco', color: '#f43f5e' },   // rose-500
+              { image: '/img10_.jpg', title: 'Relatórios', color: '#94a3b8' }        // slate-400
             ]
           }} />
         </section>

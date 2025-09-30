@@ -3,12 +3,13 @@
 import * as THREE from 'three'
 import { useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Environment, Image, ScrollControls, useScroll, useTexture } from '@react-three/drei'
+import { Environment, Image, ScrollControls, Text, useScroll, useTexture } from '@react-three/drei'
 import { easing } from 'maath'
 import './Util'
 
 type CarouselTheme = {
     images?: string[]
+    cards?: { image: string; title: string; color?: string }[]
     accentColor?: string
     gradientFrom?: string
     gradientTo?: string
@@ -33,12 +34,17 @@ function Rig(props: any) {
 
 function Carousel({ radius = 1.4, count = 8, theme }: { radius?: number; count?: number; theme: CarouselTheme }) {
     const imgs = theme.images && theme.images.length > 0 ? theme.images : Array.from({ length: 10 }, (_, i) => `/img${i + 1}_.jpg`)
+    const cards = theme.cards && theme.cards.length > 0
+        ? theme.cards
+        : Array.from({ length: count }, (_, i) => ({ image: imgs[i % imgs.length], title: `Card ${i + 1}` }))
     return (
         <>
             {Array.from({ length: count }, (_, i) => (
                 <Card
                     key={i}
-                    url={imgs[i % imgs.length]}
+                    url={cards[i % cards.length].image}
+                    title={cards[i % cards.length].title}
+                    accent={cards[i % cards.length].color ?? theme.accentColor}
                     theme={theme}
                     position={[Math.sin((i / count) * Math.PI * 2) * radius, 0, Math.cos((i / count) * Math.PI * 2) * radius] as any}
                     rotation={[0, Math.PI + (i / count) * Math.PI * 2, 0] as any}
@@ -64,7 +70,7 @@ function AccentFrame({ color }: { color: string }) {
     )
 }
 
-function Card({ url, theme, ...props }: { url: string; theme: CarouselTheme } & any) {
+function Card({ url, title, accent, theme, ...props }: { url: string; title: string; accent?: string; theme: CarouselTheme } & any) {
     const ref = useRef<any>(null)
     const [hovered, setHovered] = useState(false)
     const pointerOver = (e: any) => {
@@ -83,11 +89,22 @@ function Card({ url, theme, ...props }: { url: string; theme: CarouselTheme } & 
     })
     return (
         <group {...props}>
-            <AccentFrame color={theme.accentColor ?? '#10b981'} />
+            <AccentFrame color={accent ?? theme.accentColor ?? '#10b981'} />
             <Image ref={ref} url={url} transparent side={THREE.DoubleSide} onPointerOver={pointerOver} onPointerOut={pointerOut}>
                 {/* @ts-ignore - provided via extend in Util.ts */}
                 <bentPlaneGeometry args={[0.1, 1, 1, 20, 20]} />
             </Image>
+            <Text
+                position={[0, -0.85, 0]}
+                fontSize={0.12}
+                color={accent ?? theme.accentColor ?? '#10b981'}
+                anchorX="center"
+                anchorY="middle"
+                outlineWidth={0.005}
+                outlineColor="#000000"
+            >
+                {title}
+            </Text>
         </group>
     )
 }
