@@ -352,7 +352,14 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative z-0 h-[60vh] border-b border-white/10">
-        <Carousel3D />
+        <Carousel3D theme={{
+          accentColor: '#14b8a6', // teal-500
+          gradientFrom: '#14b8a6',
+          gradientTo: '#06b6d4',
+          hoverScale: 1.12,
+          bendRadius: 0.22,
+          zoom: { hovered: 1.0, idle: 1.45 }
+        }} />
       </section>
       <main className="relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
