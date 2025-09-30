@@ -122,7 +122,7 @@ export default function Carousel3D({ theme }: { theme?: CarouselTheme }) {
         images: theme?.images
     }
     return (
-        <Canvas camera={{ position: [0, 0, 100], fov: 15 }}>
+        <Canvas className="!absolute inset-0 !w-full !h-full" camera={{ position: [0, 0, 100], fov: 15 }}>
             {/* @ts-ignore three-stdlib fog jsx */}
             <fog attach="fog" args={["#a79", 8.5, 12]} />
             <ScrollControls pages={4} infinite>
