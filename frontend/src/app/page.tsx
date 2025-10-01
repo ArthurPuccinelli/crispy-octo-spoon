@@ -377,16 +377,16 @@ export default function Home() {
             zoom: { hovered: 0.95, idle: 1.35 },
             images: [],
             cards: [
-              { image: '/img1_.jpg', title: 'Conta Digital', color: '#14b8a6' },      // teal-500
-              { image: '/img2_.jpg', title: 'Investimentos', color: '#10b981' },     // emerald-500
-              { image: '/img3_.jpg', title: 'PIX Ilimitado', color: '#f97316' },     // orange-500
-              { image: '/img4_.jpg', title: 'Cartão de Crédito', color: '#6366f1' }, // indigo-500
-              { image: '/img5_.jpg', title: 'Seguros', color: '#a855f7' },           // purple-500
-              { image: '/img6_.jpg', title: 'Câmbio', color: '#06b6d4' },            // cyan-500
-              { image: '/img7_.jpg', title: 'Empréstimos', color: '#3b82f6' },       // blue-500
-              { image: '/img8_.jpg', title: 'Open Finance', color: '#0ea5e9' },      // sky-500
-              { image: '/img9_.jpg', title: 'Gestão de Risco', color: '#f43f5e' },   // rose-500
-              { image: '/img10_.jpg', title: 'Relatórios', color: '#94a3b8' }        // slate-400
+              { image: '/bank-digital-account.jpg', title: 'Conta Digital', subtitle: 'Abra em minutos, zero anuidade', color: '#14b8a6' },
+              { image: '/bank-investments.jpg', title: 'Investimentos', subtitle: 'A partir de R$ 1,00 com taxa zero', color: '#10b981' },
+              { image: '/bank-pix.jpg', title: 'PIX Ilimitado', subtitle: '24/7 gratuito e instantâneo', color: '#f97316' },
+              { image: '/bank-credit-card.jpg', title: 'Cartão de Crédito', subtitle: 'Cashback e pontos', color: '#6366f1' },
+              { image: '/bank-insurance.jpg', title: 'Seguros', subtitle: 'Vida, auto, residencial', color: '#a855f7' },
+              { image: '/bank-fx.jpg', title: 'Câmbio', subtitle: 'Cotações em tempo real', color: '#06b6d4' },
+              { image: '/bank-loans.jpg', title: 'Empréstimos', subtitle: 'Taxas competitivas, aprovação rápida', color: '#3b82f6' },
+              { image: '/bank-open-finance.jpg', title: 'Open Finance', subtitle: 'Integração e controle de dados', color: '#0ea5e9' },
+              { image: '/bank-risk.jpg', title: 'Gestão de Risco', subtitle: 'Monitoramento e prevenção', color: '#f43f5e' },
+              { image: '/bank-reports.jpg', title: 'Relatórios', subtitle: 'Insights e performance', color: '#94a3b8' }
             ]
           }} />
         </section>

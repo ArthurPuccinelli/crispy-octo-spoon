@@ -9,7 +9,7 @@ import './Util'
 
 type CarouselTheme = {
     images?: string[]
-    cards?: { image: string; title: string; color?: string }[]
+    cards?: { image: string; title: string; subtitle?: string; color?: string }[]
     accentColor?: string
     gradientFrom?: string
     gradientTo?: string
@@ -36,7 +36,7 @@ function Rig(props: any) {
 function Carousel({ radius = 1.4, count, theme }: { radius?: number; count?: number; theme: CarouselTheme }) {
     const imgs = theme.images && theme.images.length > 0 ? theme.images : Array.from({ length: 10 }, (_, i) => `/img${i + 1}_.jpg`)
     const fallbackCount = typeof count === 'number' && count > 0 ? count : imgs.length
-    const cards: { image: string; title: string; color?: string }[] = theme.cards && theme.cards.length > 0
+    const cards: { image: string; title: string; subtitle?: string; color?: string }[] = theme.cards && theme.cards.length > 0
         ? theme.cards
         : Array.from({ length: fallbackCount }, (_, i) => ({ image: imgs[i % imgs.length], title: `Card ${i + 1}` }))
     const total = typeof count === 'number' && count > 0 ? count : cards.length
@@ -47,6 +47,7 @@ function Carousel({ radius = 1.4, count, theme }: { radius?: number; count?: num
                     key={i}
                     url={cards[i % cards.length].image}
                     title={cards[i % cards.length].title}
+                    subtitle={cards[i % cards.length].subtitle}
                     accent={cards[i % cards.length].color ?? theme.accentColor}
                     theme={theme}
                     position={[Math.sin((i / total) * Math.PI * 2) * radius, 0, Math.cos((i / total) * Math.PI * 2) * radius] as any}
@@ -68,7 +69,7 @@ function AccentFrame({ color }: { color: string }) {
     )
 }
 
-function Card({ url, title, accent, theme, ...props }: { url: string; title: string; accent?: string; theme: CarouselTheme } & any) {
+function Card({ url, title, subtitle, accent, theme, ...props }: { url: string; title: string; subtitle?: string; accent?: string; theme: CarouselTheme } & any) {
     const ref = useRef<any>(null)
     const [hovered, setHovered] = useState(false)
     const pointerOver = (e: any) => {
@@ -94,7 +95,7 @@ function Card({ url, title, accent, theme, ...props }: { url: string; title: str
                 <bentPlaneGeometry args={[0.1, 0.9, 0.9, 20, 20]} />
             </Image>
             <Text
-                position={[0, -0.62, 0.08]}
+                position={[0, -0.58, 0.08]}
                 fontSize={0.14}
                 color={"#ffffff"}
                 anchorX="center"
@@ -104,6 +105,17 @@ function Card({ url, title, accent, theme, ...props }: { url: string; title: str
             >
                 {title}
             </Text>
+            {subtitle && (
+                <Text
+                    position={[0, -0.73, 0.08]}
+                    fontSize={0.09}
+                    color={"#cbd5e1"}
+                    anchorX="center"
+                    anchorY="middle"
+                >
+                    {subtitle}
+                </Text>
+            )}
         </group>
     )
 }
