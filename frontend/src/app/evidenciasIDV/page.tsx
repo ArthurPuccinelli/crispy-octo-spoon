@@ -164,6 +164,80 @@ export default function EvidenciasIDVPage() {
         return typeMap[eventType] || eventType
     }
 
+    // Agrupar audit events por recipient (quando disponível)
+    const groupAuditEventsByRecipient = (events: AuditEvent[]) => {
+        const grouped: Record<string, { recipient: string; email?: string; events: AuditEvent[] }> = {}
+        const ungrouped: AuditEvent[] = []
+
+        events.forEach(event => {
+            // Tentar encontrar recipient ID nos eventFields
+            const recipientField = event.eventFields?.find(f =>
+                f.name?.toLowerCase().includes('recipient') ||
+                f.name?.toLowerCase().includes('destinatario')
+            )
+
+            const recipientId = recipientField?.value || event.user?.userId
+            const recipientName = event.user?.userName || event.user?.email || recipientId
+            const recipientEmail = event.user?.email
+
+            if (recipientId) {
+                if (!grouped[recipientId]) {
+                    grouped[recipientId] = {
+                        recipient: recipientName || 'Desconhecido',
+                        email: recipientEmail,
+                        events: []
+                    }
+                }
+                grouped[recipientId].events.push(event)
+            } else {
+                ungrouped.push(event)
+            }
+        })
+
+        return { grouped, ungrouped }
+    }
+
+    // Agrupar ID Evidence events e media por recipient
+    const groupIDEvidenceByRecipient = (events: IDEvidenceEvent[], media: IDEvidenceMedia[]) => {
+        const grouped: Record<string, {
+            recipientIdGuid: string
+            recipientName: string
+            recipientEmail?: string
+            events: IDEvidenceEvent[]
+            media: IDEvidenceMedia[]
+        }> = {}
+
+        events.forEach(event => {
+            const recipientId = event.recipientIdGuid || 'unknown'
+            if (!grouped[recipientId]) {
+                grouped[recipientId] = {
+                    recipientIdGuid: recipientId,
+                    recipientName: event.recipientName || event.recipientEmail || 'Desconhecido',
+                    recipientEmail: event.recipientEmail,
+                    events: [],
+                    media: []
+                }
+            }
+            grouped[recipientId].events.push(event)
+        })
+
+        media.forEach(mediaItem => {
+            const recipientId = mediaItem.recipientIdGuid || 'unknown'
+            if (!grouped[recipientId]) {
+                grouped[recipientId] = {
+                    recipientIdGuid: recipientId,
+                    recipientName: mediaItem.recipientName || mediaItem.recipientEmail || 'Desconhecido',
+                    recipientEmail: mediaItem.recipientEmail,
+                    events: [],
+                    media: []
+                }
+            }
+            grouped[recipientId].media.push(mediaItem)
+        })
+
+        return grouped
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900">
             {/* Animated Background Elements */}
@@ -257,216 +331,296 @@ export default function EvidenciasIDVPage() {
                     {/* Results Section */}
                     {(auditEvents !== null || idEvidenceData !== null) && (
                         <div className="space-y-8">
-                            {/* Audit Events Section */}
-                            {auditEvents !== null && (
-                                <div className="glass-dark rounded-2xl p-8 backdrop-blur-lg border border-white/10 shadow-2xl">
-                                    <div className="mb-6">
-                                        <h2 className="text-2xl font-bold text-white mb-2">
-                                            Eventos de Auditoria do Envelope
-                                        </h2>
-                                        <p className="text-white/70">
-                                            {auditEvents.length} {auditEvents.length === 1 ? 'evento encontrado' : 'eventos encontrados'}
-                                        </p>
-                                    </div>
+                            {/* Agrupar e exibir por destinatário */}
+                            {(() => {
+                                const auditGrouped = auditEvents ? groupAuditEventsByRecipient(auditEvents) : { grouped: {}, ungrouped: [] }
+                                const idEvidenceGrouped = idEvidenceData?.events ? groupIDEvidenceByRecipient(
+                                    idEvidenceData.events || [],
+                                    idEvidenceData.media || []
+                                ) : {}
 
-                                    <div className="space-y-6">
-                                        {auditEvents.map((event, index) => (
-                                            <div
-                                                key={index}
-                                                className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-all"
-                                            >
-                                                <div className="flex items-start justify-between mb-4">
-                                                    <div>
-                                                        <h3 className="text-lg font-semibold text-white mb-1">
-                                                            {getEventTypeLabel(event.eventType)}
-                                                        </h3>
-                                                        {event.eventDescription && (
-                                                            <p className="text-white/70 text-sm">
-                                                                {event.eventDescription}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                    {event.eventStatus && (
-                                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${event.eventStatus === 'success' || event.eventStatus === 'completed'
-                                                            ? 'bg-green-500/20 text-green-300'
-                                                            : event.eventStatus === 'failed'
-                                                                ? 'bg-red-500/20 text-red-300'
-                                                                : 'bg-yellow-500/20 text-yellow-300'
-                                                            }`}>
-                                                            {event.eventStatus}
-                                                        </span>
-                                                    )}
-                                                </div>
+                                // Combinar todos os recipient IDs únicos
+                                const allRecipientIds = new Set([
+                                    ...Object.keys(auditGrouped.grouped),
+                                    ...Object.keys(idEvidenceGrouped),
+                                ])
 
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                                    <div>
-                                                        <p className="text-white/50 text-xs mb-1">Data/Hora</p>
-                                                        <p className="text-white font-medium">
-                                                            {formatDate(event.eventDate)}
-                                                        </p>
-                                                    </div>
-                                                    {event.user && (
-                                                        <div>
-                                                            <p className="text-white/50 text-xs mb-1">Usuário</p>
-                                                            <p className="text-white font-medium">
-                                                                {event.user.userName || event.user.email || event.user.userId || 'N/A'}
-                                                            </p>
-                                                            {event.user.email && event.user.userName && event.user.email !== event.user.userName && (
-                                                                <p className="text-white/60 text-sm mt-1">
-                                                                    {event.user.email}
-                                                                </p>
-                                                            )}
-                                                        </div>
-                                                    )}
-                                                </div>
+                                return (
+                                    <>
+                                        {/* Seções agrupadas por destinatário */}
+                                        {Array.from(allRecipientIds).map((recipientId) => {
+                                            const auditGroup = auditGrouped.grouped[recipientId]
+                                            const idEvidenceGroup = idEvidenceGrouped[recipientId]
 
-                                                {event.eventFields && event.eventFields.length > 0 && (
-                                                    <div className="mt-4 pt-4 border-t border-white/10">
-                                                        <p className="text-white/50 text-xs mb-2">Detalhes Adicionais</p>
-                                                        <div className="space-y-2">
-                                                            {event.eventFields.map((field, fieldIndex) => (
-                                                                field.name && field.value && (
-                                                                    <div key={fieldIndex} className="flex justify-between items-start">
-                                                                        <span className="text-white/70 text-sm font-medium">
-                                                                            {field.name}:
-                                                                        </span>
-                                                                        <span className="text-white text-sm text-right ml-4 flex-1">
-                                                                            {field.value}
-                                                                        </span>
-                                                                    </div>
-                                                                )
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
+                                            // Determinar informações do recipient
+                                            const recipientName = idEvidenceGroup?.recipientName || auditGroup?.recipient || 'Desconhecido'
+                                            const recipientEmail = idEvidenceGroup?.recipientEmail || auditGroup?.email
+                                            const recipientGuid = idEvidenceGroup?.recipientIdGuid || recipientId
 
-                                    {auditEvents.length === 0 && (
-                                        <div className="text-center py-12">
-                                            <p className="text-white/70">
-                                                Nenhum evento de auditoria encontrado para este envelope.
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                                            // Contar totais
+                                            const totalAuditEvents = auditGroup?.events.length || 0
+                                            const totalIDEvidenceEvents = idEvidenceGroup?.events.length || 0
+                                            const totalMedia = idEvidenceGroup?.media.length || 0
 
-                            {/* ID Evidence Events Section */}
-                            {idEvidenceData !== null && (
-                                <div className="glass-dark rounded-2xl p-8 backdrop-blur-lg border border-white/10 shadow-2xl">
-                                    <div className="mb-6">
-                                        <h2 className="text-2xl font-bold text-white mb-2">
-                                            Eventos de ID Verification
-                                        </h2>
-                                        <p className="text-white/70">
-                                            {idEvidenceData.events?.length || 0} {idEvidenceData.events?.length === 1 ? 'evento encontrado' : 'eventos encontrados'}
-                                            {idEvidenceData.media && idEvidenceData.media.length > 0 && (
-                                                <> • {idEvidenceData.media.length} {idEvidenceData.media.length === 1 ? 'imagem encontrada' : 'imagens encontradas'}</>
-                                            )}
-                                        </p>
-                                    </div>
-
-                                    <div className="space-y-6">
-                                        {idEvidenceData.events && idEvidenceData.events.length > 0 ? (
-                                            idEvidenceData.events.map((event, index) => {
-                                                // Encontrar mídia associada a este evento
-                                                const eventMedia = idEvidenceData.media?.filter(
-                                                    m => m.eventId === (event.id || event.eventId)
-                                                ) || []
-
-                                                return (
-                                                    <div
-                                                        key={index}
-                                                        className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-all"
-                                                    >
+                                            return (
+                                                <div key={recipientId} className="glass-dark rounded-2xl p-8 backdrop-blur-lg border border-white/10 shadow-2xl">
+                                                    {/* Header do Destinatário */}
+                                                    <div className="mb-8 pb-6 border-b border-white/10">
                                                         <div className="flex items-start justify-between mb-4">
                                                             <div>
-                                                                <h3 className="text-lg font-semibold text-white mb-1">
-                                                                    {event.type || 'Evento de ID Verification'}
-                                                                </h3>
-                                                                {event.status && (
-                                                                    <p className="text-white/60 text-sm mt-1">
-                                                                        Status: {event.status}
+                                                                <h2 className="text-3xl font-bold text-white mb-2">
+                                                                    {recipientName}
+                                                                </h2>
+                                                                {recipientEmail && (
+                                                                    <p className="text-white/70 text-lg mb-2">
+                                                                        {recipientEmail}
                                                                     </p>
                                                                 )}
-                                                            </div>
-                                                            {event.status && (
-                                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${event.status === 'success' || event.status === 'completed' || event.status === 'passed'
-                                                                        ? 'bg-green-500/20 text-green-300'
-                                                                        : event.status === 'failed' || event.status === 'rejected'
-                                                                            ? 'bg-red-500/20 text-red-300'
-                                                                            : 'bg-yellow-500/20 text-yellow-300'
-                                                                    }`}>
-                                                                    {event.status}
-                                                                </span>
-                                                            )}
-                                                        </div>
-
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                                            <div>
-                                                                <p className="text-white/50 text-xs mb-1">Data/Hora</p>
-                                                                <p className="text-white font-medium">
-                                                                    {formatDate(event.timestamp)}
+                                                                <p className="text-white/50 text-sm">
+                                                                    Recipient ID: {recipientGuid}
                                                                 </p>
                                                             </div>
-                                                            {(event.recipientName || event.recipientEmail) && (
-                                                                <div>
-                                                                    <p className="text-white/50 text-xs mb-1">Destinatário</p>
-                                                                    <p className="text-white font-medium">
-                                                                        {event.recipientName || event.recipientEmail || 'N/A'}
-                                                                    </p>
-                                                                    {event.recipientEmail && event.recipientName && (
-                                                                        <p className="text-white/60 text-sm mt-1">
-                                                                            {event.recipientEmail}
-                                                                        </p>
+                                                            <div className="text-right">
+                                                                <div className="flex flex-col gap-2">
+                                                                    {totalAuditEvents > 0 && (
+                                                                        <span className="px-3 py-1 bg-teal-500/20 text-teal-300 rounded-full text-xs font-semibold">
+                                                                            {totalAuditEvents} Evento{totalAuditEvents > 1 ? 's' : ''} de Auditoria
+                                                                        </span>
+                                                                    )}
+                                                                    {totalIDEvidenceEvents > 0 && (
+                                                                        <span className="px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full text-xs font-semibold">
+                                                                            {totalIDEvidenceEvents} Evento{totalIDEvidenceEvents > 1 ? 's' : ''} IDV
+                                                                        </span>
+                                                                    )}
+                                                                    {totalMedia > 0 && (
+                                                                        <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-xs font-semibold">
+                                                                            {totalMedia} Evidência{totalMedia > 1 ? 's' : ''} Visual{totalMedia > 1 ? 'is' : ''}
+                                                                        </span>
                                                                     )}
                                                                 </div>
-                                                            )}
+                                                            </div>
                                                         </div>
+                                                    </div>
 
-                                                        {/* Exibir campos adicionais do evento */}
-                                                        {Object.keys(event).filter(key =>
-                                                            !['id', 'eventId', 'type', 'status', 'timestamp', 'recipientIdGuid', 'recipientName', 'recipientEmail'].includes(key)
-                                                        ).length > 0 && (
-                                                                <div className="mt-4 pt-4 border-t border-white/10">
-                                                                    <p className="text-white/50 text-xs mb-2">Detalhes Adicionais</p>
-                                                                    <div className="space-y-2">
-                                                                        {Object.entries(event)
-                                                                            .filter(([key]) => !['id', 'eventId', 'type', 'status', 'timestamp', 'recipientIdGuid', 'recipientName', 'recipientEmail'].includes(key))
-                                                                            .map(([key, value]) => (
-                                                                                <div key={key} className="flex justify-between items-start">
-                                                                                    <span className="text-white/70 text-sm font-medium">
-                                                                                        {key}:
-                                                                                    </span>
-                                                                                    <span className="text-white text-sm text-right ml-4 flex-1">
-                                                                                        {typeof value === 'object' ? JSON.stringify(value) : String(value)}
-                                                                                    </span>
+                                                    <div className="space-y-10">
+                                                        {/* Seção de Evidências Visuais do IDV (destacar primeiro) */}
+                                                        {idEvidenceGroup && totalMedia > 0 && (
+                                                            <div>
+                                                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                                                                    <span className="text-emerald-400">📸</span>
+                                                                    Evidências Visuais de ID Verification
+                                                                    <span className="text-white/50 text-lg font-normal">
+                                                                        ({totalMedia})
+                                                                    </span>
+                                                                </h3>
+                                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                                    {idEvidenceGroup.media.map((media, mediaIndex) => (
+                                                                        <div key={mediaIndex} className="relative group">
+                                                                            <div className="bg-white/5 rounded-lg p-4 border border-white/10 hover:border-emerald-400/50 transition-all">
+                                                                                {media.base64 && (
+                                                                                    <img
+                                                                                        src={`data:${media.contentType || 'image/jpeg'};base64,${media.base64}`}
+                                                                                        alt={`Evidência IDV ${mediaIndex + 1}`}
+                                                                                        className="w-full rounded-lg border border-white/20 object-contain bg-white/5 max-h-80 cursor-pointer hover:scale-105 transition-transform"
+                                                                                        onClick={() => window.open(`data:${media.contentType || 'image/jpeg'};base64,${media.base64}`, '_blank')}
+                                                                                    />
+                                                                                )}
+                                                                                <div className="mt-3 pt-3 border-t border-white/10">
+                                                                                    <p className="text-white/70 text-xs">
+                                                                                        Evidência {mediaIndex + 1}
+                                                                                    </p>
+                                                                                    {media.size && (
+                                                                                        <p className="text-white/50 text-xs mt-1">
+                                                                                            {(media.size / 1024).toFixed(2)} KB
+                                                                                        </p>
+                                                                                    )}
+                                                                                    {media.eventId && (
+                                                                                        <p className="text-white/40 text-xs mt-1 font-mono">
+                                                                                            Event: {media.eventId.substring(0, 8)}...
+                                                                                        </p>
+                                                                                    )}
                                                                                 </div>
-                                                                            ))}
-                                                                    </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
                                                                 </div>
-                                                            )}
+                                                            </div>
+                                                        )}
 
-                                                        {/* Exibir imagens associadas */}
-                                                        {eventMedia.length > 0 && (
-                                                            <div className="mt-4 pt-4 border-t border-white/10">
-                                                                <p className="text-white/50 text-xs mb-3">Evidências Visuais</p>
-                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                                    {eventMedia.map((media, mediaIndex) => (
-                                                                        <div key={mediaIndex} className="relative">
-                                                                            {media.base64 && (
-                                                                                <img
-                                                                                    src={`data:${media.contentType || 'image/jpeg'};base64,${media.base64}`}
-                                                                                    alt={`Evidência ${mediaIndex + 1}`}
-                                                                                    className="w-full rounded-lg border border-white/20 max-h-64 object-contain bg-white/5"
-                                                                                />
-                                                                            )}
-                                                                            {media.size && (
-                                                                                <p className="text-white/50 text-xs mt-2">
-                                                                                    Tamanho: {(media.size / 1024).toFixed(2)} KB
-                                                                                </p>
+                                                        {/* Seção de Eventos de ID Verification */}
+                                                        {idEvidenceGroup && totalIDEvidenceEvents > 0 && (
+                                                            <div>
+                                                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                                                                    <span className="text-cyan-400">🔍</span>
+                                                                    Eventos de ID Verification
+                                                                    <span className="text-white/50 text-lg font-normal">
+                                                                        ({totalIDEvidenceEvents})
+                                                                    </span>
+                                                                </h3>
+                                                                <div className="space-y-4">
+                                                                    {idEvidenceGroup.events.map((event, index) => {
+                                                                        // Encontrar mídia associada a este evento
+                                                                        const eventMedia = idEvidenceGroup.media.filter(
+                                                                            m => m.eventId === (event.id || event.eventId)
+                                                                        )
+
+                                                                        return (
+                                                                            <div
+                                                                                key={index}
+                                                                                className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-all"
+                                                                            >
+                                                                                <div className="flex items-start justify-between mb-4">
+                                                                                    <div className="flex-1">
+                                                                                        <h4 className="text-lg font-semibold text-white mb-1">
+                                                                                            {event.type || 'Evento de ID Verification'}
+                                                                                        </h4>
+                                                                                        {event.timestamp && (
+                                                                                            <p className="text-white/60 text-sm">
+                                                                                                {formatDate(event.timestamp)}
+                                                                                            </p>
+                                                                                        )}
+                                                                                    </div>
+                                                                                    {event.status && (
+                                                                                        <span className={`px-4 py-2 rounded-full text-xs font-semibold ${event.status === 'success' || event.status === 'completed' || event.status === 'passed'
+                                                                                            ? 'bg-green-500/20 text-green-300'
+                                                                                            : event.status === 'failed' || event.status === 'rejected'
+                                                                                                ? 'bg-red-500/20 text-red-300'
+                                                                                                : 'bg-yellow-500/20 text-yellow-300'
+                                                                                            }`}>
+                                                                                            {event.status}
+                                                                                        </span>
+                                                                                    )}
+                                                                                </div>
+
+                                                                                {/* Detalhes do evento */}
+                                                                                {Object.keys(event).filter(key =>
+                                                                                    !['id', 'eventId', 'type', 'status', 'timestamp', 'recipientIdGuid', 'recipientName', 'recipientEmail'].includes(key)
+                                                                                ).length > 0 && (
+                                                                                        <div className="mt-4 pt-4 border-t border-white/10">
+                                                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                                                                {Object.entries(event)
+                                                                                                    .filter(([key]) => !['id', 'eventId', 'type', 'status', 'timestamp', 'recipientIdGuid', 'recipientName', 'recipientEmail'].includes(key))
+                                                                                                    .map(([key, value]) => (
+                                                                                                        <div key={key} className="flex flex-col">
+                                                                                                            <span className="text-white/50 text-xs mb-1">
+                                                                                                                {key}:
+                                                                                                            </span>
+                                                                                                            <span className="text-white text-sm">
+                                                                                                                {typeof value === 'object' ? JSON.stringify(value) : String(value)}
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                    ))}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    )}
+
+                                                                                {/* Mini preview das imagens associadas a este evento */}
+                                                                                {eventMedia.length > 0 && (
+                                                                                    <div className="mt-4 pt-4 border-t border-white/10">
+                                                                                        <p className="text-white/70 text-sm mb-3">
+                                                                                            {eventMedia.length} evidência{eventMedia.length > 1 ? 's' : ''} visual{eventMedia.length > 1 ? 'is' : ''} associada{eventMedia.length > 1 ? 's' : ''}
+                                                                                        </p>
+                                                                                        <div className="grid grid-cols-3 gap-3">
+                                                                                            {eventMedia.slice(0, 3).map((media, mediaIndex) => (
+                                                                                                media.base64 && (
+                                                                                                    <img
+                                                                                                        key={mediaIndex}
+                                                                                                        src={`data:${media.contentType || 'image/jpeg'};base64,${media.base64}`}
+                                                                                                        alt={`Preview ${mediaIndex + 1}`}
+                                                                                                        className="w-full h-24 object-cover rounded border border-white/20 cursor-pointer hover:border-emerald-400 transition-all"
+                                                                                                        onClick={() => window.open(`data:${media.contentType || 'image/jpeg'};base64,${media.base64}`, '_blank')}
+                                                                                                    />
+                                                                                                )
+                                                                                            ))}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        )
+                                                                    })}
+                                                                </div>
+                                                            </div>
+                                                        )}
+
+                                                        {/* Seção de Eventos de Auditoria */}
+                                                        {auditGroup && totalAuditEvents > 0 && (
+                                                            <div>
+                                                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                                                                    <span className="text-teal-400">📋</span>
+                                                                    Eventos de Auditoria do Envelope
+                                                                    <span className="text-white/50 text-lg font-normal">
+                                                                        ({totalAuditEvents})
+                                                                    </span>
+                                                                </h3>
+                                                                <div className="space-y-4">
+                                                                    {auditGroup.events.map((event, index) => (
+                                                                        <div
+                                                                            key={index}
+                                                                            className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-all"
+                                                                        >
+                                                                            <div className="flex items-start justify-between mb-4">
+                                                                                <div>
+                                                                                    <h4 className="text-lg font-semibold text-white mb-1">
+                                                                                        {getEventTypeLabel(event.eventType)}
+                                                                                    </h4>
+                                                                                    {event.eventDescription && (
+                                                                                        <p className="text-white/70 text-sm">
+                                                                                            {event.eventDescription}
+                                                                                        </p>
+                                                                                    )}
+                                                                                </div>
+                                                                                {event.eventStatus && (
+                                                                                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${event.eventStatus === 'success' || event.eventStatus === 'completed'
+                                                                                        ? 'bg-green-500/20 text-green-300'
+                                                                                        : event.eventStatus === 'failed'
+                                                                                            ? 'bg-red-500/20 text-red-300'
+                                                                                            : 'bg-yellow-500/20 text-yellow-300'
+                                                                                        }`}>
+                                                                                        {event.eventStatus}
+                                                                                    </span>
+                                                                                )}
+                                                                            </div>
+
+                                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                                                                <div>
+                                                                                    <p className="text-white/50 text-xs mb-1">Data/Hora</p>
+                                                                                    <p className="text-white font-medium">
+                                                                                        {formatDate(event.eventDate)}
+                                                                                    </p>
+                                                                                </div>
+                                                                                {event.user && (
+                                                                                    <div>
+                                                                                        <p className="text-white/50 text-xs mb-1">Usuário</p>
+                                                                                        <p className="text-white font-medium">
+                                                                                            {event.user.userName || event.user.email || event.user.userId || 'N/A'}
+                                                                                        </p>
+                                                                                        {event.user.email && event.user.userName && event.user.email !== event.user.userName && (
+                                                                                            <p className="text-white/60 text-sm mt-1">
+                                                                                                {event.user.email}
+                                                                                            </p>
+                                                                                        )}
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+
+                                                                            {event.eventFields && event.eventFields.length > 0 && (
+                                                                                <div className="mt-4 pt-4 border-t border-white/10">
+                                                                                    <p className="text-white/50 text-xs mb-2">Detalhes Adicionais</p>
+                                                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                                                        {event.eventFields.map((field, fieldIndex) => (
+                                                                                            field.name && field.value && (
+                                                                                                <div key={fieldIndex} className="flex flex-col">
+                                                                                                    <span className="text-white/50 text-xs mb-1">
+                                                                                                        {field.name}:
+                                                                                                    </span>
+                                                                                                    <span className="text-white text-sm">
+                                                                                                        {field.value}
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            )
+                                                                                        ))}
+                                                                                    </div>
+                                                                                </div>
                                                                             )}
                                                                         </div>
                                                                     ))}
@@ -474,21 +628,38 @@ export default function EvidenciasIDVPage() {
                                                             </div>
                                                         )}
                                                     </div>
-                                                )
-                                            })
-                                        ) : (
-                                            <div className="text-center py-12">
-                                                <p className="text-white/70">
-                                                    Nenhum evento de ID Verification encontrado para este envelope.
-                                                </p>
-                                                <p className="text-white/50 text-sm mt-2">
-                                                    ID Evidence pode não estar habilitado para este envelope.
+                                                </div>
+                                            )
+                                        })}
+
+                                        {/* Eventos não agrupados (fallback) */}
+                                        {auditGrouped.ungrouped.length > 0 && (
+                                            <div className="glass-dark rounded-2xl p-8 backdrop-blur-lg border border-white/10 shadow-2xl">
+                                                <h2 className="text-2xl font-bold text-white mb-6">
+                                                    Outros Eventos
+                                                </h2>
+                                                <div className="space-y-4">
+                                                    {auditGrouped.ungrouped.map((event, index) => (
+                                                        <div key={index} className="bg-white/5 rounded-lg p-4 border border-white/10">
+                                                            <p className="text-white font-medium">{getEventTypeLabel(event.eventType)}</p>
+                                                            <p className="text-white/60 text-sm">{formatDate(event.eventDate)}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Mensagem quando não há dados */}
+                                        {allRecipientIds.size === 0 && auditGrouped.ungrouped.length === 0 && (
+                                            <div className="glass-dark rounded-2xl p-8 backdrop-blur-lg border border-white/10 shadow-2xl text-center">
+                                                <p className="text-white/70 text-lg">
+                                                    Nenhuma evidência encontrada para este envelope.
                                                 </p>
                                             </div>
                                         )}
-                                    </div>
-                                </div>
-                            )}
+                                    </>
+                                )
+                            })()}
                         </div>
                     )}
                 </div>
