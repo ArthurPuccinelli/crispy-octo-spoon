@@ -1,0 +1,6 @@
+# Arquivo .gitmodules necessário para evitar erro no Netlify
+# O submódulo _ref_Fontara não é necessário para o build
+# Esta entrada aponta para um repositório público válido para evitar erro no checkout
+[submodule "_ref_Fontara"]
+	path = _ref_Fontara
+	url = https://github.com/github/gitignore.git
