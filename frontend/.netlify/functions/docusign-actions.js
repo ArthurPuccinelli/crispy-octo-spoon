@@ -4,6 +4,7 @@
 //  - POST /.netlify/functions/docusign-actions/envelopes -> cria envelope (send or create)
 //  - GET  /.netlify/functions/docusign-actions/diag -> diagnóstico de ambiente (sem segredos)
 //  - GET  /.netlify/functions/docusign-actions/envelopes/{envelopeId}/audit_events -> busca audit events do envelope
+//  - GET  /.netlify/functions/docusign-actions/envelopes/{envelopeId}/idevidence -> busca ID Evidence events e media
 
 const docusign = require('docusign-esign')
 
@@ -196,6 +197,190 @@ async function getEnvelopeAuditEvents(accessToken, cfg, envelopeId) {
     return results
 }
 
+async function getEnvelopeRecipients(accessToken, cfg, envelopeId) {
+    const apiClient = new docusign.ApiClient()
+    apiClient.setOAuthBasePath(cfg.oauthBasePath)
+    apiClient.addDefaultHeader('Authorization', `Bearer ${accessToken}`)
+
+    // Descobrir baseUri correto da conta e configurar basePath da API REST
+    const userInfo = await apiClient.getUserInfo(accessToken)
+    const targetAccount = userInfo?.accounts?.find(a => a.accountId === cfg.accountId) || userInfo?.accounts?.[0]
+    if (!targetAccount || !targetAccount.baseUri) {
+        throw new Error('Unable to resolve account baseUri from DocuSign user info')
+    }
+    apiClient.setBasePath(`${targetAccount.baseUri}/restapi`)
+
+    const envelopesApi = new docusign.EnvelopesApi(apiClient)
+
+    // Buscar recipients do envelope
+    const results = await envelopesApi.listRecipients(cfg.accountId, envelopeId)
+    return results
+}
+
+async function getIdentityProofToken(accessToken, cfg, envelopeId, recipientIdGuid) {
+    const apiClient = new docusign.ApiClient()
+    apiClient.setOAuthBasePath(cfg.oauthBasePath)
+    apiClient.addDefaultHeader('Authorization', `Bearer ${accessToken}`)
+
+    // Descobrir baseUri correto da conta e configurar basePath da API REST
+    const userInfo = await apiClient.getUserInfo(accessToken)
+    const targetAccount = userInfo?.accounts?.find(a => a.accountId === cfg.accountId) || userInfo?.accounts?.[0]
+    if (!targetAccount || !targetAccount.baseUri) {
+        throw new Error('Unable to resolve account baseUri from DocuSign user info')
+    }
+    const baseUri = targetAccount.baseUri
+
+    // Gerar resource token para ID Evidence
+    // POST /v2.1/accounts/{accountId}/envelopes/{envelopeId}/recipients/{recipientIdGuid}/identity_proof_token
+    const url = `${baseUri}/restapi/v2.1/accounts/${cfg.accountId}/envelopes/${envelopeId}/recipients/${recipientIdGuid}/identity_proof_token`
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+        },
+    })
+
+    if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`Failed to get identity proof token: ${response.status} ${errorText}`)
+    }
+
+    const data = await response.json()
+    return data
+}
+
+async function getIDEvidenceEvents(proofBaseURI, resourceToken, recipientIdGuid) {
+    // GET {proofBaseURI}/api/v1/events/person/{recipientIdGuid}.json
+    const url = `${proofBaseURI}/api/v1/events/person/${recipientIdGuid}.json`
+
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${resourceToken}`,
+            'Content-Type': 'application/json',
+        },
+    })
+
+    if (!response.ok) {
+        // Se retornar 404, pode ser que não há eventos de ID Evidence
+        if (response.status === 404) {
+            return { events: [] }
+        }
+        const errorText = await response.text()
+        throw new Error(`Failed to get ID Evidence events: ${response.status} ${errorText}`)
+    }
+
+    const data = await response.json()
+    return data
+}
+
+async function getIDEvidenceMedia(proofBaseURI, resourceToken, recipientIdGuid, eventId) {
+    // GET {proofBaseURI}/api/v1/media/person/{recipientIdGuid}/event/{eventId}
+    const url = `${proofBaseURI}/api/v1/media/person/${recipientIdGuid}/event/${eventId}`
+
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${resourceToken}`,
+        },
+    })
+
+    if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`Failed to get ID Evidence media: ${response.status} ${errorText}`)
+    }
+
+    // Retornar como buffer/base64
+    const buffer = Buffer.from(await response.arrayBuffer())
+    const base64 = buffer.toString('base64')
+    const contentType = response.headers.get('content-type') || 'image/jpeg'
+
+    return {
+        base64,
+        contentType,
+        size: buffer.length,
+    }
+}
+
+async function getAllIDEvidenceData(accessToken, cfg, envelopeId) {
+    try {
+        // 1. Buscar recipients do envelope
+        const recipientsResult = await getEnvelopeRecipients(accessToken, cfg, envelopeId)
+        const recipients = recipientsResult.signers || []
+
+        if (recipients.length === 0) {
+            return { events: [], media: [] }
+        }
+
+        // 2. Para cada recipient, buscar eventos de ID Evidence
+        const allEvents = []
+        const allMedia = []
+
+        for (const recipient of recipients) {
+            const recipientIdGuid = recipient.recipientIdGuid
+            if (!recipientIdGuid) continue
+
+            try {
+                // 3. Gerar resource token
+                const tokenResult = await getIdentityProofToken(accessToken, cfg, envelopeId, recipientIdGuid)
+                const { resourceToken, proofBaseURI } = tokenResult
+
+                if (!resourceToken || !proofBaseURI) continue
+
+                // 4. Buscar eventos
+                const eventsData = await getIDEvidenceEvents(proofBaseURI, resourceToken, recipientIdGuid)
+                const events = eventsData.events || eventsData || []
+
+                // Adicionar informações do recipient aos eventos
+                const eventsWithRecipient = events.map(event => ({
+                    ...event,
+                    recipientIdGuid,
+                    recipientName: recipient.name,
+                    recipientEmail: recipient.email,
+                }))
+
+                allEvents.push(...eventsWithRecipient)
+
+                // 5. Buscar mídia para cada evento que tenha ID
+                for (const event of events) {
+                    if (event.id || event.eventId) {
+                        try {
+                            const eventId = event.id || event.eventId
+                            const media = await getIDEvidenceMedia(proofBaseURI, resourceToken, recipientIdGuid, eventId)
+                            allMedia.push({
+                                eventId,
+                                recipientIdGuid,
+                                recipientName: recipient.name,
+                                recipientEmail: recipient.email,
+                                ...media,
+                            })
+                        } catch (mediaError) {
+                            // Ignorar erros de mídia individual
+                            console.log(`Media not available for event ${event.id || event.eventId}:`, mediaError.message)
+                        }
+                    }
+                }
+            } catch (recipientError) {
+                // Se não houver ID Evidence para este recipient, continuar
+                console.log(`No ID Evidence for recipient ${recipientIdGuid}:`, recipientError.message)
+            }
+        }
+
+        return {
+            events: allEvents,
+            media: allMedia,
+        }
+    } catch (error) {
+        // Se não houver ID Evidence habilitado, retornar vazio
+        if (error.message && error.message.includes('404')) {
+            return { events: [], media: [] }
+        }
+        throw error
+    }
+}
+
 exports.handler = async (event) => {
     // CORS preflight
     if (event.httpMethod === 'OPTIONS') {
@@ -302,6 +487,63 @@ exports.handler = async (event) => {
             // O SDK pode retornar o objeto diretamente ou como propriedade
             const auditEvents = result.auditEvents || result.body?.auditEvents || result
             return json(200, { auditEvents: auditEvents || [] })
+        }
+
+        // Buscar ID Evidence events e media
+        // GET /.netlify/functions/docusign-actions/envelopes/{envelopeId}/idevidence
+        if (method === 'GET' && path.includes('/docusign-actions/envelopes/') && path.endsWith('/idevidence')) {
+            const pathParts = originalPath.split('/')
+            const envelopeIdIndex = pathParts.indexOf('envelopes') + 1
+            const envelopeId = pathParts[envelopeIdIndex]
+
+            if (!envelopeId || envelopeId === 'idevidence') {
+                return json(400, { error: 'envelopeId is required in the path' })
+            }
+
+            // Token pode ser enviado pelo cliente para reuso ou será gerado aqui
+            const auth = event.headers.authorization || event.headers.Authorization
+            let token = null
+            if (auth?.startsWith('Bearer ')) token = auth.slice(7)
+
+            let accessToken, cfg
+            if (token) {
+                cfg = getEnv()
+                if (cfg.error) {
+                    return json(500, {
+                        error: 'DocuSignError',
+                        message: cfg.error
+                    })
+                }
+                accessToken = token
+            } else {
+                try {
+                    const tokenResult = await getJwtToken()
+                    accessToken = tokenResult.accessToken
+                    cfg = tokenResult.cfg
+                    if (cfg.error) {
+                        return json(500, {
+                            error: 'DocuSignError',
+                            message: cfg.error
+                        })
+                    }
+                } catch (tokenError) {
+                    return json(500, {
+                        error: 'DocuSignError',
+                        message: tokenError.message || 'Erro ao obter token JWT'
+                    })
+                }
+            }
+
+            try {
+                const result = await getAllIDEvidenceData(accessToken, cfg, envelopeId)
+                return json(200, result)
+            } catch (error) {
+                // Se não houver ID Evidence habilitado, retornar vazio
+                if (error.message && (error.message.includes('404') || error.message.includes('not found'))) {
+                    return json(200, { events: [], media: [] })
+                }
+                throw error
+            }
         }
 
         return json(404, { error: 'Not Found' })
