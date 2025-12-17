@@ -3,6 +3,7 @@
 //  - POST /.netlify/functions/docusign-actions/auth -> obtém access_token via JWT Grant
 //  - POST /.netlify/functions/docusign-actions/envelopes -> cria envelope (send or create)
 //  - GET  /.netlify/functions/docusign-actions/diag -> diagnóstico de ambiente (sem segredos)
+//  - GET  /.netlify/functions/docusign-actions/envelopes/{envelopeId}/audit_events -> busca audit events do envelope
 
 const docusign = require('docusign-esign')
 
@@ -175,6 +176,26 @@ async function createEmbeddedEnvelope(accessToken, cfg, envelopeId, returnUrl, s
     return results
 }
 
+async function getEnvelopeAuditEvents(accessToken, cfg, envelopeId) {
+    const apiClient = new docusign.ApiClient()
+    apiClient.setOAuthBasePath(cfg.oauthBasePath)
+    apiClient.addDefaultHeader('Authorization', `Bearer ${accessToken}`)
+
+    // Descobrir baseUri correto da conta e configurar basePath da API REST
+    const userInfo = await apiClient.getUserInfo(accessToken)
+    const targetAccount = userInfo?.accounts?.find(a => a.accountId === cfg.accountId) || userInfo?.accounts?.[0]
+    if (!targetAccount || !targetAccount.baseUri) {
+        throw new Error('Unable to resolve account baseUri from DocuSign user info')
+    }
+    apiClient.setBasePath(`${targetAccount.baseUri}/restapi`)
+
+    const envelopesApi = new docusign.EnvelopesApi(apiClient)
+
+    // Buscar audit events do envelope
+    const results = await envelopesApi.listAuditEvents(cfg.accountId, envelopeId)
+    return results
+}
+
 exports.handler = async (event) => {
     // CORS preflight
     if (event.httpMethod === 'OPTIONS') {
@@ -251,6 +272,36 @@ exports.handler = async (event) => {
 
             const result = await createEmbeddedEnvelope(accessToken, cfg, envelopeId, returnUrl, signer)
             return json(200, { url: result.url })
+        }
+
+        // Buscar audit events do envelope
+        // GET /.netlify/functions/docusign-actions/envelopes/{envelopeId}/audit_events
+        const originalPath = event.path || ''
+        if (method === 'GET' && path.includes('/docusign-actions/envelopes/') && path.endsWith('/audit_events')) {
+            const pathParts = originalPath.split('/')
+            const envelopeIdIndex = pathParts.indexOf('envelopes') + 1
+            const envelopeId = pathParts[envelopeIdIndex]
+
+            if (!envelopeId || envelopeId === 'audit_events') {
+                return json(400, { error: 'envelopeId is required in the path' })
+            }
+
+            // Token pode ser enviado pelo cliente para reuso ou será gerado aqui
+            const auth = event.headers.authorization || event.headers.Authorization
+            let token = null
+            if (auth?.startsWith('Bearer ')) token = auth.slice(7)
+
+            const { accessToken, cfg } = token
+                ? { accessToken: token, cfg: getEnv() }
+                : await getJwtToken()
+
+            if (cfg.error) throw new Error(cfg.error)
+
+            const result = await getEnvelopeAuditEvents(accessToken, cfg, envelopeId)
+            // Garantir que retornamos a estrutura correta
+            // O SDK pode retornar o objeto diretamente ou como propriedade
+            const auditEvents = result.auditEvents || result.body?.auditEvents || result
+            return json(200, { auditEvents: auditEvents || [] })
         }
 
         return json(404, { error: 'Not Found' })
