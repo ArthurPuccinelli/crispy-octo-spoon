@@ -20,6 +20,14 @@ export default function Home() {
   const [advancedSubmitting, setAdvancedSubmitting] = useState(false)
   const [advancedDeliveryMethod, setAdvancedDeliveryMethod] = useState<'now' | 'whatsapp' | 'sms'>('now')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [showCartaoModal, setShowCartaoModal] = useState(false)
+  const [cartaoStep, setCartaoStep] = useState<'form' | 'signing' | 'success'>('form')
+  const [cartaoUrl, setCartaoUrl] = useState('')
+  const [cartaoNome, setCartaoNome] = useState('')
+  const [cartaoEmail, setCartaoEmail] = useState('')
+  const [cartaoCpf, setCartaoCpf] = useState('')
+  const [cartaoSubmitting, setCartaoSubmitting] = useState(false)
+  const [cartaoError, setCartaoError] = useState('')
 
   // Função para criar documento HTML de demonstração com âncora \saes\
   const createDemoDocument = (name: string, email: string, cpf: string, phone?: string) => {
@@ -163,6 +171,42 @@ export default function Home() {
     }
   }
 
+  const handleCartaoConhecaMais = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!cartaoNome.trim() || !cartaoEmail.trim()) return
+    setCartaoSubmitting(true)
+    setCartaoError('')
+    try {
+      const res = await fetch('/.netlify/functions/docusign-actions/cartao-adesao', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome: cartaoNome, email: cartaoEmail, cpf: cartaoCpf, returnUrl: window.location.origin + '/?cartao=signed' }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.url) {
+        const msg = typeof data?.message === 'object' ? JSON.stringify(data.message) : (data?.message || data?.error || 'Erro desconhecido')
+        setCartaoError(msg)
+      } else {
+        setCartaoUrl(data.url)
+        setCartaoStep('signing')
+      }
+    } catch (e: any) {
+      setCartaoError(e?.message || 'Erro ao conectar com o servidor')
+    } finally {
+      setCartaoSubmitting(false)
+    }
+  }
+
+  const openCartaoModal = () => {
+    setCartaoStep('form')
+    setCartaoUrl('')
+    setCartaoNome('')
+    setCartaoEmail('')
+    setCartaoCpf('')
+    setCartaoError('')
+    setShowCartaoModal(true)
+  }
+
   const handleLoansContrateAgora = async () => {
     if (startingLoanFlow) return
     setStartingLoanFlow(true)
@@ -251,6 +295,11 @@ export default function Home() {
 
   useEffect(() => {
     setIsLoaded(true)
+    if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('cartao') === 'signed') {
+      setCartaoStep('success')
+      setShowCartaoModal(true)
+      window.history.replaceState({}, '', window.location.pathname)
+    }
   }, [])
 
   return (
@@ -598,12 +647,12 @@ export default function Home() {
                       Programa de pontos
                     </div>
                   </div>
-                  <button className="w-full px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-xl hover:from-indigo-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-indigo-500/25 animate-pulse">
+                  <button onClick={openCartaoModal} className="w-full px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-xl hover:from-indigo-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-indigo-500/25 animate-pulse">
                     <span className="flex items-center justify-center">
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
-                      Conheça Mais
+                      Solicitar Cartão
                     </span>
                   </button>
                 </div>
@@ -698,6 +747,168 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Modal Cartão de Crédito – Click to Agree (DocuSign Focused View) */}
+      {showCartaoModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className={`relative bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${cartaoStep === 'signing' ? 'w-full h-full max-w-6xl max-h-[95vh]' : 'w-full max-w-md'}`}>
+            <button
+              onClick={() => setShowCartaoModal(false)}
+              className="absolute top-3 right-3 z-10 p-2 bg-black/10 hover:bg-black/20 text-black rounded-full transition-colors"
+              aria-label="Fechar"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Step 1 – Formulário */}
+            {cartaoStep === 'form' && (
+              <div className="p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-slate-800">Solicitar Cartão de Crédito</h2>
+                    <p className="text-sm text-slate-500">Sem anuidade · 1% cashback · Aprovação em minutos</p>
+                  </div>
+                </div>
+
+                <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 mb-6 text-sm text-indigo-700">
+                  Preencha seus dados para assinar o <strong>Termo de Adesão</strong> via DocuSign e ativar seu cartão.
+                </div>
+
+                <form onSubmit={handleCartaoConhecaMais} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Nome completo *</label>
+                    <input
+                      type="text"
+                      value={cartaoNome}
+                      onChange={e => setCartaoNome(e.target.value)}
+                      required
+                      placeholder="Seu nome completo"
+                      className="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">E-mail *</label>
+                    <input
+                      type="email"
+                      value={cartaoEmail}
+                      onChange={e => setCartaoEmail(e.target.value)}
+                      required
+                      placeholder="seu@email.com"
+                      className="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">CPF</label>
+                    <input
+                      type="text"
+                      value={cartaoCpf}
+                      onChange={e => setCartaoCpf(e.target.value)}
+                      placeholder="000.000.000-00"
+                      maxLength={14}
+                      className="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm"
+                    />
+                  </div>
+
+                  {cartaoError && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+                      {cartaoError}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={cartaoSubmitting || !cartaoNome.trim() || !cartaoEmail.trim()}
+                    className="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {cartaoSubmitting ? (
+                      <>
+                        <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        </svg>
+                        Preparando documento...
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Assinar Termo de Adesão
+                      </>
+                    )}
+                  </button>
+                </form>
+
+                <p className="text-xs text-slate-400 text-center mt-4">
+                  Assinatura eletrônica com validade jurídica via DocuSign
+                </p>
+              </div>
+            )}
+
+            {/* Step 2 – DocuSign Focused View */}
+            {cartaoStep === 'signing' && (
+              <div className="h-full flex flex-col" style={{ minHeight: '85vh' }}>
+                <div className="flex items-center gap-3 px-6 py-3 border-b border-slate-100 bg-slate-50">
+                  <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-700">Termo de Adesão – Cartão de Crédito Fontara</p>
+                    <p className="text-xs text-slate-400">Leia e assine o documento para ativar seu cartão</p>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  {cartaoUrl && (
+                    <iframe
+                      src={cartaoUrl}
+                      className="w-full h-full border-0"
+                      style={{ minHeight: 'calc(85vh - 64px)' }}
+                      title="Termo de Adesão – DocuSign"
+                      allow="camera; microphone; fullscreen"
+                    />
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Step 3 – Sucesso */}
+            {cartaoStep === 'success' && (
+              <div className="p-8 text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-slate-800 mb-2">Termo Assinado!</h2>
+                <p className="text-slate-500 mb-6">
+                  Sua adesão ao <strong>Cartão de Crédito Fontara</strong> foi registrada com sucesso.
+                  Em breve você receberá as instruções de ativação por e-mail.
+                </p>
+                <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 text-sm text-green-700 text-left space-y-1">
+                  <p>✓ Documento assinado eletronicamente via DocuSign</p>
+                  <p>✓ Registro de auditoria gerado</p>
+                  <p>✓ Cópia enviada para seu e-mail</p>
+                </div>
+                <button
+                  onClick={() => setShowCartaoModal(false)}
+                  className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl hover:from-indigo-600 hover:to-purple-700 transition-all duration-200"
+                >
+                  Concluir
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Modal do Envelope PIX */}
       {showPixEnvelope && (

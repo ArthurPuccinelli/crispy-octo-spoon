@@ -546,12 +546,183 @@ exports.handler = async (event) => {
             }
         }
 
+        // Criação de adesão ao Cartão de Crédito com Focused View
+        // POST /.netlify/functions/docusign-actions/cartao-adesao
+        if (method === 'POST' && path.endsWith('/docusign-actions/cartao-adesao')) {
+            let body = {}
+            try { body = JSON.parse(event.body || '{}') } catch (_) { }
+
+            const { nome, email, cpf, returnUrl } = body
+            if (!nome || !email) return json(400, { error: 'nome e email são obrigatórios' })
+
+            const { accessToken, cfg } = await getJwtToken()
+            if (cfg.error) throw new Error(cfg.error)
+
+            const clientUserId = cpf ? cpf.replace(/\D/g, '') : `cartao_${Date.now()}`
+
+            // Criar documento HTML do Termo de Adesão
+            const termoHtml = generateCartaoTermo(nome, email, cpf)
+            const docBase64 = Buffer.from(termoHtml).toString('base64')
+
+            // Criar envelope com o termo de adesão
+            const envelopeResult = await createEnvelope(accessToken, cfg, {
+                emailSubject: 'Termo de Adesão - Cartão de Crédito Fontara',
+                status: 'sent',
+                documents: [{ name: 'Termo de Adesão Cartão de Crédito', fileExtension: 'html', base64: docBase64 }],
+                recipients: {
+                    signers: [{
+                        name: nome,
+                        email: email,
+                        clientUserId,
+                        tabs: {
+                            signHereTabs: [{
+                                anchorString: '\\saes\\',
+                                anchorUnits: 'pixels',
+                                anchorYOffset: '-10',
+                                anchorXOffset: '0',
+                            }],
+                        },
+                    }],
+                },
+            })
+
+            // Criar focused view para o signing session
+            const apiClient = new docusign.ApiClient()
+            apiClient.setOAuthBasePath(cfg.oauthBasePath)
+            apiClient.addDefaultHeader('Authorization', `Bearer ${accessToken}`)
+            const userInfo = await apiClient.getUserInfo(accessToken)
+            const targetAccount = userInfo?.accounts?.find(a => a.accountId === cfg.accountId) || userInfo?.accounts?.[0]
+            if (!targetAccount?.baseUri) throw new Error('Unable to resolve account baseUri')
+            apiClient.setBasePath(`${targetAccount.baseUri}/restapi`)
+
+            const envelopesApi = new docusign.EnvelopesApi(apiClient)
+            const recipientViewRequest = new docusign.RecipientViewRequest()
+            recipientViewRequest.authenticationMethod = 'none'
+            recipientViewRequest.returnUrl = returnUrl || `${event.headers.origin || 'https://fontara.netlify.app'}/?cartao=signed`
+            recipientViewRequest.clientUserId = clientUserId
+            recipientViewRequest.userName = nome
+            recipientViewRequest.email = email
+            recipientViewRequest.viewType = 'focusedView'
+
+            const viewResult = await envelopesApi.createRecipientView(cfg.accountId, envelopeResult.envelopeId, {
+                recipientViewRequest,
+            })
+
+            return json(200, {
+                envelopeId: envelopeResult.envelopeId,
+                url: viewResult.url,
+            })
+        }
+
         return json(404, { error: 'Not Found' })
     } catch (err) {
         console.error('DocuSign action error:', err)
         const message = err.response?.body || err.message || 'Unknown error'
         return json(500, { error: 'DocuSignError', message })
     }
+}
+
+function generateCartaoTermo(nome, email, cpf) {
+    const data = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+    const cpfFormatado = cpf
+        ? cpf.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+        : 'Não informado'
+
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Termo de Adesão - Cartão de Crédito Fontara</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 48px; line-height: 1.8; color: #1f2937; }
+    h1 { color: #1e40af; font-size: 20px; border-bottom: 2px solid #1e40af; padding-bottom: 10px; margin-bottom: 24px; }
+    h2 { color: #374151; font-size: 14px; font-weight: bold; margin-top: 24px; text-transform: uppercase; letter-spacing: 0.5px; }
+    p { margin: 8px 0; font-size: 13px; }
+    .info-box { background: #eff6ff; border-left: 4px solid #2563eb; padding: 14px 18px; margin: 20px 0; border-radius: 4px; }
+    .info-box p { margin: 4px 0; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+    th { background: #1e40af; color: #fff; padding: 10px 12px; text-align: left; font-size: 12px; text-transform: uppercase; }
+    td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .signature-area { margin-top: 60px; text-align: center; }
+    .anchor { color: #ffffff; font-size: 1px; line-height: 0; }
+    .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #e5e7eb; font-size: 11px; color: #6b7280; }
+  </style>
+</head>
+<body>
+  <h1>TERMO DE ADESÃO AO CARTÃO DE CRÉDITO FONTARA</h1>
+
+  <div class="info-box">
+    <p><strong>Emitente:</strong> Fontara Financial S.A. | CNPJ 00.000.000/0001-00 | São Paulo – SP</p>
+    <p><strong>Data:</strong> ${data}</p>
+    <p><strong>Titular:</strong> ${nome}</p>
+    <p><strong>E-mail:</strong> ${email}</p>
+    <p><strong>CPF:</strong> ${cpfFormatado}</p>
+  </div>
+
+  <h2>1. Objeto</h2>
+  <p>
+    Este Termo de Adesão ("Termo") estabelece as condições de uso do <strong>Cartão de Crédito Fontara</strong>,
+    emitido pela Fontara Financial S.A. ("Fontara"), instituição de pagamento autorizada pelo Banco Central do Brasil
+    nos termos da Resolução BCB n.º 80/2021.
+  </p>
+
+  <h2>2. Características do Produto</h2>
+  <table>
+    <tr><th>Benefício</th><th>Condições</th></tr>
+    <tr><td>Anuidade</td><td>Isenta, sem condicionalidades</td></tr>
+    <tr><td>Cashback</td><td>1 % sobre todas as compras, creditado na fatura seguinte</td></tr>
+    <tr><td>Programa de Pontos</td><td>1 ponto por R$ 1,00 gasto; válidos por 24 meses</td></tr>
+    <tr><td>Bandeira</td><td>Visa Internacional</td></tr>
+    <tr><td>Modalidade</td><td>Crédito à vista, parcelado sem juros e rotativo</td></tr>
+    <tr><td>Limite</td><td>Aprovado conforme análise de crédito individualizada</td></tr>
+  </table>
+
+  <h2>3. Taxas e Encargos</h2>
+  <p>
+    As taxas de juros, multas e demais encargos estão disponíveis no aplicativo Fontara e no site
+    <strong>fontara.com.br/tarifas</strong>, atualizados conforme regulamentação do Bacen. Qualquer
+    alteração será comunicada ao Titular com antecedência mínima de 30 (trinta) dias.
+  </p>
+
+  <h2>4. Responsabilidades do Titular</h2>
+  <p>O Titular compromete-se a:</p>
+  <p>(a) Utilizar o cartão exclusivamente para fins lícitos e de acordo com a legislação vigente;</p>
+  <p>(b) Manter seus dados cadastrais atualizados no aplicativo Fontara;</p>
+  <p>(c) Comunicar imediatamente qualquer perda, furto, roubo ou clonagem do cartão pelo canal 0800 000 0000;</p>
+  <p>(d) Efetuar o pagamento integral ou mínimo da fatura até a data de vencimento indicada.</p>
+
+  <h2>5. Proteção de Dados (LGPD)</h2>
+  <p>
+    A Fontara trata dados pessoais em conformidade com a Lei Geral de Proteção de Dados (Lei n.º 13.709/2018).
+    Os dados coletados são utilizados exclusivamente para a prestação dos serviços contratados e o cumprimento
+    de obrigações legais e regulatórias. O Titular pode exercer seus direitos de titular de dados pelo canal
+    <strong>privacidade@fontara.com.br</strong>.
+  </p>
+
+  <h2>6. Cancelamento</h2>
+  <p>
+    O Titular poderá cancelar o cartão a qualquer momento, sem ônus, pelo aplicativo Fontara ou pelo
+    telefone 0800 000 0000. O cancelamento não isenta o pagamento de saldos e encargos pendentes.
+  </p>
+
+  <h2>7. Foro</h2>
+  <p>
+    Fica eleito o foro da comarca de São Paulo – SP para a resolução de litígios decorrentes deste Termo,
+    sem prejuízo dos direitos dos consumidores assegurados pelo Código de Defesa do Consumidor (Lei n.º 8.078/1990).
+  </p>
+
+  <div class="signature-area">
+    <p><strong>Assinatura eletrônica do Titular</strong></p>
+    <span class="anchor">\\saes\\</span>
+  </div>
+
+  <div class="footer">
+    <p>Versão 1.0 · Vigência: ${data} · Fontara Financial S.A.</p>
+    <p>Este documento possui validade jurídica nos termos da MP n.º 2.200-2/2001 e da Lei n.º 14.063/2020.</p>
+  </div>
+</body>
+</html>`
 }
 
 
