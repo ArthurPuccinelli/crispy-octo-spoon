@@ -800,8 +800,8 @@ export default function Home() {
 
       {/* Modal Cartão de Crédito – Click to Agree (DocuSign Focused View) */}
       {showCartaoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className={`relative bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${cartaoStep === 'signing' ? 'w-full h-full max-w-6xl max-h-[95vh]' : 'w-full max-w-md'}`}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className={`relative bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${cartaoStep === 'signing' ? 'w-full max-w-5xl h-[90vh] flex flex-col' : 'w-full max-w-md'}`}>
             <button
               onClick={() => setShowCartaoModal(false)}
               className="absolute top-3 right-3 z-10 p-2 bg-black/10 hover:bg-black/20 text-black rounded-full transition-colors"
@@ -904,7 +904,7 @@ export default function Home() {
 
             {/* Step 2 – DocuSign JS Focused View (Click to Agree) */}
             {cartaoStep === 'signing' && (
-              <div className="flex flex-col" style={{ minHeight: '85vh' }}>
+              <>
                 <div className="flex items-center gap-3 px-6 py-3 border-b border-slate-100 bg-slate-50 flex-shrink-0">
                   <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -913,16 +913,12 @@ export default function Home() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-700">Termo de Adesão – Cartão de Crédito Fontara</p>
-                    <p className="text-xs text-slate-400">Leia o documento e clique em assinar para concluir</p>
+                    <p className="text-xs text-slate-400">Leia o documento e conclua a adesão</p>
                   </div>
                 </div>
-                {/* DocuSign JS monta aqui via useEffect */}
-                <div
-                  id="docusign-click-container"
-                  className="flex-1 w-full"
-                  style={{ minHeight: 'calc(85vh - 56px)' }}
-                />
-              </div>
+                {/* DocuSign JS monta o widget aqui — flex-1 + min-h-0 garante preenchimento total */}
+                <div id="docusign-click-container" className="flex-1 min-h-0 w-full" />
+              </>
             )}
 
             {/* Step 3 – Sucesso */}

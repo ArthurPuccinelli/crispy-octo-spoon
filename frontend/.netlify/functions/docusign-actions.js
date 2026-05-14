@@ -565,6 +565,7 @@ exports.handler = async (event) => {
             const docBase64 = Buffer.from(termoHtml).toString('base64')
 
             // Criar envelope com o termo de adesão
+            // Focused View / Click to Agree não usa signHereTabs — a conclusão é pelo botão do widget JS
             const envelopeResult = await createEnvelope(accessToken, cfg, {
                 emailSubject: 'Termo de Adesão - Cartão de Crédito Fontara',
                 status: 'sent',
@@ -574,14 +575,6 @@ exports.handler = async (event) => {
                         name: nome,
                         email: email,
                         clientUserId,
-                        tabs: {
-                            signHereTabs: [{
-                                anchorString: '\\saes\\',
-                                anchorUnits: 'pixels',
-                                anchorYOffset: '-10',
-                                anchorXOffset: '0',
-                            }],
-                        },
                     }],
                 },
             })
@@ -645,8 +638,6 @@ function generateCartaoTermo(nome, email, cpf) {
     th { background: #1e40af; color: #fff; padding: 10px 12px; text-align: left; font-size: 12px; text-transform: uppercase; }
     td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; }
     tr:nth-child(even) td { background: #f8fafc; }
-    .signature-area { margin-top: 60px; text-align: center; }
-    .anchor { color: #ffffff; font-size: 1px; line-height: 0; }
     .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #e5e7eb; font-size: 11px; color: #6b7280; }
   </style>
 </head>
@@ -712,11 +703,6 @@ function generateCartaoTermo(nome, email, cpf) {
     Fica eleito o foro da comarca de São Paulo – SP para a resolução de litígios decorrentes deste Termo,
     sem prejuízo dos direitos dos consumidores assegurados pelo Código de Defesa do Consumidor (Lei n.º 8.078/1990).
   </p>
-
-  <div class="signature-area">
-    <p><strong>Assinatura eletrônica do Titular</strong></p>
-    <span class="anchor">\\saes\\</span>
-  </div>
 
   <div class="footer">
     <p>Versão 1.0 · Vigência: ${data} · Fontara Financial S.A.</p>
