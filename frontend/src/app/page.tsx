@@ -23,6 +23,7 @@ export default function Home() {
   const [showCartaoModal, setShowCartaoModal] = useState(false)
   const [cartaoStep, setCartaoStep] = useState<'form' | 'signing' | 'success'>('form')
   const [cartaoUrl, setCartaoUrl] = useState('')
+  const [cartaoIntegrationKey, setCartaoIntegrationKey] = useState('')
   const [cartaoNome, setCartaoNome] = useState('')
   const [cartaoEmail, setCartaoEmail] = useState('')
   const [cartaoCpf, setCartaoCpf] = useState('')
@@ -188,6 +189,7 @@ export default function Home() {
         setCartaoError(msg)
       } else {
         setCartaoUrl(data.url)
+        setCartaoIntegrationKey(data.integrationKey || '')
         setCartaoStep('signing')
       }
     } catch (e: any) {
@@ -200,6 +202,7 @@ export default function Home() {
   const openCartaoModal = () => {
     setCartaoStep('form')
     setCartaoUrl('')
+    setCartaoIntegrationKey('')
     setCartaoNome('')
     setCartaoEmail('')
     setCartaoCpf('')
@@ -301,6 +304,53 @@ export default function Home() {
       window.history.replaceState({}, '', window.location.pathname)
     }
   }, [])
+
+  // Monta o DocuSign JS (focused view / click-to-agree) quando entra na etapa de assinatura
+  useEffect(() => {
+    if (cartaoStep !== 'signing' || !cartaoUrl || !cartaoIntegrationKey) return
+
+    let signing: any = null
+    let script: HTMLScriptElement | null = null
+
+    const mountDocuSign = async () => {
+      try {
+        const docusign = await (window as any).DocuSign.loadDocuSign(cartaoIntegrationKey)
+        signing = docusign.signing({
+          url: cartaoUrl,
+          displayFormat: 'focused',
+          style: {
+            branding: { primaryButton: { backgroundColor: '#4f46e5', color: '#fff' } },
+            signingNavigationButton: { finishText: 'Concluir', belowFinish: false },
+          },
+        })
+        signing.on('ready', () => { /* widget pronto */ })
+        signing.on('sessionEnd', (event: any) => {
+          if (event?.sessionEndType === 'signing_complete') {
+            setCartaoStep('success')
+          } else if (['cancel', 'decline', 'exception', 'fax_pending', 'session_timeout', 'ttl_expired', 'viewing_complete'].includes(event?.sessionEndType)) {
+            setCartaoStep('form')
+          }
+        })
+        signing.mount('#docusign-click-container')
+      } catch (err) {
+        console.error('DocuSign JS mount error:', err)
+      }
+    }
+
+    if ((window as any).DocuSign) {
+      mountDocuSign()
+    } else {
+      script = document.createElement('script')
+      script.src = 'https://js.docusign.com/bundle.js'
+      script.onload = mountDocuSign
+      document.head.appendChild(script)
+    }
+
+    return () => {
+      try { signing?.unmount?.() } catch (_) {}
+      if (script && document.head.contains(script)) document.head.removeChild(script)
+    }
+  }, [cartaoStep, cartaoUrl, cartaoIntegrationKey])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 overflow-hidden">
@@ -852,10 +902,10 @@ export default function Home() {
               </div>
             )}
 
-            {/* Step 2 – DocuSign Focused View */}
+            {/* Step 2 – DocuSign JS Focused View (Click to Agree) */}
             {cartaoStep === 'signing' && (
-              <div className="h-full flex flex-col" style={{ minHeight: '85vh' }}>
-                <div className="flex items-center gap-3 px-6 py-3 border-b border-slate-100 bg-slate-50">
+              <div className="flex flex-col" style={{ minHeight: '85vh' }}>
+                <div className="flex items-center gap-3 px-6 py-3 border-b border-slate-100 bg-slate-50 flex-shrink-0">
                   <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -863,20 +913,15 @@ export default function Home() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-700">Termo de Adesão – Cartão de Crédito Fontara</p>
-                    <p className="text-xs text-slate-400">Leia e assine o documento para ativar seu cartão</p>
+                    <p className="text-xs text-slate-400">Leia o documento e clique em assinar para concluir</p>
                   </div>
                 </div>
-                <div className="flex-1">
-                  {cartaoUrl && (
-                    <iframe
-                      src={cartaoUrl}
-                      className="w-full h-full border-0"
-                      style={{ minHeight: 'calc(85vh - 64px)' }}
-                      title="Termo de Adesão – DocuSign"
-                      allow="camera; microphone; fullscreen"
-                    />
-                  )}
-                </div>
+                {/* DocuSign JS monta aqui via useEffect */}
+                <div
+                  id="docusign-click-container"
+                  className="flex-1 w-full"
+                  style={{ minHeight: 'calc(85vh - 56px)' }}
+                />
               </div>
             )}
 

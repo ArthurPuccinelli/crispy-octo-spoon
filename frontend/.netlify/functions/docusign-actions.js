@@ -611,6 +611,7 @@ exports.handler = async (event) => {
             return json(200, {
                 envelopeId: envelopeResult.envelopeId,
                 url: viewResult.url,
+                integrationKey: cfg.integrationKey,
             })
         }
 
