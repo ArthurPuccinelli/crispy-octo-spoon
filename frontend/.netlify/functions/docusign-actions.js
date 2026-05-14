@@ -588,14 +588,31 @@ exports.handler = async (event) => {
             if (!targetAccount?.baseUri) throw new Error('Unable to resolve account baseUri')
             apiClient.setBasePath(`${targetAccount.baseUri}/restapi`)
 
+            // Determinar URLs do ambiente DocuSign (demo vs produção)
+            const isDemoEnv = cfg.oauthBasePath.includes('account-d') || cfg.oauthBasePath.includes('demo')
+            const docusignAppUrl = isDemoEnv ? 'https://apps-d.docusign.com' : 'https://apps.docusign.com'
+
+            // App origin para frameAncestors — usa o header Origin ou URL configurada
+            const appOrigin = process.env.APP_ORIGIN ||
+                (event.headers.origin && !event.headers.origin.includes('docusign') ? event.headers.origin : null) ||
+                (process.env.URL) ||
+                'https://fontara.netlify.app'
+
+            const frameAncestors = [docusignAppUrl, appOrigin]
+            if (process.env.NETLIFY_DEV === 'true' || process.env.NODE_ENV === 'development') {
+                frameAncestors.push(`http://localhost:${process.env.PORT || 8888}`)
+            }
+
             const envelopesApi = new docusign.EnvelopesApi(apiClient)
             const recipientViewRequest = new docusign.RecipientViewRequest()
             recipientViewRequest.authenticationMethod = 'none'
-            recipientViewRequest.returnUrl = returnUrl || `${event.headers.origin || 'https://fontara.netlify.app'}/?cartao=signed`
+            recipientViewRequest.returnUrl = returnUrl || `${appOrigin}/?cartao=signed`
             recipientViewRequest.clientUserId = clientUserId
             recipientViewRequest.userName = nome
             recipientViewRequest.email = email
-            recipientViewRequest.viewType = 'focusedView'
+            // frameAncestors e messageOrigins são obrigatórios para embedding via DocuSign JS
+            recipientViewRequest.frameAncestors = frameAncestors
+            recipientViewRequest.messageOrigins = [docusignAppUrl]
 
             const viewResult = await envelopesApi.createRecipientView(cfg.accountId, envelopeResult.envelopeId, {
                 recipientViewRequest,

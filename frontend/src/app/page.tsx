@@ -324,10 +324,12 @@ export default function Home() {
           },
         })
         signing.on('ready', () => { /* widget pronto */ })
-        signing.on('sessionEnd', (event: any) => {
-          if (event?.sessionEndType === 'signing_complete') {
+        signing.on('sessionEnd', (eventData: any) => {
+          // O DocuSign JS retorna sessionEndType diretamente ou dentro de .type
+          const endType: string = eventData?.sessionEndType || eventData?.type || ''
+          if (endType === 'signing_complete') {
             setCartaoStep('success')
-          } else if (['cancel', 'decline', 'exception', 'fax_pending', 'session_timeout', 'ttl_expired', 'viewing_complete'].includes(event?.sessionEndType)) {
+          } else if (['cancel', 'decline', 'exception', 'session_timeout', 'ttl_expired', 'viewing_complete'].includes(endType)) {
             setCartaoStep('form')
           }
         })
@@ -341,7 +343,8 @@ export default function Home() {
       mountDocuSign()
     } else {
       script = document.createElement('script')
-      script.src = 'https://js.docusign.com/bundle.js'
+      // js-d.docusign.com = ambiente demo; produção usa js.docusign.com
+      script.src = 'https://js-d.docusign.com/bundle.js'
       script.onload = mountDocuSign
       document.head.appendChild(script)
     }
