@@ -26,9 +26,10 @@ export default function AdminLayout({
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-teal-400 border-t-transparent mx-auto mb-6"></div>
+            <div className="relative min-h-screen bg-slate-950 flex items-center justify-center">
+                <div className="absolute inset-0 brand-mesh pointer-events-none" />
+                <div className="relative text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-brand border-t-transparent mx-auto mb-6"></div>
                     <p className="text-white/70 text-lg">Verificando autenticação...</p>
                 </div>
             </div>
@@ -40,10 +41,13 @@ export default function AdminLayout({
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900">
-            <AdminNavBar />
-            <div className="max-w-7xl mx-auto">
-                {children}
+        <div className="relative min-h-screen bg-slate-950">
+            <div className="absolute inset-0 brand-mesh pointer-events-none" />
+            <div className="relative">
+                <AdminNavBar />
+                <div className="max-w-7xl mx-auto">
+                    {children}
+                </div>
             </div>
         </div>
     )
