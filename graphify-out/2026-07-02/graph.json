@@ -4,64 +4,14 @@
   "graph": {},
   "nodes": [
     {
-      "label": "layout.tsx",
-      "file_type": "code",
-      "source_file": "frontend/src/app/admin/layout.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "frontend_src_app_admin_layout",
-      "community": 21,
-      "norm_label": "layout.tsx"
-    },
-    {
-      "label": "AdminLayout()",
-      "file_type": "code",
-      "source_file": "frontend/src/app/admin/layout.tsx",
-      "source_location": "L9",
-      "_origin": "ast",
-      "id": "frontend_src_app_admin_layout_adminlayout",
-      "community": 21,
-      "norm_label": "adminlayout()"
-    },
-    {
-      "label": "page.tsx",
-      "file_type": "code",
-      "source_file": "frontend/src/app/admin/page.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "frontend_src_app_admin_page",
-      "community": 20,
-      "norm_label": "page.tsx"
-    },
-    {
-      "label": "DashboardStats",
-      "file_type": "code",
-      "source_file": "frontend/src/app/admin/page.tsx",
-      "source_location": "L9",
-      "_origin": "ast",
-      "id": "frontend_src_app_admin_page_dashboardstats",
-      "community": 20,
-      "norm_label": "dashboardstats"
-    },
-    {
-      "label": "AdminDashboard()",
-      "file_type": "code",
-      "source_file": "frontend/src/app/admin/page.tsx",
-      "source_location": "L16",
-      "_origin": "ast",
-      "id": "frontend_src_app_admin_page_admindashboard",
-      "community": 20,
-      "norm_label": "admindashboard()"
-    },
-    {
       "label": "CLAUDE.md",
       "file_type": "document",
       "source_file": ".claude/CLAUDE.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_claude",
       "community": 17,
-      "norm_label": "claude.md",
-      "id": "claude_claude"
+      "norm_label": "claude.md"
     },
     {
       "label": "graphify",
@@ -69,9 +19,9 @@
       "source_file": ".claude/CLAUDE.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_claude_graphify",
       "community": 17,
-      "norm_label": "graphify",
-      "id": "claude_claude_graphify"
+      "norm_label": "graphify"
     },
     {
       "label": "SKILL.md",
@@ -79,9 +29,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill",
       "community": 5,
-      "norm_label": "skill.md",
-      "id": "claude_skills_graphify_skill"
+      "norm_label": "skill.md"
     },
     {
       "label": "/graphify",
@@ -89,9 +39,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L6",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_graphify",
       "community": 5,
-      "norm_label": "/graphify",
-      "id": "claude_skills_graphify_skill_graphify"
+      "norm_label": "/graphify"
     },
     {
       "label": "Usage",
@@ -99,9 +49,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L10",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_usage",
       "community": 5,
-      "norm_label": "usage",
-      "id": "claude_skills_graphify_skill_usage"
+      "norm_label": "usage"
     },
     {
       "label": "What graphify is for",
@@ -109,9 +59,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L45",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_what_graphify_is_for",
       "community": 5,
-      "norm_label": "what graphify is for",
-      "id": "claude_skills_graphify_skill_what_graphify_is_for"
+      "norm_label": "what graphify is for"
     },
     {
       "label": "What You Must Do When Invoked",
@@ -119,9 +69,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L49",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
       "community": 2,
-      "norm_label": "what you must do when invoked",
-      "id": "claude_skills_graphify_skill_what_you_must_do_when_invoked"
+      "norm_label": "what you must do when invoked"
     },
     {
       "label": "Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)",
@@ -129,9 +79,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L61",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_0_github_repos_and_multi_path_merge_only_if_a_url_or_several_paths",
       "community": 2,
-      "norm_label": "step 0 - github repos and multi-path merge (only if a url or several paths)",
-      "id": "claude_skills_graphify_skill_step_0_github_repos_and_multi_path_merge_only_if_a_url_or_several_paths"
+      "norm_label": "step 0 - github repos and multi-path merge (only if a url or several paths)"
     },
     {
       "label": "Step 1 - Ensure graphify is installed",
@@ -139,9 +89,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L65",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_1_ensure_graphify_is_installed",
       "community": 2,
-      "norm_label": "step 1 - ensure graphify is installed",
-      "id": "claude_skills_graphify_skill_step_1_ensure_graphify_is_installed"
+      "norm_label": "step 1 - ensure graphify is installed"
     },
     {
       "label": "Step 2 - Detect files",
@@ -149,9 +99,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L107",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_2_detect_files",
       "community": 2,
-      "norm_label": "step 2 - detect files",
-      "id": "claude_skills_graphify_skill_step_2_detect_files"
+      "norm_label": "step 2 - detect files"
     },
     {
       "label": "Step 2.5 - Video and audio (only if video files detected)",
@@ -159,9 +109,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L144",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_2_5_video_and_audio_only_if_video_files_detected",
       "community": 2,
-      "norm_label": "step 2.5 - video and audio (only if video files detected)",
-      "id": "claude_skills_graphify_skill_step_2_5_video_and_audio_only_if_video_files_detected"
+      "norm_label": "step 2.5 - video and audio (only if video files detected)"
     },
     {
       "label": "Step 3 - Extract entities and relationships",
@@ -169,9 +119,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L148",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_3_extract_entities_and_relationships",
       "community": 2,
-      "norm_label": "step 3 - extract entities and relationships",
-      "id": "claude_skills_graphify_skill_step_3_extract_entities_and_relationships"
+      "norm_label": "step 3 - extract entities and relationships"
     },
     {
       "label": "Part A - Structural extraction for code files",
@@ -179,9 +129,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L167",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_part_a_structural_extraction_for_code_files",
       "community": 2,
-      "norm_label": "part a - structural extraction for code files",
-      "id": "claude_skills_graphify_skill_part_a_structural_extraction_for_code_files"
+      "norm_label": "part a - structural extraction for code files"
     },
     {
       "label": "Part B - Semantic extraction (parallel subagents)",
@@ -189,9 +139,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L193",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_part_b_semantic_extraction_parallel_subagents",
       "community": 2,
-      "norm_label": "part b - semantic extraction (parallel subagents)",
-      "id": "claude_skills_graphify_skill_part_b_semantic_extraction_parallel_subagents"
+      "norm_label": "part b - semantic extraction (parallel subagents)"
     },
     {
       "label": "Part C - Merge AST + semantic into final extraction",
@@ -199,9 +149,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L353",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_part_c_merge_ast_semantic_into_final_extraction",
       "community": 2,
-      "norm_label": "part c - merge ast + semantic into final extraction",
-      "id": "claude_skills_graphify_skill_part_c_merge_ast_semantic_into_final_extraction"
+      "norm_label": "part c - merge ast + semantic into final extraction"
     },
     {
       "label": "Step 4 - Build graph, cluster, analyze, generate outputs",
@@ -209,9 +159,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L387",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_4_build_graph_cluster_analyze_generate_outputs",
       "community": 2,
-      "norm_label": "step 4 - build graph, cluster, analyze, generate outputs",
-      "id": "claude_skills_graphify_skill_step_4_build_graph_cluster_analyze_generate_outputs"
+      "norm_label": "step 4 - build graph, cluster, analyze, generate outputs"
     },
     {
       "label": "Step 4.5 - Graph health check (read-only integrity gate)",
@@ -219,9 +169,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L450",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_4_5_graph_health_check_read_only_integrity_gate",
       "community": 2,
-      "norm_label": "step 4.5 - graph health check (read-only integrity gate)",
-      "id": "claude_skills_graphify_skill_step_4_5_graph_health_check_read_only_integrity_gate"
+      "norm_label": "step 4.5 - graph health check (read-only integrity gate)"
     },
     {
       "label": "Step 5 - Label communities",
@@ -229,9 +179,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L476",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_5_label_communities",
       "community": 2,
-      "norm_label": "step 5 - label communities",
-      "id": "claude_skills_graphify_skill_step_5_label_communities"
+      "norm_label": "step 5 - label communities"
     },
     {
       "label": "Step 6 - Generate Obsidian vault (opt-in) + HTML",
@@ -239,9 +189,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L517",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_6_generate_obsidian_vault_opt_in_html",
       "community": 2,
-      "norm_label": "step 6 - generate obsidian vault (opt-in) + html",
-      "id": "claude_skills_graphify_skill_step_6_generate_obsidian_vault_opt_in_html"
+      "norm_label": "step 6 - generate obsidian vault (opt-in) + html"
     },
     {
       "label": "Steps 6b-8 - Wiki, Neo4j, FalkorDB, SVG, GraphML, MCP, benchmark (only on their flags)",
@@ -249,9 +199,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L537",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_steps_6b_8_wiki_neo4j_falkordb_svg_graphml_mcp_benchmark_only_on_their_flags",
       "community": 2,
-      "norm_label": "steps 6b-8 - wiki, neo4j, falkordb, svg, graphml, mcp, benchmark (only on their flags)",
-      "id": "claude_skills_graphify_skill_steps_6b_8_wiki_neo4j_falkordb_svg_graphml_mcp_benchmark_only_on_their_flags"
+      "norm_label": "steps 6b-8 - wiki, neo4j, falkordb, svg, graphml, mcp, benchmark (only on their flags)"
     },
     {
       "label": "Step 9 - Save manifest, update cost tracker, clean up, and report",
@@ -259,9 +209,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L543",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_step_9_save_manifest_update_cost_tracker_clean_up_and_report",
       "community": 2,
-      "norm_label": "step 9 - save manifest, update cost tracker, clean up, and report",
-      "id": "claude_skills_graphify_skill_step_9_save_manifest_update_cost_tracker_clean_up_and_report"
+      "norm_label": "step 9 - save manifest, update cost tracker, clean up, and report"
     },
     {
       "label": "Interpreter guard for subcommands",
@@ -269,9 +219,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L623",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_interpreter_guard_for_subcommands",
       "community": 5,
-      "norm_label": "interpreter guard for subcommands",
-      "id": "claude_skills_graphify_skill_interpreter_guard_for_subcommands"
+      "norm_label": "interpreter guard for subcommands"
     },
     {
       "label": "For --update and --cluster-only",
@@ -279,9 +229,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L641",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_for_update_and_cluster_only",
       "community": 5,
-      "norm_label": "for --update and --cluster-only",
-      "id": "claude_skills_graphify_skill_for_update_and_cluster_only"
+      "norm_label": "for --update and --cluster-only"
     },
     {
       "label": "For /graphify query",
@@ -289,9 +239,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L647",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_for_graphify_query",
       "community": 5,
-      "norm_label": "for /graphify query",
-      "id": "claude_skills_graphify_skill_for_graphify_query"
+      "norm_label": "for /graphify query"
     },
     {
       "label": "For /graphify add and --watch",
@@ -299,9 +249,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L659",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_for_graphify_add_and_watch",
       "community": 5,
-      "norm_label": "for /graphify add and --watch",
-      "id": "claude_skills_graphify_skill_for_graphify_add_and_watch"
+      "norm_label": "for /graphify add and --watch"
     },
     {
       "label": "For the commit hook and native CLAUDE.md integration",
@@ -309,9 +259,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L665",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_for_the_commit_hook_and_native_claude_md_integration",
       "community": 5,
-      "norm_label": "for the commit hook and native claude.md integration",
-      "id": "claude_skills_graphify_skill_for_the_commit_hook_and_native_claude_md_integration"
+      "norm_label": "for the commit hook and native claude.md integration"
     },
     {
       "label": "Honesty Rules",
@@ -319,9 +269,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L671",
       "_origin": "ast",
+      "id": "claude_skills_graphify_skill_honesty_rules",
       "community": 5,
-      "norm_label": "honesty rules",
-      "id": "claude_skills_graphify_skill_honesty_rules"
+      "norm_label": "honesty rules"
     },
     {
       "label": "add-watch.md",
@@ -329,9 +279,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_add_watch",
       "community": 11,
-      "norm_label": "add-watch.md",
-      "id": "claude_skills_graphify_references_add_watch"
+      "norm_label": "add-watch.md"
     },
     {
       "label": "graphify reference: add a URL and watch a folder",
@@ -339,9 +289,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
       "community": 11,
-      "norm_label": "graphify reference: add a url and watch a folder",
-      "id": "claude_skills_graphify_references_add_watch_graphify_reference_add_a_url_and_watch_a_folder"
+      "norm_label": "graphify reference: add a url and watch a folder"
     },
     {
       "label": "For /graphify add",
@@ -349,9 +299,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L5",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_add_watch_for_graphify_add",
       "community": 11,
-      "norm_label": "for /graphify add",
-      "id": "claude_skills_graphify_references_add_watch_for_graphify_add"
+      "norm_label": "for /graphify add"
     },
     {
       "label": "For --watch",
@@ -359,9 +309,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L39",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_add_watch_for_watch",
       "community": 11,
-      "norm_label": "for --watch",
-      "id": "claude_skills_graphify_references_add_watch_for_watch"
+      "norm_label": "for --watch"
     },
     {
       "label": "exports.md",
@@ -369,9 +319,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_exports",
       "community": 8,
-      "norm_label": "exports.md",
-      "id": "claude_skills_graphify_references_exports"
+      "norm_label": "exports.md"
     },
     {
       "label": "graphify reference: extra exports and benchmark",
@@ -379,9 +329,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark",
       "community": 8,
-      "norm_label": "graphify reference: extra exports and benchmark",
-      "id": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark"
+      "norm_label": "graphify reference: extra exports and benchmark"
     },
     {
       "label": "Step 6b - Wiki (only if --wiki flag)",
@@ -389,9 +339,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L5",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_exports_step_6b_wiki_only_if_wiki_flag",
       "community": 8,
-      "norm_label": "step 6b - wiki (only if --wiki flag)",
-      "id": "claude_skills_graphify_references_exports_step_6b_wiki_only_if_wiki_flag"
+      "norm_label": "step 6b - wiki (only if --wiki flag)"
     },
     {
       "label": "Step 7 - Neo4j export (only if --neo4j or --neo4j-push flag)",
@@ -399,9 +349,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L15",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_exports_step_7_neo4j_export_only_if_neo4j_or_neo4j_push_flag",
       "community": 8,
-      "norm_label": "step 7 - neo4j export (only if --neo4j or --neo4j-push flag)",
-      "id": "claude_skills_graphify_references_exports_step_7_neo4j_export_only_if_neo4j_or_neo4j_push_flag"
+      "norm_label": "step 7 - neo4j export (only if --neo4j or --neo4j-push flag)"
     },
     {
       "label": "Step 7a - FalkorDB export (only if --falkordb or --falkordb-push flag)",
@@ -409,9 +359,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L31",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_exports_step_7a_falkordb_export_only_if_falkordb_or_falkordb_push_flag",
       "community": 8,
-      "norm_label": "step 7a - falkordb export (only if --falkordb or --falkordb-push flag)",
-      "id": "claude_skills_graphify_references_exports_step_7a_falkordb_export_only_if_falkordb_or_falkordb_push_flag"
+      "norm_label": "step 7a - falkordb export (only if --falkordb or --falkordb-push flag)"
     },
     {
       "label": "Step 7b - SVG export (only if --svg flag)",
@@ -419,9 +369,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L47",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_exports_step_7b_svg_export_only_if_svg_flag",
       "community": 8,
-      "norm_label": "step 7b - svg export (only if --svg flag)",
-      "id": "claude_skills_graphify_references_exports_step_7b_svg_export_only_if_svg_flag"
+      "norm_label": "step 7b - svg export (only if --svg flag)"
     },
     {
       "label": "Step 7c - GraphML export (only if --graphml flag)",
@@ -429,9 +379,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L53",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_exports_step_7c_graphml_export_only_if_graphml_flag",
       "community": 8,
-      "norm_label": "step 7c - graphml export (only if --graphml flag)",
-      "id": "claude_skills_graphify_references_exports_step_7c_graphml_export_only_if_graphml_flag"
+      "norm_label": "step 7c - graphml export (only if --graphml flag)"
     },
     {
       "label": "Step 7d - MCP server (only if --mcp flag)",
@@ -439,9 +389,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L59",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_exports_step_7d_mcp_server_only_if_mcp_flag",
       "community": 8,
-      "norm_label": "step 7d - mcp server (only if --mcp flag)",
-      "id": "claude_skills_graphify_references_exports_step_7d_mcp_server_only_if_mcp_flag"
+      "norm_label": "step 7d - mcp server (only if --mcp flag)"
     },
     {
       "label": "Step 8 - Token reduction benchmark (only if total_words > 5000)",
@@ -449,9 +399,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L79",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_exports_step_8_token_reduction_benchmark_only_if_total_words_5000",
       "community": 8,
-      "norm_label": "step 8 - token reduction benchmark (only if total_words > 5000)",
-      "id": "claude_skills_graphify_references_exports_step_8_token_reduction_benchmark_only_if_total_words_5000"
+      "norm_label": "step 8 - token reduction benchmark (only if total_words > 5000)"
     },
     {
       "label": "extraction-spec.md",
@@ -459,9 +409,9 @@
       "source_file": ".claude/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_extraction_spec",
       "community": 18,
-      "norm_label": "extraction-spec.md",
-      "id": "claude_skills_graphify_references_extraction_spec"
+      "norm_label": "extraction-spec.md"
     },
     {
       "label": "graphify reference: extraction subagent prompt",
@@ -469,9 +419,9 @@
       "source_file": ".claude/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_extraction_spec_graphify_reference_extraction_subagent_prompt",
       "community": 18,
-      "norm_label": "graphify reference: extraction subagent prompt",
-      "id": "claude_skills_graphify_references_extraction_spec_graphify_reference_extraction_subagent_prompt"
+      "norm_label": "graphify reference: extraction subagent prompt"
     },
     {
       "label": "github-and-merge.md",
@@ -479,9 +429,9 @@
       "source_file": ".claude/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_github_and_merge",
       "community": 14,
-      "norm_label": "github-and-merge.md",
-      "id": "claude_skills_graphify_references_github_and_merge"
+      "norm_label": "github-and-merge.md"
     },
     {
       "label": "graphify reference: GitHub clone and cross-repo merge",
@@ -489,9 +439,9 @@
       "source_file": ".claude/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
       "community": 14,
-      "norm_label": "graphify reference: github clone and cross-repo merge",
-      "id": "claude_skills_graphify_references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge"
+      "norm_label": "graphify reference: github clone and cross-repo merge"
     },
     {
       "label": "Step 0 - Clone GitHub repo(s) (only if a GitHub URL was given)",
@@ -499,9 +449,9 @@
       "source_file": ".claude/skills/graphify/references/github-and-merge.md",
       "source_location": "L5",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given",
       "community": 14,
-      "norm_label": "step 0 - clone github repo(s) (only if a github url was given)",
-      "id": "claude_skills_graphify_references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given"
+      "norm_label": "step 0 - clone github repo(s) (only if a github url was given)"
     },
     {
       "label": "hooks.md",
@@ -509,9 +459,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_hooks",
       "community": 12,
-      "norm_label": "hooks.md",
-      "id": "claude_skills_graphify_references_hooks"
+      "norm_label": "hooks.md"
     },
     {
       "label": "graphify reference: commit hook and native CLAUDE.md integration",
@@ -519,9 +469,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
       "community": 12,
-      "norm_label": "graphify reference: commit hook and native claude.md integration",
-      "id": "claude_skills_graphify_references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration"
+      "norm_label": "graphify reference: commit hook and native claude.md integration"
     },
     {
       "label": "For git commit hook",
@@ -529,9 +479,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L5",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_hooks_for_git_commit_hook",
       "community": 12,
-      "norm_label": "for git commit hook",
-      "id": "claude_skills_graphify_references_hooks_for_git_commit_hook"
+      "norm_label": "for git commit hook"
     },
     {
       "label": "For native CLAUDE.md integration",
@@ -539,9 +489,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L21",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_hooks_for_native_claude_md_integration",
       "community": 12,
-      "norm_label": "for native claude.md integration",
-      "id": "claude_skills_graphify_references_hooks_for_native_claude_md_integration"
+      "norm_label": "for native claude.md integration"
     },
     {
       "label": "query.md",
@@ -549,9 +499,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_query",
       "community": 10,
-      "norm_label": "query.md",
-      "id": "claude_skills_graphify_references_query"
+      "norm_label": "query.md"
     },
     {
       "label": "graphify reference: query, path, explain",
@@ -559,9 +509,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_query_graphify_reference_query_path_explain",
       "community": 10,
-      "norm_label": "graphify reference: query, path, explain",
-      "id": "claude_skills_graphify_references_query_graphify_reference_query_path_explain"
+      "norm_label": "graphify reference: query, path, explain"
     },
     {
       "label": "Step 0 \u2014 Constrained query expansion (REQUIRED before traversal)",
@@ -569,9 +519,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L23",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_query_step_0_constrained_query_expansion_required_before_traversal",
       "community": 10,
-      "norm_label": "step 0 \u2014 constrained query expansion (required before traversal)",
-      "id": "claude_skills_graphify_references_query_step_0_constrained_query_expansion_required_before_traversal"
+      "norm_label": "step 0 \u2014 constrained query expansion (required before traversal)"
     },
     {
       "label": "Step 1 \u2014 Traversal",
@@ -579,9 +529,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L61",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_query_step_1_traversal",
       "community": 10,
-      "norm_label": "step 1 \u2014 traversal",
-      "id": "claude_skills_graphify_references_query_step_1_traversal"
+      "norm_label": "step 1 \u2014 traversal"
     },
     {
       "label": "For /graphify path",
@@ -589,9 +539,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L186",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_query_for_graphify_path",
       "community": 10,
-      "norm_label": "for /graphify path",
-      "id": "claude_skills_graphify_references_query_for_graphify_path"
+      "norm_label": "for /graphify path"
     },
     {
       "label": "For /graphify explain",
@@ -599,9 +549,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L254",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_query_for_graphify_explain",
       "community": 10,
-      "norm_label": "for /graphify explain",
-      "id": "claude_skills_graphify_references_query_for_graphify_explain"
+      "norm_label": "for /graphify explain"
     },
     {
       "label": "transcribe.md",
@@ -609,9 +559,9 @@
       "source_file": ".claude/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_transcribe",
       "community": 15,
-      "norm_label": "transcribe.md",
-      "id": "claude_skills_graphify_references_transcribe"
+      "norm_label": "transcribe.md"
     },
     {
       "label": "graphify reference: transcribe video and audio",
@@ -619,9 +569,9 @@
       "source_file": ".claude/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_transcribe_graphify_reference_transcribe_video_and_audio",
       "community": 15,
-      "norm_label": "graphify reference: transcribe video and audio",
-      "id": "claude_skills_graphify_references_transcribe_graphify_reference_transcribe_video_and_audio"
+      "norm_label": "graphify reference: transcribe video and audio"
     },
     {
       "label": "Step 2.5 - Transcribe video / audio files (only if video files detected)",
@@ -629,9 +579,9 @@
       "source_file": ".claude/skills/graphify/references/transcribe.md",
       "source_location": "L5",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_transcribe_step_2_5_transcribe_video_audio_files_only_if_video_files_detected",
       "community": 15,
-      "norm_label": "step 2.5 - transcribe video / audio files (only if video files detected)",
-      "id": "claude_skills_graphify_references_transcribe_step_2_5_transcribe_video_audio_files_only_if_video_files_detected"
+      "norm_label": "step 2.5 - transcribe video / audio files (only if video files detected)"
     },
     {
       "label": "update.md",
@@ -639,9 +589,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_update",
       "community": 13,
-      "norm_label": "update.md",
-      "id": "claude_skills_graphify_references_update"
+      "norm_label": "update.md"
     },
     {
       "label": "graphify reference: incremental update and cluster-only",
@@ -649,9 +599,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_update_graphify_reference_incremental_update_and_cluster_only",
       "community": 13,
-      "norm_label": "graphify reference: incremental update and cluster-only",
-      "id": "claude_skills_graphify_references_update_graphify_reference_incremental_update_and_cluster_only"
+      "norm_label": "graphify reference: incremental update and cluster-only"
     },
     {
       "label": "For --update (incremental re-extraction)",
@@ -659,9 +609,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L5",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_update_for_update_incremental_re_extraction",
       "community": 13,
-      "norm_label": "for --update (incremental re-extraction)",
-      "id": "claude_skills_graphify_references_update_for_update_incremental_re_extraction"
+      "norm_label": "for --update (incremental re-extraction)"
     },
     {
       "label": "For --cluster-only",
@@ -669,9 +619,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L184",
       "_origin": "ast",
+      "id": "claude_skills_graphify_references_update_for_cluster_only",
       "community": 13,
-      "norm_label": "for --cluster-only",
-      "id": "claude_skills_graphify_references_update_for_cluster_only"
+      "norm_label": "for --cluster-only"
     },
     {
       "label": "CLAUDE.md",
@@ -679,9 +629,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude",
       "community": 16,
-      "norm_label": "claude.md",
-      "id": "claude"
+      "norm_label": "claude.md"
     },
     {
       "label": "graphify",
@@ -689,9 +639,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "claude_graphify",
       "community": 16,
-      "norm_label": "graphify",
-      "id": "claude_graphify"
+      "norm_label": "graphify"
     },
     {
       "label": "maestro.js",
@@ -699,9 +649,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro",
       "community": 6,
-      "norm_label": "maestro.js",
-      "id": "frontend_netlify_functions_maestro"
+      "norm_label": "maestro.js"
     },
     {
       "label": "docusign",
@@ -709,9 +659,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L10",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro_docusign",
       "community": 6,
-      "norm_label": "docusign",
-      "id": "frontend_netlify_functions_maestro_docusign"
+      "norm_label": "docusign"
     },
     {
       "label": "axios",
@@ -719,9 +669,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L11",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro_axios",
       "community": 6,
-      "norm_label": "axios",
-      "id": "frontend_netlify_functions_maestro_axios"
+      "norm_label": "axios"
     },
     {
       "label": "CORS_HEADERS",
@@ -729,9 +679,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L13",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro_cors_headers",
       "community": 6,
-      "norm_label": "cors_headers",
-      "id": "frontend_netlify_functions_maestro_cors_headers"
+      "norm_label": "cors_headers"
     },
     {
       "label": "json()",
@@ -739,9 +689,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L20",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro_json",
       "community": 6,
-      "norm_label": "json()",
-      "id": "frontend_netlify_functions_maestro_json"
+      "norm_label": "json()"
     },
     {
       "label": "getEnv()",
@@ -749,9 +699,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L24",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro_getenv",
       "community": 6,
-      "norm_label": "getenv()",
-      "id": "frontend_netlify_functions_maestro_getenv"
+      "norm_label": "getenv()"
     },
     {
       "label": "getJwtToken()",
@@ -759,9 +709,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L72",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro_getjwttoken",
       "community": 6,
-      "norm_label": "getjwttoken()",
-      "id": "frontend_netlify_functions_maestro_getjwttoken"
+      "norm_label": "getjwttoken()"
     },
     {
       "label": "resolveWorkflowId()",
@@ -769,9 +719,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L93",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro_resolveworkflowid",
       "community": 6,
-      "norm_label": "resolveworkflowid()",
-      "id": "frontend_netlify_functions_maestro_resolveworkflowid"
+      "norm_label": "resolveworkflowid()"
     },
     {
       "label": "maestroFetch()",
@@ -779,9 +729,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L109",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro_maestrofetch",
       "community": 6,
-      "norm_label": "maestrofetch()",
-      "id": "frontend_netlify_functions_maestro_maestrofetch"
+      "norm_label": "maestrofetch()"
     },
     {
       "label": "handler()",
@@ -789,9 +739,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L142",
       "_origin": "ast",
+      "id": "frontend_netlify_functions_maestro_handler",
       "community": 6,
-      "norm_label": "handler()",
-      "id": "frontend_netlify_functions_maestro_handler"
+      "norm_label": "handler()"
     },
     {
       "label": "page.tsx",
@@ -799,9 +749,9 @@
       "source_file": "frontend/src/app/admin/tema/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_admin_tema_page",
       "community": 3,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_admin_tema_page"
+      "norm_label": "page.tsx"
     },
     {
       "label": "TemaPage()",
@@ -809,9 +759,9 @@
       "source_file": "frontend/src/app/admin/tema/page.tsx",
       "source_location": "L10",
       "_origin": "ast",
+      "id": "frontend_src_app_admin_tema_page_temapage",
       "community": 3,
-      "norm_label": "temapage()",
-      "id": "frontend_src_app_admin_tema_page_temapage"
+      "norm_label": "temapage()"
     },
     {
       "label": "page.tsx",
@@ -819,9 +769,9 @@
       "source_file": "frontend/src/app/conta/assinaturas/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_assinaturas_page",
       "community": 0,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_conta_assinaturas_page"
+      "norm_label": "page.tsx"
     },
     {
       "label": "DOCUMENTOS",
@@ -829,9 +779,9 @@
       "source_file": "frontend/src/app/conta/assinaturas/page.tsx",
       "source_location": "L7",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_assinaturas_page_documentos",
       "community": 0,
-      "norm_label": "documentos",
-      "id": "frontend_src_app_conta_assinaturas_page_documentos"
+      "norm_label": "documentos"
     },
     {
       "label": "AssinaturasPage()",
@@ -839,9 +789,9 @@
       "source_file": "frontend/src/app/conta/assinaturas/page.tsx",
       "source_location": "L14",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_assinaturas_page_assinaturaspage",
       "community": 0,
-      "norm_label": "assinaturaspage()",
-      "id": "frontend_src_app_conta_assinaturas_page_assinaturaspage"
+      "norm_label": "assinaturaspage()"
     },
     {
       "label": "page.tsx",
@@ -849,9 +799,9 @@
       "source_file": "frontend/src/app/conta/cartoes/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_conta_cartoes_page"
+      "id": "frontend_src_app_conta_cartoes_page",
+      "community": 7,
+      "norm_label": "page.tsx"
     },
     {
       "label": "CartoesPage()",
@@ -859,9 +809,9 @@
       "source_file": "frontend/src/app/conta/cartoes/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "cartoespage()",
-      "id": "frontend_src_app_conta_cartoes_page_cartoespage"
+      "id": "frontend_src_app_conta_cartoes_page_cartoespage",
+      "community": 7,
+      "norm_label": "cartoespage()"
     },
     {
       "label": "page.tsx",
@@ -869,9 +819,9 @@
       "source_file": "frontend/src/app/conta/emprestimos/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_emprestimos_page",
       "community": 7,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_conta_emprestimos_page"
+      "norm_label": "page.tsx"
     },
     {
       "label": "fmtBRL()",
@@ -879,9 +829,9 @@
       "source_file": "frontend/src/app/conta/emprestimos/page.tsx",
       "source_location": "L8",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_emprestimos_page_fmtbrl",
       "community": 7,
-      "norm_label": "fmtbrl()",
-      "id": "frontend_src_app_conta_emprestimos_page_fmtbrl"
+      "norm_label": "fmtbrl()"
     },
     {
       "label": "EmprestimosPage()",
@@ -889,9 +839,9 @@
       "source_file": "frontend/src/app/conta/emprestimos/page.tsx",
       "source_location": "L11",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_emprestimos_page_emprestimospage",
       "community": 7,
-      "norm_label": "emprestimospage()",
-      "id": "frontend_src_app_conta_emprestimos_page_emprestimospage"
+      "norm_label": "emprestimospage()"
     },
     {
       "label": "layout.tsx",
@@ -899,9 +849,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_layout",
       "community": 4,
-      "norm_label": "layout.tsx",
-      "id": "frontend_src_app_conta_layout"
+      "norm_label": "layout.tsx"
     },
     {
       "label": "NAV_ITEMS",
@@ -909,9 +859,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L12",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_layout_nav_items",
       "community": 4,
-      "norm_label": "nav_items",
-      "id": "frontend_src_app_conta_layout_nav_items"
+      "norm_label": "nav_items"
     },
     {
       "label": "ContaLayout()",
@@ -919,9 +869,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L35",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_layout_contalayout",
       "community": 4,
-      "norm_label": "contalayout()",
-      "id": "frontend_src_app_conta_layout_contalayout"
+      "norm_label": "contalayout()"
     },
     {
       "label": "page.tsx",
@@ -929,9 +879,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_page",
       "community": 0,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_conta_page"
+      "norm_label": "page.tsx"
     },
     {
       "label": "TRANSACOES",
@@ -939,9 +889,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L15",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_page_transacoes",
       "community": 0,
-      "norm_label": "transacoes",
-      "id": "frontend_src_app_conta_page_transacoes"
+      "norm_label": "transacoes"
     },
     {
       "label": "fmtBRL()",
@@ -949,9 +899,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L24",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_page_fmtbrl",
       "community": 0,
-      "norm_label": "fmtbrl()",
-      "id": "frontend_src_app_conta_page_fmtbrl"
+      "norm_label": "fmtbrl()"
     },
     {
       "label": "ContaDashboard()",
@@ -959,9 +909,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L27",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_page_contadashboard",
       "community": 0,
-      "norm_label": "contadashboard()",
-      "id": "frontend_src_app_conta_page_contadashboard"
+      "norm_label": "contadashboard()"
     },
     {
       "label": "page.tsx",
@@ -969,9 +919,9 @@
       "source_file": "frontend/src/app/conta/pix/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_pix_page",
       "community": 0,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_conta_pix_page"
+      "norm_label": "page.tsx"
     },
     {
       "label": "CHAVES",
@@ -979,9 +929,9 @@
       "source_file": "frontend/src/app/conta/pix/page.tsx",
       "source_location": "L7",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_pix_page_chaves",
       "community": 0,
-      "norm_label": "chaves",
-      "id": "frontend_src_app_conta_pix_page_chaves"
+      "norm_label": "chaves"
     },
     {
       "label": "PixPage()",
@@ -989,9 +939,9 @@
       "source_file": "frontend/src/app/conta/pix/page.tsx",
       "source_location": "L13",
       "_origin": "ast",
+      "id": "frontend_src_app_conta_pix_page_pixpage",
       "community": 0,
-      "norm_label": "pixpage()",
-      "id": "frontend_src_app_conta_pix_page_pixpage"
+      "norm_label": "pixpage()"
     },
     {
       "label": "page.tsx",
@@ -999,9 +949,9 @@
       "source_file": "frontend/src/app/entrar/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_entrar_page",
       "community": 4,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_entrar_page"
+      "norm_label": "page.tsx"
     },
     {
       "label": "EntrarPage()",
@@ -1009,9 +959,9 @@
       "source_file": "frontend/src/app/entrar/page.tsx",
       "source_location": "L12",
       "_origin": "ast",
+      "id": "frontend_src_app_entrar_page_entrarpage",
       "community": 4,
-      "norm_label": "entrarpage()",
-      "id": "frontend_src_app_entrar_page_entrarpage"
+      "norm_label": "entrarpage()"
     },
     {
       "label": "page.tsx",
@@ -1019,9 +969,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_evidenciasidv_page",
       "community": 9,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_evidenciasidv_page"
+      "norm_label": "page.tsx"
     },
     {
       "label": "AuditEvent",
@@ -1029,9 +979,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L6",
       "_origin": "ast",
+      "id": "frontend_src_app_evidenciasidv_page_auditevent",
       "community": 9,
-      "norm_label": "auditevent",
-      "id": "frontend_src_app_evidenciasidv_page_auditevent"
+      "norm_label": "auditevent"
     },
     {
       "label": "AuditEventsResponse",
@@ -1039,9 +989,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L22",
       "_origin": "ast",
+      "id": "frontend_src_app_evidenciasidv_page_auditeventsresponse",
       "community": 9,
-      "norm_label": "auditeventsresponse",
-      "id": "frontend_src_app_evidenciasidv_page_auditeventsresponse"
+      "norm_label": "auditeventsresponse"
     },
     {
       "label": "IDEvidenceEvent",
@@ -1049,9 +999,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L26",
       "_origin": "ast",
+      "id": "frontend_src_app_evidenciasidv_page_idevidenceevent",
       "community": 9,
-      "norm_label": "idevidenceevent",
-      "id": "frontend_src_app_evidenciasidv_page_idevidenceevent"
+      "norm_label": "idevidenceevent"
     },
     {
       "label": "IDEvidenceMedia",
@@ -1059,9 +1009,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L38",
       "_origin": "ast",
+      "id": "frontend_src_app_evidenciasidv_page_idevidencemedia",
       "community": 9,
-      "norm_label": "idevidencemedia",
-      "id": "frontend_src_app_evidenciasidv_page_idevidencemedia"
+      "norm_label": "idevidencemedia"
     },
     {
       "label": "IDEvidenceResponse",
@@ -1069,9 +1019,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L48",
       "_origin": "ast",
+      "id": "frontend_src_app_evidenciasidv_page_idevidenceresponse",
       "community": 9,
-      "norm_label": "idevidenceresponse",
-      "id": "frontend_src_app_evidenciasidv_page_idevidenceresponse"
+      "norm_label": "idevidenceresponse"
     },
     {
       "label": "EvidenciasIDVPage()",
@@ -1079,9 +1029,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L53",
       "_origin": "ast",
+      "id": "frontend_src_app_evidenciasidv_page_evidenciasidvpage",
       "community": 9,
-      "norm_label": "evidenciasidvpage()",
-      "id": "frontend_src_app_evidenciasidv_page_evidenciasidvpage"
+      "norm_label": "evidenciasidvpage()"
     },
     {
       "label": "layout.tsx",
@@ -1089,9 +1039,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_layout",
       "community": 1,
-      "norm_label": "layout.tsx",
-      "id": "frontend_src_app_layout"
+      "norm_label": "layout.tsx"
     },
     {
       "label": "inter",
@@ -1099,9 +1049,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L7",
       "_origin": "ast",
+      "id": "frontend_src_app_layout_inter",
       "community": 1,
-      "norm_label": "inter",
-      "id": "frontend_src_app_layout_inter"
+      "norm_label": "inter"
     },
     {
       "label": "metadata",
@@ -1109,9 +1059,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L9",
       "_origin": "ast",
+      "id": "frontend_src_app_layout_metadata",
       "community": 1,
-      "norm_label": "metadata",
-      "id": "frontend_src_app_layout_metadata"
+      "norm_label": "metadata"
     },
     {
       "label": "RootLayout()",
@@ -1119,9 +1069,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L14",
       "_origin": "ast",
+      "id": "frontend_src_app_layout_rootlayout",
       "community": 1,
-      "norm_label": "rootlayout()",
-      "id": "frontend_src_app_layout_rootlayout"
+      "norm_label": "rootlayout()"
     },
     {
       "label": "page.tsx",
@@ -1129,9 +1079,9 @@
       "source_file": "frontend/src/app/login/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_login_page",
       "community": 1,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_login_page"
+      "norm_label": "page.tsx"
     },
     {
       "label": "LoginPage()",
@@ -1139,9 +1089,9 @@
       "source_file": "frontend/src/app/login/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
+      "id": "frontend_src_app_login_page_loginpage",
       "community": 1,
-      "norm_label": "loginpage()",
-      "id": "frontend_src_app_login_page_loginpage"
+      "norm_label": "loginpage()"
     },
     {
       "label": "page.tsx",
@@ -1149,9 +1099,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_app_page",
       "community": 0,
-      "norm_label": "page.tsx",
-      "id": "frontend_src_app_page"
+      "norm_label": "page.tsx"
     },
     {
       "label": "Home()",
@@ -1159,9 +1109,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L17",
       "_origin": "ast",
+      "id": "frontend_src_app_page_home",
       "community": 0,
-      "norm_label": "home()",
-      "id": "frontend_src_app_page_home"
+      "norm_label": "home()"
     },
     {
       "label": "AdvancedSignatureDemo.tsx",
@@ -1169,9 +1119,9 @@
       "source_file": "frontend/src/components/docusign/AdvancedSignatureDemo.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_advancedsignaturedemo",
       "community": 0,
-      "norm_label": "advancedsignaturedemo.tsx",
-      "id": "frontend_src_components_docusign_advancedsignaturedemo"
+      "norm_label": "advancedsignaturedemo.tsx"
     },
     {
       "label": "DeliveryMethod",
@@ -1179,9 +1129,9 @@
       "source_file": "frontend/src/components/docusign/AdvancedSignatureDemo.tsx",
       "source_location": "L9",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_advancedsignaturedemo_deliverymethod",
       "community": 0,
-      "norm_label": "deliverymethod",
-      "id": "frontend_src_components_docusign_advancedsignaturedemo_deliverymethod"
+      "norm_label": "deliverymethod"
     },
     {
       "label": "useAdvancedSignatureDemo()",
@@ -1189,9 +1139,9 @@
       "source_file": "frontend/src/components/docusign/AdvancedSignatureDemo.tsx",
       "source_location": "L11",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo",
       "community": 0,
-      "norm_label": "useadvancedsignaturedemo()",
-      "id": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo"
+      "norm_label": "useadvancedsignaturedemo()"
     },
     {
       "label": "CartaoClickToAgree.tsx",
@@ -1199,9 +1149,9 @@
       "source_file": "frontend/src/components/docusign/CartaoClickToAgree.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_cartaoclicktoagree",
       "community": 0,
-      "norm_label": "cartaoclicktoagree.tsx",
-      "id": "frontend_src_components_docusign_cartaoclicktoagree"
+      "norm_label": "cartaoclicktoagree.tsx"
     },
     {
       "label": "CartaoStep",
@@ -1209,9 +1159,9 @@
       "source_file": "frontend/src/components/docusign/CartaoClickToAgree.tsx",
       "source_location": "L8",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_cartaoclicktoagree_cartaostep",
       "community": 0,
-      "norm_label": "cartaostep",
-      "id": "frontend_src_components_docusign_cartaoclicktoagree_cartaostep"
+      "norm_label": "cartaostep"
     },
     {
       "label": "useCartaoClickToAgree()",
@@ -1219,9 +1169,9 @@
       "source_file": "frontend/src/components/docusign/CartaoClickToAgree.tsx",
       "source_location": "L10",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_cartaoclicktoagree_usecartaoclicktoagree",
       "community": 0,
-      "norm_label": "usecartaoclicktoagree()",
-      "id": "frontend_src_components_docusign_cartaoclicktoagree_usecartaoclicktoagree"
+      "norm_label": "usecartaoclicktoagree()"
     },
     {
       "label": "MaestroDemo.tsx",
@@ -1229,9 +1179,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "maestrodemo.tsx",
-      "id": "frontend_src_components_docusign_maestrodemo"
+      "id": "frontend_src_components_docusign_maestrodemo",
+      "community": 7,
+      "norm_label": "maestrodemo.tsx"
     },
     {
       "label": "MaestroFlowOptions",
@@ -1239,9 +1189,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "maestroflowoptions",
-      "id": "frontend_src_components_docusign_maestrodemo_maestroflowoptions"
+      "id": "frontend_src_components_docusign_maestrodemo_maestroflowoptions",
+      "community": 7,
+      "norm_label": "maestroflowoptions"
     },
     {
       "label": "useMaestroFlow()",
@@ -1249,9 +1199,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "usemaestroflow()",
-      "id": "frontend_src_components_docusign_maestrodemo_usemaestroflow"
+      "id": "frontend_src_components_docusign_maestrodemo_usemaestroflow",
+      "community": 7,
+      "norm_label": "usemaestroflow()"
     },
     {
       "label": "useMaestroDemo()",
@@ -1259,9 +1209,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L157",
       "_origin": "ast",
-      "community": 0,
-      "norm_label": "usemaestrodemo()",
-      "id": "frontend_src_components_docusign_maestrodemo_usemaestrodemo"
+      "id": "frontend_src_components_docusign_maestrodemo_usemaestrodemo",
+      "community": 7,
+      "norm_label": "usemaestrodemo()"
     },
     {
       "label": "useCartaoMaestroFlow()",
@@ -1269,9 +1219,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L169",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "usecartaomaestroflow()",
-      "id": "frontend_src_components_docusign_maestrodemo_usecartaomaestroflow"
+      "id": "frontend_src_components_docusign_maestrodemo_usecartaomaestroflow",
+      "community": 7,
+      "norm_label": "usecartaomaestroflow()"
     },
     {
       "label": "PixSigningDemo.tsx",
@@ -1279,9 +1229,9 @@
       "source_file": "frontend/src/components/docusign/PixSigningDemo.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_pixsigningdemo",
       "community": 0,
-      "norm_label": "pixsigningdemo.tsx",
-      "id": "frontend_src_components_docusign_pixsigningdemo"
+      "norm_label": "pixsigningdemo.tsx"
     },
     {
       "label": "usePixSigningDemo()",
@@ -1289,9 +1239,9 @@
       "source_file": "frontend/src/components/docusign/PixSigningDemo.tsx",
       "source_location": "L8",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo",
       "community": 0,
-      "norm_label": "usepixsigningdemo()",
-      "id": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo"
+      "norm_label": "usepixsigningdemo()"
     },
     {
       "label": "demoDocument.ts",
@@ -1299,9 +1249,9 @@
       "source_file": "frontend/src/components/docusign/demoDocument.ts",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_demodocument",
       "community": 0,
-      "norm_label": "demodocument.ts",
-      "id": "frontend_src_components_docusign_demodocument"
+      "norm_label": "demodocument.ts"
     },
     {
       "label": "createDemoDocument()",
@@ -1309,9 +1259,9 @@
       "source_file": "frontend/src/components/docusign/demoDocument.ts",
       "source_location": "L4",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_demodocument_createdemodocument",
       "community": 0,
-      "norm_label": "createdemodocument()",
-      "id": "frontend_src_components_docusign_demodocument_createdemodocument"
+      "norm_label": "createdemodocument()"
     },
     {
       "label": "validateCpf()",
@@ -1319,9 +1269,9 @@
       "source_file": "frontend/src/components/docusign/demoDocument.ts",
       "source_location": "L47",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_demodocument_validatecpf",
       "community": 0,
-      "norm_label": "validatecpf()",
-      "id": "frontend_src_components_docusign_demodocument_validatecpf"
+      "norm_label": "validatecpf()"
     },
     {
       "label": "htmlToBase64()",
@@ -1329,9 +1279,9 @@
       "source_file": "frontend/src/components/docusign/demoDocument.ts",
       "source_location": "L64",
       "_origin": "ast",
+      "id": "frontend_src_components_docusign_demodocument_htmltobase64",
       "community": 0,
-      "norm_label": "htmltobase64()",
-      "id": "frontend_src_components_docusign_demodocument_htmltobase64"
+      "norm_label": "htmltobase64()"
     },
     {
       "label": "AdminNavBar.tsx",
@@ -1339,9 +1289,9 @@
       "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_components_navigation_adminnavbar",
       "community": 1,
-      "norm_label": "adminnavbar.tsx",
-      "id": "frontend_src_components_navigation_adminnavbar"
+      "norm_label": "adminnavbar.tsx"
     },
     {
       "label": "AdminNavBar()",
@@ -1349,9 +1299,9 @@
       "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
       "source_location": "L9",
       "_origin": "ast",
+      "id": "frontend_src_components_navigation_adminnavbar_adminnavbar",
       "community": 1,
-      "norm_label": "adminnavbar()",
-      "id": "frontend_src_components_navigation_adminnavbar_adminnavbar"
+      "norm_label": "adminnavbar()"
     },
     {
       "label": "AuthContext.tsx",
@@ -1359,9 +1309,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_contexts_authcontext",
       "community": 1,
-      "norm_label": "authcontext.tsx",
-      "id": "frontend_src_contexts_authcontext"
+      "norm_label": "authcontext.tsx"
     },
     {
       "label": "AuthContextType",
@@ -1369,9 +1319,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L8",
       "_origin": "ast",
+      "id": "frontend_src_contexts_authcontext_authcontexttype",
       "community": 1,
-      "norm_label": "authcontexttype",
-      "id": "frontend_src_contexts_authcontext_authcontexttype"
+      "norm_label": "authcontexttype"
     },
     {
       "label": "AuthContext",
@@ -1379,9 +1329,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L16",
       "_origin": "ast",
+      "id": "frontend_src_contexts_authcontext_authcontext",
       "community": 1,
-      "norm_label": "authcontext",
-      "id": "frontend_src_contexts_authcontext_authcontext"
+      "norm_label": "authcontext"
     },
     {
       "label": "MASTER_USERS",
@@ -1389,9 +1339,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L20",
       "_origin": "ast",
+      "id": "frontend_src_contexts_authcontext_master_users",
       "community": 1,
-      "norm_label": "master_users",
-      "id": "frontend_src_contexts_authcontext_master_users"
+      "norm_label": "master_users"
     },
     {
       "label": "MASTER_ADMIN_EMAILS",
@@ -1399,9 +1349,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L25",
       "_origin": "ast",
+      "id": "frontend_src_contexts_authcontext_master_admin_emails",
       "community": 1,
-      "norm_label": "master_admin_emails",
-      "id": "frontend_src_contexts_authcontext_master_admin_emails"
+      "norm_label": "master_admin_emails"
     },
     {
       "label": "buildMasterUser()",
@@ -1409,9 +1359,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L29",
       "_origin": "ast",
+      "id": "frontend_src_contexts_authcontext_buildmasteruser",
       "community": 1,
-      "norm_label": "buildmasteruser()",
-      "id": "frontend_src_contexts_authcontext_buildmasteruser"
+      "norm_label": "buildmasteruser()"
     },
     {
       "label": "AuthProvider()",
@@ -1419,9 +1369,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L42",
       "_origin": "ast",
+      "id": "frontend_src_contexts_authcontext_authprovider",
       "community": 1,
-      "norm_label": "authprovider()",
-      "id": "frontend_src_contexts_authcontext_authprovider"
+      "norm_label": "authprovider()"
     },
     {
       "label": "useAuth()",
@@ -1429,9 +1379,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L273",
       "_origin": "ast",
+      "id": "frontend_src_contexts_authcontext_useauth",
       "community": 1,
-      "norm_label": "useauth()",
-      "id": "frontend_src_contexts_authcontext_useauth"
+      "norm_label": "useauth()"
     },
     {
       "label": "ThemeContext.tsx",
@@ -1439,9 +1389,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_contexts_themecontext",
       "community": 3,
-      "norm_label": "themecontext.tsx",
-      "id": "frontend_src_contexts_themecontext"
+      "norm_label": "themecontext.tsx"
     },
     {
       "label": "ThemeContextType",
@@ -1449,9 +1399,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L14",
       "_origin": "ast",
+      "id": "frontend_src_contexts_themecontext_themecontexttype",
       "community": 3,
-      "norm_label": "themecontexttype",
-      "id": "frontend_src_contexts_themecontext_themecontexttype"
+      "norm_label": "themecontexttype"
     },
     {
       "label": "ThemeContext",
@@ -1459,9 +1409,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L29",
       "_origin": "ast",
+      "id": "frontend_src_contexts_themecontext_themecontext",
       "community": 3,
-      "norm_label": "themecontext",
-      "id": "frontend_src_contexts_themecontext_themecontext"
+      "norm_label": "themecontext"
     },
     {
       "label": "StoredTheme",
@@ -1469,9 +1419,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L31",
       "_origin": "ast",
+      "id": "frontend_src_contexts_themecontext_storedtheme",
       "community": 3,
-      "norm_label": "storedtheme",
-      "id": "frontend_src_contexts_themecontext_storedtheme"
+      "norm_label": "storedtheme"
     },
     {
       "label": "ThemeProvider()",
@@ -1479,9 +1429,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L36",
       "_origin": "ast",
+      "id": "frontend_src_contexts_themecontext_themeprovider",
       "community": 1,
-      "norm_label": "themeprovider()",
-      "id": "frontend_src_contexts_themecontext_themeprovider"
+      "norm_label": "themeprovider()"
     },
     {
       "label": "readLocal()",
@@ -1489,9 +1439,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L112",
       "_origin": "ast",
+      "id": "frontend_src_contexts_themecontext_readlocal",
       "community": 3,
-      "norm_label": "readlocal()",
-      "id": "frontend_src_contexts_themecontext_readlocal"
+      "norm_label": "readlocal()"
     },
     {
       "label": "writeLocal()",
@@ -1499,9 +1449,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L124",
       "_origin": "ast",
+      "id": "frontend_src_contexts_themecontext_writelocal",
       "community": 3,
-      "norm_label": "writelocal()",
-      "id": "frontend_src_contexts_themecontext_writelocal"
+      "norm_label": "writelocal()"
     },
     {
       "label": "useTheme()",
@@ -1509,9 +1459,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L133",
       "_origin": "ast",
+      "id": "frontend_src_contexts_themecontext_usetheme",
       "community": 3,
-      "norm_label": "usetheme()",
-      "id": "frontend_src_contexts_themecontext_usetheme"
+      "norm_label": "usetheme()"
     },
     {
       "label": "bankSession.ts",
@@ -1519,9 +1469,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_lib_banksession",
       "community": 4,
-      "norm_label": "banksession.ts",
-      "id": "frontend_src_lib_banksession"
+      "norm_label": "banksession.ts"
     },
     {
       "label": "BankSession",
@@ -1529,9 +1479,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L4",
       "_origin": "ast",
+      "id": "frontend_src_lib_banksession_banksession",
       "community": 4,
-      "norm_label": "banksession",
-      "id": "frontend_src_lib_banksession_banksession"
+      "norm_label": "banksession"
     },
     {
       "label": "getBankSession()",
@@ -1539,9 +1489,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L12",
       "_origin": "ast",
+      "id": "frontend_src_lib_banksession_getbanksession",
       "community": 4,
-      "norm_label": "getbanksession()",
-      "id": "frontend_src_lib_banksession_getbanksession"
+      "norm_label": "getbanksession()"
     },
     {
       "label": "createBankSession()",
@@ -1549,9 +1499,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L24",
       "_origin": "ast",
+      "id": "frontend_src_lib_banksession_createbanksession",
       "community": 4,
-      "norm_label": "createbanksession()",
-      "id": "frontend_src_lib_banksession_createbanksession"
+      "norm_label": "createbanksession()"
     },
     {
       "label": "clearBankSession()",
@@ -1559,9 +1509,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L37",
       "_origin": "ast",
+      "id": "frontend_src_lib_banksession_clearbanksession",
       "community": 4,
-      "norm_label": "clearbanksession()",
-      "id": "frontend_src_lib_banksession_clearbanksession"
+      "norm_label": "clearbanksession()"
     },
     {
       "label": "deriveNameFromEmail()",
@@ -1569,9 +1519,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L43",
       "_origin": "ast",
+      "id": "frontend_src_lib_banksession_derivenamefromemail",
       "community": 4,
-      "norm_label": "derivenamefromemail()",
-      "id": "frontend_src_lib_banksession_derivenamefromemail"
+      "norm_label": "derivenamefromemail()"
     },
     {
       "label": "firstName()",
@@ -1579,9 +1529,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L54",
       "_origin": "ast",
+      "id": "frontend_src_lib_banksession_firstname",
       "community": 4,
-      "norm_label": "firstname()",
-      "id": "frontend_src_lib_banksession_firstname"
+      "norm_label": "firstname()"
     },
     {
       "label": "supabase.ts",
@@ -1589,9 +1539,9 @@
       "source_file": "frontend/src/lib/supabase.ts",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_lib_supabase",
       "community": 1,
-      "norm_label": "supabase.ts",
-      "id": "frontend_src_lib_supabase"
+      "norm_label": "supabase.ts"
     },
     {
       "label": "supabase",
@@ -1599,9 +1549,9 @@
       "source_file": "frontend/src/lib/supabase.ts",
       "source_location": "L12",
       "_origin": "ast",
+      "id": "frontend_src_lib_supabase_supabase",
       "community": 1,
-      "norm_label": "supabase",
-      "id": "frontend_src_lib_supabase_supabase"
+      "norm_label": "supabase"
     },
     {
       "label": "formatCurrency()",
@@ -1609,9 +1559,9 @@
       "source_file": "frontend/src/lib/supabase.ts",
       "source_location": "L18",
       "_origin": "ast",
+      "id": "frontend_src_lib_supabase_formatcurrency",
       "community": 1,
-      "norm_label": "formatcurrency()",
-      "id": "frontend_src_lib_supabase_formatcurrency"
+      "norm_label": "formatcurrency()"
     },
     {
       "label": "themes.ts",
@@ -1619,9 +1569,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_src_lib_themes",
       "community": 3,
-      "norm_label": "themes.ts",
-      "id": "frontend_src_lib_themes"
+      "norm_label": "themes.ts"
     },
     {
       "label": "ThemeColors",
@@ -1629,9 +1579,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L5",
       "_origin": "ast",
+      "id": "frontend_src_lib_themes_themecolors",
       "community": 3,
-      "norm_label": "themecolors",
-      "id": "frontend_src_lib_themes_themecolors"
+      "norm_label": "themecolors"
     },
     {
       "label": "Theme",
@@ -1639,9 +1589,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L14",
       "_origin": "ast",
+      "id": "frontend_src_lib_themes_theme",
       "community": 3,
-      "norm_label": "theme",
-      "id": "frontend_src_lib_themes_theme"
+      "norm_label": "theme"
     },
     {
       "label": "hexToRgbTriplet()",
@@ -1649,9 +1599,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L22",
       "_origin": "ast",
+      "id": "frontend_src_lib_themes_hextorgbtriplet",
       "community": 3,
-      "norm_label": "hextorgbtriplet()",
-      "id": "frontend_src_lib_themes_hextorgbtriplet"
+      "norm_label": "hextorgbtriplet()"
     },
     {
       "label": "applyTheme()",
@@ -1659,9 +1609,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L31",
       "_origin": "ast",
+      "id": "frontend_src_lib_themes_applytheme",
       "community": 3,
-      "norm_label": "applytheme()",
-      "id": "frontend_src_lib_themes_applytheme"
+      "norm_label": "applytheme()"
     },
     {
       "label": "THEME_PRESETS",
@@ -1669,9 +1619,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L43",
       "_origin": "ast",
+      "id": "frontend_src_lib_themes_theme_presets",
       "community": 3,
-      "norm_label": "theme_presets",
-      "id": "frontend_src_lib_themes_theme_presets"
+      "norm_label": "theme_presets"
     },
     {
       "label": "tailwind.config.js",
@@ -1679,51 +1629,21 @@
       "source_file": "frontend/tailwind.config.js",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "frontend_tailwind_config",
       "community": 19,
-      "norm_label": "tailwind.config.js",
-      "id": "frontend_tailwind_config"
+      "norm_label": "tailwind.config.js"
     }
   ],
   "links": [
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/admin/layout.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "source": "frontend_src_app_admin_layout",
-      "target": "frontend_src_app_admin_layout_adminlayout",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/admin/page.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "source": "frontend_src_app_admin_page",
-      "target": "frontend_src_app_admin_page_admindashboard",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/admin/page.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "source": "frontend_src_app_admin_page",
-      "target": "frontend_src_app_admin_page_dashboardstats",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": ".claude/CLAUDE.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_claude",
-      "target": "claude_claude_graphify"
+      "target": "claude_claude_graphify",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1731,9 +1651,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill",
-      "target": "claude_skills_graphify_skill_graphify"
+      "target": "claude_skills_graphify_skill_graphify",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1741,9 +1661,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L659",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_graphify",
-      "target": "claude_skills_graphify_skill_for_graphify_add_and_watch"
+      "target": "claude_skills_graphify_skill_for_graphify_add_and_watch",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1751,9 +1671,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L647",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_graphify",
-      "target": "claude_skills_graphify_skill_for_graphify_query"
+      "target": "claude_skills_graphify_skill_for_graphify_query",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1761,9 +1681,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L665",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_graphify",
-      "target": "claude_skills_graphify_skill_for_the_commit_hook_and_native_claude_md_integration"
+      "target": "claude_skills_graphify_skill_for_the_commit_hook_and_native_claude_md_integration",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1771,9 +1691,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L641",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_graphify",
-      "target": "claude_skills_graphify_skill_for_update_and_cluster_only"
+      "target": "claude_skills_graphify_skill_for_update_and_cluster_only",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1781,9 +1701,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L671",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_graphify",
-      "target": "claude_skills_graphify_skill_honesty_rules"
+      "target": "claude_skills_graphify_skill_honesty_rules",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1791,9 +1711,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L623",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_graphify",
-      "target": "claude_skills_graphify_skill_interpreter_guard_for_subcommands"
+      "target": "claude_skills_graphify_skill_interpreter_guard_for_subcommands",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1801,9 +1721,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_graphify",
-      "target": "claude_skills_graphify_skill_usage"
+      "target": "claude_skills_graphify_skill_usage",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1811,9 +1731,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L45",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_graphify",
-      "target": "claude_skills_graphify_skill_what_graphify_is_for"
+      "target": "claude_skills_graphify_skill_what_graphify_is_for",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1821,9 +1741,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L49",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_graphify",
-      "target": "claude_skills_graphify_skill_what_you_must_do_when_invoked"
+      "target": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1831,9 +1751,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L61",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_0_github_repos_and_multi_path_merge_only_if_a_url_or_several_paths"
+      "target": "claude_skills_graphify_skill_step_0_github_repos_and_multi_path_merge_only_if_a_url_or_several_paths",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1841,9 +1761,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L65",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_1_ensure_graphify_is_installed"
+      "target": "claude_skills_graphify_skill_step_1_ensure_graphify_is_installed",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1851,9 +1771,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L144",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_2_5_video_and_audio_only_if_video_files_detected"
+      "target": "claude_skills_graphify_skill_step_2_5_video_and_audio_only_if_video_files_detected",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1861,9 +1781,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L107",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_2_detect_files"
+      "target": "claude_skills_graphify_skill_step_2_detect_files",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1871,9 +1791,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L148",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_3_extract_entities_and_relationships"
+      "target": "claude_skills_graphify_skill_step_3_extract_entities_and_relationships",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1881,9 +1801,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L450",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_4_5_graph_health_check_read_only_integrity_gate"
+      "target": "claude_skills_graphify_skill_step_4_5_graph_health_check_read_only_integrity_gate",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1891,9 +1811,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L387",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_4_build_graph_cluster_analyze_generate_outputs"
+      "target": "claude_skills_graphify_skill_step_4_build_graph_cluster_analyze_generate_outputs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1901,9 +1821,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L476",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_5_label_communities"
+      "target": "claude_skills_graphify_skill_step_5_label_communities",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1911,9 +1831,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L517",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_6_generate_obsidian_vault_opt_in_html"
+      "target": "claude_skills_graphify_skill_step_6_generate_obsidian_vault_opt_in_html",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1921,9 +1841,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L543",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_step_9_save_manifest_update_cost_tracker_clean_up_and_report"
+      "target": "claude_skills_graphify_skill_step_9_save_manifest_update_cost_tracker_clean_up_and_report",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1931,9 +1851,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L537",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_what_you_must_do_when_invoked",
-      "target": "claude_skills_graphify_skill_steps_6b_8_wiki_neo4j_falkordb_svg_graphml_mcp_benchmark_only_on_their_flags"
+      "target": "claude_skills_graphify_skill_steps_6b_8_wiki_neo4j_falkordb_svg_graphml_mcp_benchmark_only_on_their_flags",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1941,9 +1861,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L167",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_step_3_extract_entities_and_relationships",
-      "target": "claude_skills_graphify_skill_part_a_structural_extraction_for_code_files"
+      "target": "claude_skills_graphify_skill_part_a_structural_extraction_for_code_files",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1951,9 +1871,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L193",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_step_3_extract_entities_and_relationships",
-      "target": "claude_skills_graphify_skill_part_b_semantic_extraction_parallel_subagents"
+      "target": "claude_skills_graphify_skill_part_b_semantic_extraction_parallel_subagents",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1961,9 +1881,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L353",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_skill_step_3_extract_entities_and_relationships",
-      "target": "claude_skills_graphify_skill_part_c_merge_ast_semantic_into_final_extraction"
+      "target": "claude_skills_graphify_skill_part_c_merge_ast_semantic_into_final_extraction",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1971,9 +1891,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_add_watch",
-      "target": "claude_skills_graphify_references_add_watch_graphify_reference_add_a_url_and_watch_a_folder"
+      "target": "claude_skills_graphify_references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1981,9 +1901,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
-      "target": "claude_skills_graphify_references_add_watch_for_graphify_add"
+      "target": "claude_skills_graphify_references_add_watch_for_graphify_add",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1991,9 +1911,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L39",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
-      "target": "claude_skills_graphify_references_add_watch_for_watch"
+      "target": "claude_skills_graphify_references_add_watch_for_watch",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2001,9 +1921,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_exports",
-      "target": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark"
+      "target": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2011,9 +1931,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "claude_skills_graphify_references_exports_step_6b_wiki_only_if_wiki_flag"
+      "target": "claude_skills_graphify_references_exports_step_6b_wiki_only_if_wiki_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2021,9 +1941,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "claude_skills_graphify_references_exports_step_7_neo4j_export_only_if_neo4j_or_neo4j_push_flag"
+      "target": "claude_skills_graphify_references_exports_step_7_neo4j_export_only_if_neo4j_or_neo4j_push_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2031,9 +1951,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L31",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "claude_skills_graphify_references_exports_step_7a_falkordb_export_only_if_falkordb_or_falkordb_push_flag"
+      "target": "claude_skills_graphify_references_exports_step_7a_falkordb_export_only_if_falkordb_or_falkordb_push_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2041,9 +1961,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L47",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "claude_skills_graphify_references_exports_step_7b_svg_export_only_if_svg_flag"
+      "target": "claude_skills_graphify_references_exports_step_7b_svg_export_only_if_svg_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2051,9 +1971,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L53",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "claude_skills_graphify_references_exports_step_7c_graphml_export_only_if_graphml_flag"
+      "target": "claude_skills_graphify_references_exports_step_7c_graphml_export_only_if_graphml_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2061,9 +1981,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L59",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "claude_skills_graphify_references_exports_step_7d_mcp_server_only_if_mcp_flag"
+      "target": "claude_skills_graphify_references_exports_step_7d_mcp_server_only_if_mcp_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2071,9 +1991,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L79",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "claude_skills_graphify_references_exports_step_8_token_reduction_benchmark_only_if_total_words_5000"
+      "target": "claude_skills_graphify_references_exports_step_8_token_reduction_benchmark_only_if_total_words_5000",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2081,9 +2001,9 @@
       "source_file": ".claude/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_extraction_spec",
-      "target": "claude_skills_graphify_references_extraction_spec_graphify_reference_extraction_subagent_prompt"
+      "target": "claude_skills_graphify_references_extraction_spec_graphify_reference_extraction_subagent_prompt",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2091,9 +2011,9 @@
       "source_file": ".claude/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_github_and_merge",
-      "target": "claude_skills_graphify_references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge"
+      "target": "claude_skills_graphify_references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2101,9 +2021,9 @@
       "source_file": ".claude/skills/graphify/references/github-and-merge.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
-      "target": "claude_skills_graphify_references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given"
+      "target": "claude_skills_graphify_references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2111,9 +2031,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_hooks",
-      "target": "claude_skills_graphify_references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration"
+      "target": "claude_skills_graphify_references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2121,9 +2041,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
-      "target": "claude_skills_graphify_references_hooks_for_git_commit_hook"
+      "target": "claude_skills_graphify_references_hooks_for_git_commit_hook",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2131,9 +2051,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L21",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
-      "target": "claude_skills_graphify_references_hooks_for_native_claude_md_integration"
+      "target": "claude_skills_graphify_references_hooks_for_native_claude_md_integration",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2141,9 +2061,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_query",
-      "target": "claude_skills_graphify_references_query_graphify_reference_query_path_explain"
+      "target": "claude_skills_graphify_references_query_graphify_reference_query_path_explain",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2151,9 +2071,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L254",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_query_graphify_reference_query_path_explain",
-      "target": "claude_skills_graphify_references_query_for_graphify_explain"
+      "target": "claude_skills_graphify_references_query_for_graphify_explain",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2161,9 +2081,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L186",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_query_graphify_reference_query_path_explain",
-      "target": "claude_skills_graphify_references_query_for_graphify_path"
+      "target": "claude_skills_graphify_references_query_for_graphify_path",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2171,9 +2091,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L23",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_query_graphify_reference_query_path_explain",
-      "target": "claude_skills_graphify_references_query_step_0_constrained_query_expansion_required_before_traversal"
+      "target": "claude_skills_graphify_references_query_step_0_constrained_query_expansion_required_before_traversal",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2181,9 +2101,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L61",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_query_graphify_reference_query_path_explain",
-      "target": "claude_skills_graphify_references_query_step_1_traversal"
+      "target": "claude_skills_graphify_references_query_step_1_traversal",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2191,9 +2111,9 @@
       "source_file": ".claude/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_transcribe",
-      "target": "claude_skills_graphify_references_transcribe_graphify_reference_transcribe_video_and_audio"
+      "target": "claude_skills_graphify_references_transcribe_graphify_reference_transcribe_video_and_audio",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2201,9 +2121,9 @@
       "source_file": ".claude/skills/graphify/references/transcribe.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_transcribe_graphify_reference_transcribe_video_and_audio",
-      "target": "claude_skills_graphify_references_transcribe_step_2_5_transcribe_video_audio_files_only_if_video_files_detected"
+      "target": "claude_skills_graphify_references_transcribe_step_2_5_transcribe_video_audio_files_only_if_video_files_detected",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2211,9 +2131,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_update",
-      "target": "claude_skills_graphify_references_update_graphify_reference_incremental_update_and_cluster_only"
+      "target": "claude_skills_graphify_references_update_graphify_reference_incremental_update_and_cluster_only",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2221,9 +2141,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L184",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_update_graphify_reference_incremental_update_and_cluster_only",
-      "target": "claude_skills_graphify_references_update_for_cluster_only"
+      "target": "claude_skills_graphify_references_update_for_cluster_only",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2231,9 +2151,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_skills_graphify_references_update_graphify_reference_incremental_update_and_cluster_only",
-      "target": "claude_skills_graphify_references_update_for_update_incremental_re_extraction"
+      "target": "claude_skills_graphify_references_update_for_update_incremental_re_extraction",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2241,9 +2161,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude",
-      "target": "claude_graphify"
+      "target": "claude_graphify",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2251,9 +2171,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro",
-      "target": "frontend_netlify_functions_maestro_axios"
+      "target": "frontend_netlify_functions_maestro_axios",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2261,9 +2181,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L13",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro",
-      "target": "frontend_netlify_functions_maestro_cors_headers"
+      "target": "frontend_netlify_functions_maestro_cors_headers",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2271,9 +2191,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro",
-      "target": "frontend_netlify_functions_maestro_docusign"
+      "target": "frontend_netlify_functions_maestro_docusign",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2281,9 +2201,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L24",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro",
-      "target": "frontend_netlify_functions_maestro_getenv"
+      "target": "frontend_netlify_functions_maestro_getenv",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2291,9 +2211,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L72",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro",
-      "target": "frontend_netlify_functions_maestro_getjwttoken"
+      "target": "frontend_netlify_functions_maestro_getjwttoken",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2301,9 +2221,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L142",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro",
-      "target": "frontend_netlify_functions_maestro_handler"
+      "target": "frontend_netlify_functions_maestro_handler",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2311,9 +2231,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L20",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro",
-      "target": "frontend_netlify_functions_maestro_json"
+      "target": "frontend_netlify_functions_maestro_json",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2321,9 +2241,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L109",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro",
-      "target": "frontend_netlify_functions_maestro_maestrofetch"
+      "target": "frontend_netlify_functions_maestro_maestrofetch",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2331,9 +2251,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L93",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro",
-      "target": "frontend_netlify_functions_maestro_resolveworkflowid"
+      "target": "frontend_netlify_functions_maestro_resolveworkflowid",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2342,9 +2262,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L114",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro_maestrofetch",
-      "target": "frontend_netlify_functions_maestro_axios"
+      "target": "frontend_netlify_functions_maestro_axios",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2353,9 +2273,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L143",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro_handler",
-      "target": "frontend_netlify_functions_maestro_json"
+      "target": "frontend_netlify_functions_maestro_json",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2364,9 +2284,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L73",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro_getjwttoken",
-      "target": "frontend_netlify_functions_maestro_getenv"
+      "target": "frontend_netlify_functions_maestro_getenv",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2375,9 +2295,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L154",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro_handler",
-      "target": "frontend_netlify_functions_maestro_getenv"
+      "target": "frontend_netlify_functions_maestro_getenv",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2386,9 +2306,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L110",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro_maestrofetch",
-      "target": "frontend_netlify_functions_maestro_getenv"
+      "target": "frontend_netlify_functions_maestro_getenv",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2397,9 +2317,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L235",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro_handler",
-      "target": "frontend_netlify_functions_maestro_getjwttoken"
+      "target": "frontend_netlify_functions_maestro_getjwttoken",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2408,9 +2328,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L244",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro_handler",
-      "target": "frontend_netlify_functions_maestro_resolveworkflowid"
+      "target": "frontend_netlify_functions_maestro_resolveworkflowid",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2419,9 +2339,9 @@
       "source_file": "frontend/.netlify/functions/maestro.js",
       "source_location": "L250",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_netlify_functions_maestro_handler",
-      "target": "frontend_netlify_functions_maestro_maestrofetch"
+      "target": "frontend_netlify_functions_maestro_maestrofetch",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2429,9 +2349,9 @@
       "source_file": "frontend/src/app/admin/tema/page.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_admin_tema_page",
-      "target": "frontend_src_app_admin_tema_page_temapage"
+      "target": "frontend_src_app_admin_tema_page_temapage",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2440,9 +2360,9 @@
       "source_file": "frontend/src/app/admin/tema/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_admin_tema_page",
-      "target": "frontend_src_contexts_themecontext"
+      "target": "frontend_src_contexts_themecontext",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2451,9 +2371,9 @@
       "source_file": "frontend/src/app/admin/tema/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_admin_tema_page",
-      "target": "frontend_src_contexts_themecontext_usetheme"
+      "target": "frontend_src_contexts_themecontext_usetheme",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2462,9 +2382,9 @@
       "source_file": "frontend/src/app/admin/tema/page.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_admin_tema_page",
-      "target": "frontend_src_lib_themes"
+      "target": "frontend_src_lib_themes",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2473,9 +2393,9 @@
       "source_file": "frontend/src/app/admin/tema/page.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_admin_tema_page",
-      "target": "frontend_src_lib_themes_theme_presets"
+      "target": "frontend_src_lib_themes_theme_presets",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2484,9 +2404,9 @@
       "source_file": "frontend/src/app/admin/tema/page.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_admin_tema_page",
-      "target": "frontend_src_lib_themes_themecolors"
+      "target": "frontend_src_lib_themes_themecolors",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2505,9 +2425,9 @@
       "source_file": "frontend/src/app/conta/assinaturas/page.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_assinaturas_page",
-      "target": "frontend_src_app_conta_assinaturas_page_assinaturaspage"
+      "target": "frontend_src_app_conta_assinaturas_page_assinaturaspage",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2515,9 +2435,9 @@
       "source_file": "frontend/src/app/conta/assinaturas/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_assinaturas_page",
-      "target": "frontend_src_app_conta_assinaturas_page_documentos"
+      "target": "frontend_src_app_conta_assinaturas_page_documentos",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2526,9 +2446,9 @@
       "source_file": "frontend/src/app/conta/assinaturas/page.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_assinaturas_page",
-      "target": "frontend_src_components_docusign_advancedsignaturedemo"
+      "target": "frontend_src_components_docusign_advancedsignaturedemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2537,9 +2457,9 @@
       "source_file": "frontend/src/app/conta/assinaturas/page.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_assinaturas_page",
-      "target": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo"
+      "target": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2558,9 +2478,9 @@
       "source_file": "frontend/src/app/conta/cartoes/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_cartoes_page",
-      "target": "frontend_src_app_conta_cartoes_page_cartoespage"
+      "target": "frontend_src_app_conta_cartoes_page_cartoespage",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2569,9 +2489,9 @@
       "source_file": "frontend/src/app/conta/cartoes/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_cartoes_page",
-      "target": "frontend_src_components_docusign_maestrodemo"
+      "target": "frontend_src_components_docusign_maestrodemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2580,9 +2500,9 @@
       "source_file": "frontend/src/app/conta/cartoes/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_cartoes_page",
-      "target": "frontend_src_components_docusign_maestrodemo_usecartaomaestroflow"
+      "target": "frontend_src_components_docusign_maestrodemo_usecartaomaestroflow",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2591,9 +2511,9 @@
       "source_file": "frontend/src/app/conta/cartoes/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_cartoes_page",
-      "target": "frontend_src_lib_banksession"
+      "target": "frontend_src_lib_banksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2602,9 +2522,9 @@
       "source_file": "frontend/src/app/conta/cartoes/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_cartoes_page",
-      "target": "frontend_src_lib_banksession_banksession"
+      "target": "frontend_src_lib_banksession_banksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2613,9 +2533,9 @@
       "source_file": "frontend/src/app/conta/cartoes/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_cartoes_page",
-      "target": "frontend_src_lib_banksession_getbanksession"
+      "target": "frontend_src_lib_banksession_getbanksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2634,9 +2554,9 @@
       "source_file": "frontend/src/app/conta/emprestimos/page.tsx",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_emprestimos_page",
-      "target": "frontend_src_app_conta_emprestimos_page_emprestimospage"
+      "target": "frontend_src_app_conta_emprestimos_page_emprestimospage",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2644,9 +2564,9 @@
       "source_file": "frontend/src/app/conta/emprestimos/page.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_emprestimos_page",
-      "target": "frontend_src_app_conta_emprestimos_page_fmtbrl"
+      "target": "frontend_src_app_conta_emprestimos_page_fmtbrl",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2655,9 +2575,9 @@
       "source_file": "frontend/src/app/conta/emprestimos/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_emprestimos_page",
-      "target": "frontend_src_components_docusign_maestrodemo"
+      "target": "frontend_src_components_docusign_maestrodemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2666,9 +2586,9 @@
       "source_file": "frontend/src/app/conta/emprestimos/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_emprestimos_page",
-      "target": "frontend_src_components_docusign_maestrodemo_usemaestrodemo"
+      "target": "frontend_src_components_docusign_maestrodemo_usemaestrodemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2677,9 +2597,9 @@
       "source_file": "frontend/src/app/conta/emprestimos/page.tsx",
       "source_location": "L35",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_emprestimos_page_emprestimospage",
-      "target": "frontend_src_app_conta_emprestimos_page_fmtbrl"
+      "target": "frontend_src_app_conta_emprestimos_page_fmtbrl",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2698,9 +2618,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L35",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_layout",
-      "target": "frontend_src_app_conta_layout_contalayout"
+      "target": "frontend_src_app_conta_layout_contalayout",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2708,9 +2628,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_layout",
-      "target": "frontend_src_app_conta_layout_nav_items"
+      "target": "frontend_src_app_conta_layout_nav_items",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2719,9 +2639,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_layout",
-      "target": "frontend_src_lib_banksession"
+      "target": "frontend_src_lib_banksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2730,9 +2650,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_layout",
-      "target": "frontend_src_lib_banksession_banksession"
+      "target": "frontend_src_lib_banksession_banksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2741,9 +2661,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_layout",
-      "target": "frontend_src_lib_banksession_clearbanksession"
+      "target": "frontend_src_lib_banksession_clearbanksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2752,9 +2672,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_layout",
-      "target": "frontend_src_lib_banksession_firstname"
+      "target": "frontend_src_lib_banksession_firstname",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2763,9 +2683,9 @@
       "source_file": "frontend/src/app/conta/layout.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_layout",
-      "target": "frontend_src_lib_banksession_getbanksession"
+      "target": "frontend_src_lib_banksession_getbanksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2784,9 +2704,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L27",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_app_conta_page_contadashboard"
+      "target": "frontend_src_app_conta_page_contadashboard",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2794,9 +2714,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L24",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_app_conta_page_fmtbrl"
+      "target": "frontend_src_app_conta_page_fmtbrl",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2804,9 +2724,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_app_conta_page_transacoes"
+      "target": "frontend_src_app_conta_page_transacoes",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2815,9 +2735,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_components_docusign_advancedsignaturedemo"
+      "target": "frontend_src_components_docusign_advancedsignaturedemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2826,9 +2746,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo"
+      "target": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2837,9 +2757,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_components_docusign_cartaoclicktoagree"
+      "target": "frontend_src_components_docusign_cartaoclicktoagree",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2848,9 +2768,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_components_docusign_cartaoclicktoagree_usecartaoclicktoagree"
+      "target": "frontend_src_components_docusign_cartaoclicktoagree_usecartaoclicktoagree",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2859,9 +2779,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_components_docusign_maestrodemo"
+      "target": "frontend_src_components_docusign_maestrodemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2870,9 +2790,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_components_docusign_maestrodemo_usemaestrodemo"
+      "target": "frontend_src_components_docusign_maestrodemo_usemaestrodemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2881,9 +2801,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_components_docusign_pixsigningdemo"
+      "target": "frontend_src_components_docusign_pixsigningdemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2892,9 +2812,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo"
+      "target": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -2903,9 +2823,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_lib_banksession"
+      "target": "frontend_src_lib_banksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2914,9 +2834,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_lib_banksession_banksession"
+      "target": "frontend_src_lib_banksession_banksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2925,9 +2845,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_lib_banksession_firstname"
+      "target": "frontend_src_lib_banksession_firstname",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -2936,9 +2856,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page",
-      "target": "frontend_src_lib_banksession_getbanksession"
+      "target": "frontend_src_lib_banksession_getbanksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2947,9 +2867,9 @@
       "source_file": "frontend/src/app/conta/page.tsx",
       "source_location": "L75",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_page_contadashboard",
-      "target": "frontend_src_app_conta_page_fmtbrl"
+      "target": "frontend_src_app_conta_page_fmtbrl",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3012,9 +2932,9 @@
       "source_file": "frontend/src/app/conta/pix/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_pix_page",
-      "target": "frontend_src_app_conta_pix_page_chaves"
+      "target": "frontend_src_app_conta_pix_page_chaves",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3022,9 +2942,9 @@
       "source_file": "frontend/src/app/conta/pix/page.tsx",
       "source_location": "L13",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_pix_page",
-      "target": "frontend_src_app_conta_pix_page_pixpage"
+      "target": "frontend_src_app_conta_pix_page_pixpage",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3033,9 +2953,9 @@
       "source_file": "frontend/src/app/conta/pix/page.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_pix_page",
-      "target": "frontend_src_components_docusign_pixsigningdemo"
+      "target": "frontend_src_components_docusign_pixsigningdemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3044,9 +2964,9 @@
       "source_file": "frontend/src/app/conta/pix/page.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_conta_pix_page",
-      "target": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo"
+      "target": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3065,9 +2985,9 @@
       "source_file": "frontend/src/app/entrar/page.tsx",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_entrar_page",
-      "target": "frontend_src_app_entrar_page_entrarpage"
+      "target": "frontend_src_app_entrar_page_entrarpage",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3076,9 +2996,9 @@
       "source_file": "frontend/src/app/entrar/page.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_entrar_page",
-      "target": "frontend_src_lib_banksession"
+      "target": "frontend_src_lib_banksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3087,9 +3007,9 @@
       "source_file": "frontend/src/app/entrar/page.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_entrar_page",
-      "target": "frontend_src_lib_banksession_createbanksession"
+      "target": "frontend_src_lib_banksession_createbanksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3097,9 +3017,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_evidenciasidv_page",
-      "target": "frontend_src_app_evidenciasidv_page_auditevent"
+      "target": "frontend_src_app_evidenciasidv_page_auditevent",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3107,9 +3027,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L22",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_evidenciasidv_page",
-      "target": "frontend_src_app_evidenciasidv_page_auditeventsresponse"
+      "target": "frontend_src_app_evidenciasidv_page_auditeventsresponse",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3117,9 +3037,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L53",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_evidenciasidv_page",
-      "target": "frontend_src_app_evidenciasidv_page_evidenciasidvpage"
+      "target": "frontend_src_app_evidenciasidv_page_evidenciasidvpage",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3127,9 +3047,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L26",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_evidenciasidv_page",
-      "target": "frontend_src_app_evidenciasidv_page_idevidenceevent"
+      "target": "frontend_src_app_evidenciasidv_page_idevidenceevent",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3137,9 +3057,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L38",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_evidenciasidv_page",
-      "target": "frontend_src_app_evidenciasidv_page_idevidencemedia"
+      "target": "frontend_src_app_evidenciasidv_page_idevidencemedia",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3147,9 +3067,9 @@
       "source_file": "frontend/src/app/evidenciasIDV/page.tsx",
       "source_location": "L48",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_evidenciasidv_page",
-      "target": "frontend_src_app_evidenciasidv_page_idevidenceresponse"
+      "target": "frontend_src_app_evidenciasidv_page_idevidenceresponse",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3157,9 +3077,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_layout",
-      "target": "frontend_src_app_layout_inter"
+      "target": "frontend_src_app_layout_inter",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3167,9 +3087,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_layout",
-      "target": "frontend_src_app_layout_metadata"
+      "target": "frontend_src_app_layout_metadata",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3177,9 +3097,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_layout",
-      "target": "frontend_src_app_layout_rootlayout"
+      "target": "frontend_src_app_layout_rootlayout",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3188,9 +3108,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_layout",
-      "target": "frontend_src_contexts_authcontext"
+      "target": "frontend_src_contexts_authcontext",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3199,9 +3119,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_layout",
-      "target": "frontend_src_contexts_authcontext_authprovider"
+      "target": "frontend_src_contexts_authcontext_authprovider",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3210,9 +3130,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_layout",
-      "target": "frontend_src_contexts_themecontext"
+      "target": "frontend_src_contexts_themecontext",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3221,9 +3141,9 @@
       "source_file": "frontend/src/app/layout.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_layout",
-      "target": "frontend_src_contexts_themecontext_themeprovider"
+      "target": "frontend_src_contexts_themecontext_themeprovider",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3231,9 +3151,9 @@
       "source_file": "frontend/src/app/login/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_login_page",
-      "target": "frontend_src_app_login_page_loginpage"
+      "target": "frontend_src_app_login_page_loginpage",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3242,9 +3162,9 @@
       "source_file": "frontend/src/app/login/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_login_page",
-      "target": "frontend_src_contexts_authcontext"
+      "target": "frontend_src_contexts_authcontext",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3253,9 +3173,9 @@
       "source_file": "frontend/src/app/login/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_login_page",
-      "target": "frontend_src_contexts_authcontext_useauth"
+      "target": "frontend_src_contexts_authcontext_useauth",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3274,9 +3194,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L17",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_page",
-      "target": "frontend_src_app_page_home"
+      "target": "frontend_src_app_page_home",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3285,9 +3205,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_page",
-      "target": "frontend_src_components_docusign_advancedsignaturedemo"
+      "target": "frontend_src_components_docusign_advancedsignaturedemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3296,9 +3216,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_page",
-      "target": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo"
+      "target": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3307,9 +3227,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_page",
-      "target": "frontend_src_components_docusign_cartaoclicktoagree"
+      "target": "frontend_src_components_docusign_cartaoclicktoagree",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3318,9 +3238,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_page",
-      "target": "frontend_src_components_docusign_cartaoclicktoagree_usecartaoclicktoagree"
+      "target": "frontend_src_components_docusign_cartaoclicktoagree_usecartaoclicktoagree",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3329,9 +3249,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_page",
-      "target": "frontend_src_components_docusign_maestrodemo"
+      "target": "frontend_src_components_docusign_maestrodemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3340,9 +3260,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_page",
-      "target": "frontend_src_components_docusign_maestrodemo_usemaestrodemo"
+      "target": "frontend_src_components_docusign_maestrodemo_usemaestrodemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3351,9 +3271,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_page",
-      "target": "frontend_src_components_docusign_pixsigningdemo"
+      "target": "frontend_src_components_docusign_pixsigningdemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3362,9 +3282,9 @@
       "source_file": "frontend/src/app/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_app_page",
-      "target": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo"
+      "target": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3416,9 +3336,9 @@
       "source_file": "frontend/src/components/docusign/AdvancedSignatureDemo.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_advancedsignaturedemo",
-      "target": "frontend_src_components_docusign_advancedsignaturedemo_deliverymethod"
+      "target": "frontend_src_components_docusign_advancedsignaturedemo_deliverymethod",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3426,9 +3346,9 @@
       "source_file": "frontend/src/components/docusign/AdvancedSignatureDemo.tsx",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_advancedsignaturedemo",
-      "target": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo"
+      "target": "frontend_src_components_docusign_advancedsignaturedemo_useadvancedsignaturedemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3437,9 +3357,9 @@
       "source_file": "frontend/src/components/docusign/AdvancedSignatureDemo.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_advancedsignaturedemo",
-      "target": "frontend_src_components_docusign_demodocument"
+      "target": "frontend_src_components_docusign_demodocument",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3448,9 +3368,9 @@
       "source_file": "frontend/src/components/docusign/AdvancedSignatureDemo.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_advancedsignaturedemo",
-      "target": "frontend_src_components_docusign_demodocument_createdemodocument"
+      "target": "frontend_src_components_docusign_demodocument_createdemodocument",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3459,9 +3379,9 @@
       "source_file": "frontend/src/components/docusign/AdvancedSignatureDemo.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_advancedsignaturedemo",
-      "target": "frontend_src_components_docusign_demodocument_htmltobase64"
+      "target": "frontend_src_components_docusign_demodocument_htmltobase64",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3470,9 +3390,9 @@
       "source_file": "frontend/src/components/docusign/AdvancedSignatureDemo.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_advancedsignaturedemo",
-      "target": "frontend_src_components_docusign_demodocument_validatecpf"
+      "target": "frontend_src_components_docusign_demodocument_validatecpf",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3480,9 +3400,9 @@
       "source_file": "frontend/src/components/docusign/CartaoClickToAgree.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_cartaoclicktoagree",
-      "target": "frontend_src_components_docusign_cartaoclicktoagree_cartaostep"
+      "target": "frontend_src_components_docusign_cartaoclicktoagree_cartaostep",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3490,9 +3410,9 @@
       "source_file": "frontend/src/components/docusign/CartaoClickToAgree.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_cartaoclicktoagree",
-      "target": "frontend_src_components_docusign_cartaoclicktoagree_usecartaoclicktoagree"
+      "target": "frontend_src_components_docusign_cartaoclicktoagree_usecartaoclicktoagree",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3500,9 +3420,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_maestrodemo",
-      "target": "frontend_src_components_docusign_maestrodemo_maestroflowoptions"
+      "target": "frontend_src_components_docusign_maestrodemo_maestroflowoptions",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3510,9 +3430,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L169",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_maestrodemo",
-      "target": "frontend_src_components_docusign_maestrodemo_usecartaomaestroflow"
+      "target": "frontend_src_components_docusign_maestrodemo_usecartaomaestroflow",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3520,9 +3440,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L157",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_maestrodemo",
-      "target": "frontend_src_components_docusign_maestrodemo_usemaestrodemo"
+      "target": "frontend_src_components_docusign_maestrodemo_usemaestrodemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3530,9 +3450,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L21",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_maestrodemo",
-      "target": "frontend_src_components_docusign_maestrodemo_usemaestroflow"
+      "target": "frontend_src_components_docusign_maestrodemo_usemaestroflow",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3541,9 +3461,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L170",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_maestrodemo_usecartaomaestroflow",
-      "target": "frontend_src_components_docusign_maestrodemo_usemaestroflow"
+      "target": "frontend_src_components_docusign_maestrodemo_usemaestroflow",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3552,9 +3472,9 @@
       "source_file": "frontend/src/components/docusign/MaestroDemo.tsx",
       "source_location": "L158",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_maestrodemo_usemaestrodemo",
-      "target": "frontend_src_components_docusign_maestrodemo_usemaestroflow"
+      "target": "frontend_src_components_docusign_maestrodemo_usemaestroflow",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3563,9 +3483,9 @@
       "source_file": "frontend/src/components/docusign/PixSigningDemo.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_pixsigningdemo",
-      "target": "frontend_src_components_docusign_demodocument"
+      "target": "frontend_src_components_docusign_demodocument",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3574,9 +3494,9 @@
       "source_file": "frontend/src/components/docusign/PixSigningDemo.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_pixsigningdemo",
-      "target": "frontend_src_components_docusign_demodocument_createdemodocument"
+      "target": "frontend_src_components_docusign_demodocument_createdemodocument",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3585,9 +3505,9 @@
       "source_file": "frontend/src/components/docusign/PixSigningDemo.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_pixsigningdemo",
-      "target": "frontend_src_components_docusign_demodocument_htmltobase64"
+      "target": "frontend_src_components_docusign_demodocument_htmltobase64",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3595,9 +3515,9 @@
       "source_file": "frontend/src/components/docusign/PixSigningDemo.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_pixsigningdemo",
-      "target": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo"
+      "target": "frontend_src_components_docusign_pixsigningdemo_usepixsigningdemo",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3605,9 +3525,9 @@
       "source_file": "frontend/src/components/docusign/demoDocument.ts",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_demodocument",
-      "target": "frontend_src_components_docusign_demodocument_createdemodocument"
+      "target": "frontend_src_components_docusign_demodocument_createdemodocument",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3615,9 +3535,9 @@
       "source_file": "frontend/src/components/docusign/demoDocument.ts",
       "source_location": "L64",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_demodocument",
-      "target": "frontend_src_components_docusign_demodocument_htmltobase64"
+      "target": "frontend_src_components_docusign_demodocument_htmltobase64",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3625,9 +3545,9 @@
       "source_file": "frontend/src/components/docusign/demoDocument.ts",
       "source_location": "L47",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_docusign_demodocument",
-      "target": "frontend_src_components_docusign_demodocument_validatecpf"
+      "target": "frontend_src_components_docusign_demodocument_validatecpf",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3635,9 +3555,9 @@
       "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_navigation_adminnavbar",
-      "target": "frontend_src_components_navigation_adminnavbar_adminnavbar"
+      "target": "frontend_src_components_navigation_adminnavbar_adminnavbar",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3646,9 +3566,9 @@
       "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_navigation_adminnavbar",
-      "target": "frontend_src_contexts_authcontext"
+      "target": "frontend_src_contexts_authcontext",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3657,9 +3577,9 @@
       "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_components_navigation_adminnavbar",
-      "target": "frontend_src_contexts_authcontext_useauth"
+      "target": "frontend_src_contexts_authcontext_useauth",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3678,9 +3598,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L16",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_authcontext",
-      "target": "frontend_src_contexts_authcontext_authcontext"
+      "target": "frontend_src_contexts_authcontext_authcontext",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3688,9 +3608,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_authcontext",
-      "target": "frontend_src_contexts_authcontext_authcontexttype"
+      "target": "frontend_src_contexts_authcontext_authcontexttype",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3698,9 +3618,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L42",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_authcontext",
-      "target": "frontend_src_contexts_authcontext_authprovider"
+      "target": "frontend_src_contexts_authcontext_authprovider",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3708,9 +3628,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L29",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_authcontext",
-      "target": "frontend_src_contexts_authcontext_buildmasteruser"
+      "target": "frontend_src_contexts_authcontext_buildmasteruser",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3718,9 +3638,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L25",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_authcontext",
-      "target": "frontend_src_contexts_authcontext_master_admin_emails"
+      "target": "frontend_src_contexts_authcontext_master_admin_emails",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3728,9 +3648,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L20",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_authcontext",
-      "target": "frontend_src_contexts_authcontext_master_users"
+      "target": "frontend_src_contexts_authcontext_master_users",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3738,9 +3658,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L273",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_authcontext",
-      "target": "frontend_src_contexts_authcontext_useauth"
+      "target": "frontend_src_contexts_authcontext_useauth",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3749,9 +3669,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_authcontext",
-      "target": "frontend_src_lib_supabase"
+      "target": "frontend_src_lib_supabase",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3760,9 +3680,9 @@
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_authcontext",
-      "target": "frontend_src_lib_supabase_supabase"
+      "target": "frontend_src_lib_supabase_supabase",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3770,9 +3690,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L112",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_contexts_themecontext_readlocal"
+      "target": "frontend_src_contexts_themecontext_readlocal",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3780,9 +3700,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L31",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_contexts_themecontext_storedtheme"
+      "target": "frontend_src_contexts_themecontext_storedtheme",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3790,9 +3710,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L29",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_contexts_themecontext_themecontext"
+      "target": "frontend_src_contexts_themecontext_themecontext",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3800,9 +3720,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_contexts_themecontext_themecontexttype"
+      "target": "frontend_src_contexts_themecontext_themecontexttype",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3810,9 +3730,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L36",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_contexts_themecontext_themeprovider"
+      "target": "frontend_src_contexts_themecontext_themeprovider",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3820,9 +3740,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L133",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_contexts_themecontext_usetheme"
+      "target": "frontend_src_contexts_themecontext_usetheme",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3830,9 +3750,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L124",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_contexts_themecontext_writelocal"
+      "target": "frontend_src_contexts_themecontext_writelocal",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -3841,9 +3761,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_lib_supabase"
+      "target": "frontend_src_lib_supabase",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3852,9 +3772,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_lib_supabase_supabase"
+      "target": "frontend_src_lib_supabase_supabase",
+      "confidence_score": 1.0
     },
     {
       "relation": "re_exports",
@@ -3863,9 +3783,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L141",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_lib_themes"
+      "target": "frontend_src_lib_themes",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3874,9 +3794,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_lib_themes_applytheme"
+      "target": "frontend_src_lib_themes_applytheme",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3885,9 +3805,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_lib_themes_theme"
+      "target": "frontend_src_lib_themes_theme",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3896,9 +3816,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_lib_themes_theme_presets"
+      "target": "frontend_src_lib_themes_theme_presets",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -3907,9 +3827,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext",
-      "target": "frontend_src_lib_themes_themecolors"
+      "target": "frontend_src_lib_themes_themecolors",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3918,9 +3838,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L20",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext_themecontexttype",
-      "target": "frontend_src_lib_themes_theme"
+      "target": "frontend_src_lib_themes_theme",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3929,9 +3849,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L16",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext_themecontexttype",
-      "target": "frontend_src_lib_themes_themecolors"
+      "target": "frontend_src_lib_themes_themecolors",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3940,9 +3860,9 @@
       "source_file": "frontend/src/contexts/ThemeContext.tsx",
       "source_location": "L33",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_contexts_themecontext_storedtheme",
-      "target": "frontend_src_lib_themes_themecolors"
+      "target": "frontend_src_lib_themes_themecolors",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3950,9 +3870,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_banksession",
-      "target": "frontend_src_lib_banksession_banksession"
+      "target": "frontend_src_lib_banksession_banksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3960,9 +3880,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L37",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_banksession",
-      "target": "frontend_src_lib_banksession_clearbanksession"
+      "target": "frontend_src_lib_banksession_clearbanksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3970,9 +3890,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L24",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_banksession",
-      "target": "frontend_src_lib_banksession_createbanksession"
+      "target": "frontend_src_lib_banksession_createbanksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3980,9 +3900,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L43",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_banksession",
-      "target": "frontend_src_lib_banksession_derivenamefromemail"
+      "target": "frontend_src_lib_banksession_derivenamefromemail",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3990,9 +3910,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L54",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_banksession",
-      "target": "frontend_src_lib_banksession_firstname"
+      "target": "frontend_src_lib_banksession_firstname",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4000,9 +3920,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_banksession",
-      "target": "frontend_src_lib_banksession_getbanksession"
+      "target": "frontend_src_lib_banksession_getbanksession",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -4011,9 +3931,9 @@
       "source_file": "frontend/src/lib/bankSession.ts",
       "source_location": "L25",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_banksession_createbanksession",
-      "target": "frontend_src_lib_banksession_derivenamefromemail"
+      "target": "frontend_src_lib_banksession_derivenamefromemail",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4021,9 +3941,9 @@
       "source_file": "frontend/src/lib/supabase.ts",
       "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_supabase",
-      "target": "frontend_src_lib_supabase_formatcurrency"
+      "target": "frontend_src_lib_supabase_formatcurrency",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4031,9 +3951,9 @@
       "source_file": "frontend/src/lib/supabase.ts",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_supabase",
-      "target": "frontend_src_lib_supabase_supabase"
+      "target": "frontend_src_lib_supabase_supabase",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4041,9 +3961,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L31",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_themes",
-      "target": "frontend_src_lib_themes_applytheme"
+      "target": "frontend_src_lib_themes_applytheme",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4051,9 +3971,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L22",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_themes",
-      "target": "frontend_src_lib_themes_hextorgbtriplet"
+      "target": "frontend_src_lib_themes_hextorgbtriplet",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4061,9 +3981,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_themes",
-      "target": "frontend_src_lib_themes_theme"
+      "target": "frontend_src_lib_themes_theme",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4071,9 +3991,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L43",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_themes",
-      "target": "frontend_src_lib_themes_theme_presets"
+      "target": "frontend_src_lib_themes_theme_presets",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4081,9 +4001,9 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_themes",
-      "target": "frontend_src_lib_themes_themecolors"
+      "target": "frontend_src_lib_themes_themecolors",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -4092,11 +4012,11 @@
       "source_file": "frontend/src/lib/themes.ts",
       "source_location": "L34",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_src_lib_themes_applytheme",
-      "target": "frontend_src_lib_themes_hextorgbtriplet"
+      "target": "frontend_src_lib_themes_hextorgbtriplet",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "90bb4f5b191d93e101904a84fea4de0ba0206686"
+  "built_at_commit": "6cfc7f57310a29a69ec790a86f01374949ee72b3"
 }

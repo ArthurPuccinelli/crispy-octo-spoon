@@ -1,16 +1,16 @@
 # Graph Report - crispy-octo-spoon  (2026-07-02)
 
 ## Corpus Check
-- 76 files · ~45,131 words
+- 76 files · ~45,152 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 168 nodes · 231 edges · 22 communities (15 shown, 7 thin omitted)
+- 163 nodes · 228 edges · 20 communities (15 shown, 5 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `90bb4f5b`
+- Built from commit: `6cfc7f57`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -34,7 +34,6 @@
 - [[_COMMUNITY_CLAUDE|CLAUDE.md]]
 - [[_COMMUNITY_CLAUDE|CLAUDE.md]]
 - [[_COMMUNITY_extraction-spec|extraction-spec.md]]
-- [[_COMMUNITY_page.tsx|page.tsx]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `What You Must Do When Invoked` - 12 edges
@@ -51,10 +50,10 @@
 ## Surprising Connections (you probably didn't know these)
 - `AssinaturasPage()` --calls--> `useAdvancedSignatureDemo()`  [EXTRACTED]
   frontend/src/app/conta/assinaturas/page.tsx → frontend/src/components/docusign/AdvancedSignatureDemo.tsx
-- `EmprestimosPage()` --calls--> `useMaestroDemo()`  [EXTRACTED]
-  frontend/src/app/conta/emprestimos/page.tsx → frontend/src/components/docusign/MaestroDemo.tsx
 - `ContaLayout()` --calls--> `firstName()`  [EXTRACTED]
   frontend/src/app/conta/layout.tsx → frontend/src/lib/bankSession.ts
+- `ContaDashboard()` --calls--> `useMaestroDemo()`  [EXTRACTED]
+  frontend/src/app/conta/page.tsx → frontend/src/components/docusign/MaestroDemo.tsx
 - `ContaDashboard()` --calls--> `firstName()`  [EXTRACTED]
   frontend/src/app/conta/page.tsx → frontend/src/lib/bankSession.ts
 - `PixPage()` --calls--> `usePixSigningDemo()`  [EXTRACTED]
@@ -63,11 +62,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (22 total, 7 thin omitted)
+## Communities (20 total, 5 thin omitted)
 
 ### Community 0 - "page.tsx"
 Cohesion: 0.17
-Nodes (17): AssinaturasPage(), DOCUMENTOS, ContaDashboard(), fmtBRL(), TRANSACOES, CHAVES, PixPage(), Home() (+9 more)
+Nodes (16): AssinaturasPage(), DOCUMENTOS, ContaDashboard(), fmtBRL(), TRANSACOES, CHAVES, PixPage(), Home() (+8 more)
 
 ### Community 1 - "AuthContext.tsx"
 Cohesion: 0.13
@@ -82,8 +81,8 @@ Cohesion: 0.26
 Nodes (10): TemaPage(), StoredTheme, ThemeContext, ThemeContextType, useTheme(), applyTheme(), hexToRgbTriplet(), Theme (+2 more)
 
 ### Community 4 - "bankSession.ts"
-Cohesion: 0.19
-Nodes (12): CartoesPage(), ContaLayout(), NAV_ITEMS, MaestroFlowOptions, useCartaoMaestroFlow(), useMaestroFlow(), BankSession, clearBankSession() (+4 more)
+Cohesion: 0.27
+Nodes (8): ContaLayout(), NAV_ITEMS, BankSession, clearBankSession(), createBankSession(), deriveNameFromEmail(), firstName(), getBankSession()
 
 ### Community 5 - "/graphify"
 Cohesion: 0.20
@@ -92,6 +91,10 @@ Nodes (9): For /graphify add and --watch, For /graphify query, For the commit ho
 ### Community 6 - "maestro.js"
 Cohesion: 0.38
 Nodes (9): axios, CORS_HEADERS, docusign, getEnv(), getJwtToken(), handler(), json(), maestroFetch() (+1 more)
+
+### Community 7 - "MaestroDemo.tsx"
+Cohesion: 0.36
+Nodes (7): CartoesPage(), EmprestimosPage(), fmtBRL(), MaestroFlowOptions, useCartaoMaestroFlow(), useMaestroDemo(), useMaestroFlow()
 
 ### Community 8 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
@@ -118,21 +121,21 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ## Knowledge Gaps
-- **65 isolated node(s):** `DashboardStats`, `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)` (+60 more)
+- **64 isolated node(s):** `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)`, `Step 1 - Ensure graphify is installed` (+59 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `What You Must Do When Invoked` connect `What You Must Do When Invoked` to `/graphify`?**
-  _High betweenness centrality (0.016) - this node is a cross-community bridge._
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `/graphify` connect `/graphify` to `What You Must Do When Invoked`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `useMaestroDemo()` connect `page.tsx` to `bankSession.ts`, `MaestroDemo.tsx`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **What connects `DashboardStats`, `graphify`, `Usage` to the rest of the system?**
-  _65 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `useMaestroDemo()` connect `MaestroDemo.tsx` to `page.tsx`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **What connects `graphify`, `Usage`, `What graphify is for` to the rest of the system?**
+  _64 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AuthContext.tsx` be split into smaller, more focused modules?**
   _Cohesion score 0.13157894736842105 - nodes in this community are weakly interconnected._
 - **Should `What You Must Do When Invoked` be split into smaller, more focused modules?**

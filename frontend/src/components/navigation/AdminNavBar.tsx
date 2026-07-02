@@ -40,7 +40,7 @@ export default function AdminNavBar() {
     }
 
     return (
-        <nav className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
+        <nav className="bg-slate-950/80 backdrop-blur-md border-b border-white/10 shadow-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-12">
                     <div className="flex items-center">
@@ -63,8 +63,8 @@ export default function AdminNavBar() {
                                 <Link
                                     href="/admin"
                                     className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin') && !isActive('/admin/')
-                                        ? 'bg-gray-900 text-white'
-                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                        ? 'brand-gradient text-white'
+                                        : 'text-white/60 hover:bg-white/10 hover:text-white'
                                         }`}
                                 >
                                     Dashboard
@@ -72,8 +72,8 @@ export default function AdminNavBar() {
                                 <Link
                                     href="/admin/clientes"
                                     className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin/clientes')
-                                        ? 'bg-gray-900 text-white'
-                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                        ? 'brand-gradient text-white'
+                                        : 'text-white/60 hover:bg-white/10 hover:text-white'
                                         }`}
                                 >
                                     Clientes
@@ -81,8 +81,8 @@ export default function AdminNavBar() {
                                 <Link
                                     href="/admin/produtos"
                                     className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin/produtos')
-                                        ? 'bg-gray-900 text-white'
-                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                        ? 'brand-gradient text-white'
+                                        : 'text-white/60 hover:bg-white/10 hover:text-white'
                                         }`}
                                 >
                                     Produtos
@@ -90,8 +90,8 @@ export default function AdminNavBar() {
                                 <Link
                                     href="/admin/servicos"
                                     className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin/servicos')
-                                        ? 'bg-gray-900 text-white'
-                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                        ? 'brand-gradient text-white'
+                                        : 'text-white/60 hover:bg-white/10 hover:text-white'
                                         }`}
                                 >
                                     Serviços
@@ -99,8 +99,8 @@ export default function AdminNavBar() {
                                 <Link
                                     href="/admin/tema"
                                     className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin/tema')
-                                        ? 'bg-gray-900 text-white'
-                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                        ? 'brand-gradient text-white'
+                                        : 'text-white/60 hover:bg-white/10 hover:text-white'
                                         }`}
                                 >
                                     🎨 Tema
@@ -116,7 +116,7 @@ export default function AdminNavBar() {
                             aria-label="Abrir menu"
                             aria-expanded={isMenuOpen}
                             onClick={() => setIsMenuOpen(v => !v)}
-                            className="inline-flex items-center justify-center rounded-md p-2 text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white md:hidden"
+                            className="inline-flex items-center justify-center rounded-md p-2 text-white/60 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white md:hidden"
                         >
                             <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 {isMenuOpen ? (
@@ -128,14 +128,14 @@ export default function AdminNavBar() {
                         </button>
                         <div className="hidden md:flex items-center space-x-4">
                             {user && (
-                                <div className="text-gray-300 text-sm">
+                                <div className="text-white/60 text-sm">
                                     Olá, {user.email}
                                 </div>
                             )}
                             <button
                                 onClick={handleLogout}
                                 disabled={isLoggingOut}
-                                className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors ${isLoggingOut ? 'opacity-50 cursor-not-allowed' : ''
+                                className={`text-white/60 hover:bg-white/10 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors ${isLoggingOut ? 'opacity-50 cursor-not-allowed' : ''
                                     }`}
                             >
                                 {isLoggingOut ? 'Saindo...' : 'Sair'}
@@ -146,52 +146,52 @@ export default function AdminNavBar() {
             </div>
             {/* Mobile menu panel */}
             {isMenuOpen && (
-                <div className="md:hidden border-t border-gray-700">
+                <div className="md:hidden border-t border-white/10">
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         <Link
                             href="/admin"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin') && !isActive('/admin/') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin') && !isActive('/admin/') ? 'brand-gradient text-white' : 'text-white/60 hover:bg-white/10 hover:text-white'}`}
                             onClick={() => setIsMenuOpen(false)}
                         >
                             Dashboard
                         </Link>
                         <Link
                             href="/admin/clientes"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin/clientes') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin/clientes') ? 'brand-gradient text-white' : 'text-white/60 hover:bg-white/10 hover:text-white'}`}
                             onClick={() => setIsMenuOpen(false)}
                         >
                             Clientes
                         </Link>
                         <Link
                             href="/admin/produtos"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin/produtos') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin/produtos') ? 'brand-gradient text-white' : 'text-white/60 hover:bg-white/10 hover:text-white'}`}
                             onClick={() => setIsMenuOpen(false)}
                         >
                             Produtos
                         </Link>
                         <Link
                             href="/admin/servicos"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin/servicos') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin/servicos') ? 'brand-gradient text-white' : 'text-white/60 hover:bg-white/10 hover:text-white'}`}
                             onClick={() => setIsMenuOpen(false)}
                         >
                             Serviços
                         </Link>
                         <Link
                             href="/admin/tema"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin/tema') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin/tema') ? 'brand-gradient text-white' : 'text-white/60 hover:bg-white/10 hover:text-white'}`}
                             onClick={() => setIsMenuOpen(false)}
                         >
                             🎨 Tema
                         </Link>
                     </div>
-                    <div className="border-t border-gray-700 px-2 py-3">
+                    <div className="border-t border-white/10 px-2 py-3">
                         {user && (
-                            <div className="px-3 pb-2 text-sm text-gray-300">Olá, {user.email}</div>
+                            <div className="px-3 pb-2 text-sm text-white/60">Olá, {user.email}</div>
                         )}
                         <button
                             onClick={handleLogout}
                             disabled={isLoggingOut}
-                            className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors ${isLoggingOut ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium text-white/60 hover:bg-white/10 hover:text-white transition-colors ${isLoggingOut ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                             {isLoggingOut ? 'Saindo...' : 'Sair'}
                         </button>

@@ -110,13 +110,13 @@
     "semantic_hash": ""
   },
   "frontend/src/app/admin/layout.tsx": {
-    "mtime": 1783017247.3613071,
-    "ast_hash": "c6129daffeaf431978f4dc7f92e2409d",
+    "mtime": 1783013538.9560947,
+    "ast_hash": "0c3650076c6b213dbbb968b1c07ff988",
     "semantic_hash": ""
   },
   "frontend/src/app/admin/page.tsx": {
-    "mtime": 1783017316.2505026,
-    "ast_hash": "e2e164c848768d8a259a427e3d9426a5",
+    "mtime": 1783013538.9560947,
+    "ast_hash": "cc9cc288e3ce835d10580d3a9853fd07",
     "semantic_hash": ""
   },
   "frontend/src/app/admin/produtos/page.tsx": {
