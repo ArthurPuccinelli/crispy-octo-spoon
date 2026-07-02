@@ -96,6 +96,15 @@ export default function AdminNavBar() {
                                 >
                                     Serviços
                                 </Link>
+                                <Link
+                                    href="/admin/tema"
+                                    className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin/tema')
+                                        ? 'bg-gray-900 text-white'
+                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                        }`}
+                                >
+                                    🎨 Tema
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -166,6 +175,13 @@ export default function AdminNavBar() {
                             onClick={() => setIsMenuOpen(false)}
                         >
                             Serviços
+                        </Link>
+                        <Link
+                            href="/admin/tema"
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin/tema') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            🎨 Tema
                         </Link>
                     </div>
                     <div className="border-t border-gray-700 px-2 py-3">

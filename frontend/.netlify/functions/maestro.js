@@ -91,16 +91,19 @@ async function getJwtToken(scopes) {
 }
 
 function resolveWorkflowId(input) {
-    try {
-        const map = require('./config/maestro-workflows.json')
-        if (!input) return map?.emprestimos || null
-        // If input matches a UUID, use it directly; otherwise, use mapping key
-        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input)
-        if (isUuid) return input
-        return map?.[String(input)] || null
-    } catch (_) {
-        return input || null
+    // Chaves conhecidas → env vars do Netlify (têm prioridade sobre o mapa em JSON)
+    const envMap = {
+        emprestimos: process.env.DOCUSIGN_MAESTRO_WORKFLOW_ID,
+        cartao: process.env.DOCUSIGN_MAESTRO_CARTAO_WORKFLOW_ID,
     }
+    let map = {}
+    try { map = require('./config/maestro-workflows.json') } catch (_) { }
+
+    if (!input) return envMap.emprestimos || map?.emprestimos || null
+    // If input matches a UUID, use it directly; otherwise, use mapping key
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input)
+    if (isUuid) return input
+    return envMap[String(input)] || map?.[String(input)] || null
 }
 
 async function maestroFetch(path, method, token, body) {

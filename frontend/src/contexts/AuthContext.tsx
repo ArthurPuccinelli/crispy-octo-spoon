@@ -15,6 +15,30 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+// Usuários master da demo — funcionam mesmo sem existirem no Supabase Auth
+// (fallback simulado; o site é de demonstração)
+const MASTER_USERS: { email: string; password: string }[] = [
+    { email: 'admin@fontara.com', password: 'admin123' },
+    { email: 'arthurdocusign@gmail.com', password: 'Arthurdocusign1!' },
+]
+
+const MASTER_ADMIN_EMAILS = MASTER_USERS.map(u => u.email)
+
+const MASTER_SESSION_KEY = 'fontara_master_session'
+
+function buildMasterUser(email: string): User {
+    // Objeto mínimo compatível com o shape de User do Supabase
+    return {
+        id: `master-${email}`,
+        aud: 'authenticated',
+        role: 'authenticated',
+        email,
+        app_metadata: { provider: 'demo' },
+        user_metadata: { role: 'admin' },
+        created_at: new Date().toISOString(),
+    } as unknown as User
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
@@ -25,6 +49,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Verificar sessão atual
         const getSession = async () => {
             try {
+                // Sessão master simulada tem prioridade (sobrevive a refresh via sessionStorage)
+                const masterEmail = typeof window !== 'undefined' ? sessionStorage.getItem(MASTER_SESSION_KEY) : null
+                if (masterEmail && MASTER_ADMIN_EMAILS.includes(masterEmail)) {
+                    setUser(buildMasterUser(masterEmail))
+                    setIsAdmin(true)
+                    setLoading(false)
+                    return
+                }
+
                 const { data: { session } } = await supabase.auth.getSession()
                 // Sessão atual verificada
                 setUser(session?.user ?? null)
@@ -90,6 +123,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
             // Verificando role do usuário
 
+            // Usuários master são sempre admin
+            if (user.email && MASTER_ADMIN_EMAILS.includes(user.email)) {
+                setIsAdmin(true)
+                return
+            }
+
             // Verificar se o usuário tem role admin no JWT
             if (user.user_metadata?.role === 'admin') {
                 // Usuário é admin (JWT)
@@ -106,8 +145,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             if (error) {
                 // Tabela usuarios não encontrada, verificando JWT
-                // Se não houver tabela usuarios, verificar se é o usuário admin padrão
-                if (user.email === 'admin@fontara.com') {
+                // Se não houver tabela usuarios, verificar se é um dos usuários master
+                if (user.email && MASTER_ADMIN_EMAILS.includes(user.email)) {
                     // Usuário admin padrão detectado
                     setIsAdmin(true)
                     return
@@ -127,21 +166,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const signIn = async (email: string, password: string) => {
+        const normalizedEmail = email.trim().toLowerCase()
         try {
-            // Tentando login
+            // Tentando login via Supabase Auth
             const { error } = await supabase.auth.signInWithPassword({
-                email,
+                email: normalizedEmail,
                 password
             })
 
-            if (error) {
-                console.error('❌ Erro no login:', error)
-            } else {
-                // Login bem-sucedido
+            if (!error) {
+                return { error: null }
             }
 
+            // Fallback: usuários master simulados (site de demonstração)
+            const master = MASTER_USERS.find(u => u.email === normalizedEmail && u.password === password)
+            if (master) {
+                if (typeof window !== 'undefined') {
+                    sessionStorage.setItem(MASTER_SESSION_KEY, master.email)
+                }
+                setUser(buildMasterUser(master.email))
+                setIsAdmin(true)
+                setLoading(false)
+                return { error: null }
+            }
+
+            console.error('❌ Erro no login:', error)
             return { error }
         } catch (error) {
+            // Supabase indisponível — ainda permite login master
+            const master = MASTER_USERS.find(u => u.email === normalizedEmail && u.password === password)
+            if (master) {
+                if (typeof window !== 'undefined') {
+                    sessionStorage.setItem(MASTER_SESSION_KEY, master.email)
+                }
+                setUser(buildMasterUser(master.email))
+                setIsAdmin(true)
+                setLoading(false)
+                return { error: null }
+            }
             console.error('❌ Erro inesperado no login:', error)
             return { error }
         }
@@ -150,6 +212,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const signOut = async () => {
         try {
             // Fazendo logout
+
+            // Limpar sessão master simulada
+            if (typeof window !== 'undefined') {
+                sessionStorage.removeItem(MASTER_SESSION_KEY)
+            }
 
             // Limpar estado local primeiro
             setUser(null)

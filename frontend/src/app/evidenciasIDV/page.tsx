@@ -280,7 +280,7 @@ export default function EvidenciasIDVPage() {
                             Evidências IDV
                         </h1>
                         <p className="text-white/70 text-lg">
-                            Consulte as evidências de um envelope DocuSign através do seu ID
+                            Consulte as evidências de identidade de um envelope através do seu ID
                         </p>
                     </div>
 
