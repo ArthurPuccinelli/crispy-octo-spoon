@@ -1,16 +1,16 @@
 # Graph Report - crispy-octo-spoon  (2026-07-02)
 
 ## Corpus Check
-- 76 files · ~45,131 words
+- 76 files · ~45,132 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 168 nodes · 231 edges · 22 communities (15 shown, 7 thin omitted)
+- 168 nodes · 228 edges · 23 communities (16 shown, 7 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `90bb4f5b`
+- Built from commit: `78371e9c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -63,15 +63,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (22 total, 7 thin omitted)
+## Communities (23 total, 7 thin omitted)
 
 ### Community 0 - "page.tsx"
 Cohesion: 0.17
 Nodes (17): AssinaturasPage(), DOCUMENTOS, ContaDashboard(), fmtBRL(), TRANSACOES, CHAVES, PixPage(), Home() (+9 more)
 
 ### Community 1 - "AuthContext.tsx"
-Cohesion: 0.13
-Nodes (12): inter, metadata, LoginPage(), AdminNavBar(), AuthContext, AuthContextType, AuthProvider(), MASTER_ADMIN_EMAILS (+4 more)
+Cohesion: 0.14
+Nodes (11): inter, metadata, LoginPage(), AuthContext, AuthContextType, AuthProvider(), MASTER_ADMIN_EMAILS, MASTER_USERS (+3 more)
 
 ### Community 2 - "What You Must Do When Invoked"
 Cohesion: 0.13
@@ -134,6 +134,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `DashboardStats`, `graphify`, `Usage` to the rest of the system?**
   _65 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AuthContext.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.13157894736842105 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.13725490196078433 - nodes in this community are weakly interconnected._
 - **Should `What You Must Do When Invoked` be split into smaller, more focused modules?**
   _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._

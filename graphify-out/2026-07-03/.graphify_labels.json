@@ -20,5 +20,6 @@
   "18": "extraction-spec.md",
   "19": "tailwind.config.js",
   "20": "page.tsx",
-  "21": "layout.tsx"
+  "21": "layout.tsx",
+  "22": "AdminNavBar.tsx"
 }

@@ -64,17 +64,17 @@ export default function GestaoClientesPage() {
             <div className="mb-8">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                     <div>
-                        <nav className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
-                            <Link href="/admin" className="hover:text-teal-600">Dashboard</Link>
+                        <nav className="flex items-center space-x-2 text-sm text-white/50 mb-2">
+                            <Link href="/admin" className="hover:text-brand-accent">Dashboard</Link>
                             <span>/</span>
-                            <span className="text-gray-900 font-medium">Clientes</span>
+                            <span className="text-white font-medium">Clientes</span>
                         </nav>
-                        <h1 className="text-3xl font-bold text-gray-900">Gestão de Clientes</h1>
-                        <p className="text-gray-600 mt-2">Gerencie todos os clientes da plataforma financeira</p>
+                        <h1 className="text-3xl font-bold text-white">Gestão de Clientes</h1>
+                        <p className="text-white/60 mt-2">Gerencie todos os clientes da plataforma financeira</p>
                     </div>
                     <button
                         onClick={() => setShowForm(true)}
-                        className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all duration-200 shadow-lg"
+                        className="w-full sm:w-auto px-6 py-3 brand-gradient text-white font-semibold rounded-lg hover:opacity-90 transition-all duration-200 shadow-lg"
                     >
                         + Novo Cliente
                     </button>
@@ -85,7 +85,7 @@ export default function GestaoClientesPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-gray-100">
                     <div className="flex items-center">
-                        <div className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-teal-500">
+                        <div className="p-3 rounded-full brand-gradient">
                             <span className="text-2xl text-white">👥</span>
                         </div>
                         <div className="ml-4">
@@ -96,7 +96,7 @@ export default function GestaoClientesPage() {
                 </div>
                 <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-gray-100">
                     <div className="flex items-center">
-                        <div className="p-3 rounded-full bg-gradient-to-r from-teal-500 to-emerald-500">
+                        <div className="p-3 rounded-full brand-gradient">
                             <span className="text-2xl text-white">✅</span>
                         </div>
                         <div className="ml-4">
@@ -158,7 +158,7 @@ export default function GestaoClientesPage() {
 
             {loading ? (
                 <div className="flex justify-center items-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand"></div>
                     <span className="ml-3 text-lg text-gray-600">Carregando clientes...</span>
                 </div>
             ) : (
@@ -196,7 +196,7 @@ export default function GestaoClientesPage() {
                                         <td className="px-6 py-4">
                                             <div className="flex items-center">
                                                 <div className="flex-shrink-0 h-10 w-10">
-                                                    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-teal-500 flex items-center justify-center">
+                                                    <div className="h-10 w-10 rounded-full brand-gradient flex items-center justify-center">
                                                         <span className="text-sm font-medium text-white">
                                                             {cliente.nome.charAt(0).toUpperCase()}
                                                         </span>
@@ -230,7 +230,7 @@ export default function GestaoClientesPage() {
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full 
-                                                ${cliente.status === 'ativo' ? 'bg-gradient-to-r from-teal-100 to-emerald-100 text-teal-800 border border-teal-200' :
+                                                ${cliente.status === 'ativo' ? 'bg-brand/10 text-brand border border-brand/30' :
                                                     cliente.status === 'suspenso' ? 'bg-gradient-to-r from-yellow-100 to-orange-100 text-yellow-800 border border-yellow-200' :
                                                         'bg-gradient-to-r from-red-100 to-pink-100 text-red-800 border border-red-200'}`}>
                                                 {cliente.status === 'ativo' ? '✅ Ativo' :
@@ -243,7 +243,7 @@ export default function GestaoClientesPage() {
                                                     setSelectedCliente(cliente)
                                                     setShowForm(true)
                                                 }}
-                                                className="text-teal-600 hover:text-teal-900 mr-4 transition-colors"
+                                                className="text-brand hover:opacity-75 mr-4 transition-colors"
                                             >
                                                 ✏️ Editar
                                             </button>

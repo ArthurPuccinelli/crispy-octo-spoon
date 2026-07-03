@@ -105,8 +105,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/admin/clientes/page.tsx": {
-    "mtime": 1783013538.9560947,
-    "ast_hash": "872daa010e006263c17cbb2e3ccc521e",
+    "mtime": 1783107359.9447658,
+    "ast_hash": "0eca82cd6e544d28ffa5abcf17875db4",
     "semantic_hash": ""
   },
   "frontend/src/app/admin/layout.tsx": {
@@ -120,13 +120,13 @@
     "semantic_hash": ""
   },
   "frontend/src/app/admin/produtos/page.tsx": {
-    "mtime": 1783013538.9560947,
-    "ast_hash": "c45006584bd74258e4d455199530faa4",
+    "mtime": 1783107352.1223717,
+    "ast_hash": "5b2ae7d0441b2f8e467e4b6872d44b2b",
     "semantic_hash": ""
   },
   "frontend/src/app/admin/servicos/page.tsx": {
-    "mtime": 1783013538.9560947,
-    "ast_hash": "d068bae7b48845c876a2b63d23372ac1",
+    "mtime": 1783107352.122688,
+    "ast_hash": "83324eaddec8153983c21e67ae11d260",
     "semantic_hash": ""
   },
   "frontend/src/app/admin/tema/page.tsx": {
@@ -245,8 +245,8 @@
     "semantic_hash": ""
   },
   "frontend/src/components/navigation/AdminNavBar.tsx": {
-    "mtime": 1783015469.9728618,
-    "ast_hash": "ee0c3e52ede750c8e7485bbabc5d899d",
+    "mtime": 1783017330.5172946,
+    "ast_hash": "972a255bc02dc6625ff317cdb79caca0",
     "semantic_hash": ""
   },
   "frontend/src/components/ui/common.tsx": {
@@ -260,8 +260,8 @@
     "semantic_hash": ""
   },
   "frontend/src/contexts/AuthContext.tsx": {
-    "mtime": 1783014838.0645766,
-    "ast_hash": "f2682193ef0e523dfd3c77ce87603057",
+    "mtime": 1783107462.0153818,
+    "ast_hash": "ba9071e74207ce824dbb93d697a79cea",
     "semantic_hash": ""
   },
   "frontend/src/contexts/ThemeContext.tsx": {
@@ -427,6 +427,11 @@
   "frontend/public/logo-fontara.svg": {
     "mtime": 1783013538.955952,
     "ast_hash": "b7925b35c0a826d506f798b29259d8de",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260703_enable_rls_demo_tables.sql": {
+    "mtime": 1783107519.9624405,
+    "ast_hash": "bc83e38f69ec142ac0511386654eda07",
     "semantic_hash": ""
   }
 }

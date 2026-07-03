@@ -97,7 +97,7 @@ export default function GestaoProdutosPage() {
     if (authLoading) {
         return (
             <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand"></div>
             </div>
         )
     }
@@ -110,10 +110,10 @@ export default function GestaoProdutosPage() {
     return (
         <div className="max-w-7xl mx-auto p-6">
             <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
-                <h1 className="text-3xl font-bold text-gray-900">Gestão de Produtos</h1>
+                <h1 className="text-3xl font-bold text-white">Gestão de Produtos</h1>
                 <button
                     onClick={() => setShowForm(true)}
-                    className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="w-full sm:w-auto px-4 py-2 brand-gradient text-white rounded-md hover:opacity-90"
                 >
                     Novo Produto
                 </button>
@@ -136,7 +136,7 @@ export default function GestaoProdutosPage() {
 
             {loading ? (
                 <div className="flex justify-center items-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand"></div>
                 </div>
             ) : (
                 <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -214,7 +214,7 @@ export default function GestaoProdutosPage() {
                                                     setSelectedProduto(produto)
                                                     setShowForm(true)
                                                 }}
-                                                className="text-blue-600 hover:text-blue-900 mr-4"
+                                                className="text-brand hover:opacity-75 mr-4"
                                             >
                                                 Editar
                                             </button>

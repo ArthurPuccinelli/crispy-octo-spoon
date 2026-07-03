@@ -144,10 +144,10 @@ export default function ServicosContratadosPage() {
     return (
         <div className="max-w-7xl mx-auto p-6">
             <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
-                <h1 className="text-3xl font-bold text-gray-900">Serviços Contratados</h1>
+                <h1 className="text-3xl font-bold text-white">Serviços Contratados</h1>
                 <button
                     onClick={() => setShowForm(true)}
-                    className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="w-full sm:w-auto px-4 py-2 brand-gradient text-white rounded-md hover:opacity-90"
                 >
                     Contratar Novo Serviço
                 </button>
@@ -178,7 +178,7 @@ export default function ServicosContratadosPage() {
                             <select
                                 name="cliente_id"
                                 required
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand focus:ring-brand text-gray-900 bg-white"
                             >
                                 <option value="">Selecione um cliente</option>
                                 {clientes.map((cliente) => (
@@ -194,7 +194,7 @@ export default function ServicosContratadosPage() {
                             <select
                                 name="produto_id"
                                 required
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand focus:ring-brand text-gray-900 bg-white"
                             >
                                 <option value="">Selecione um produto</option>
                                 {produtos.map((produto) => (
@@ -213,7 +213,7 @@ export default function ServicosContratadosPage() {
                                 required
                                 step="0.01"
                                 min="0"
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900 bg-white"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand focus:ring-brand text-gray-900 bg-white"
                             />
                         </div>
 
@@ -227,7 +227,7 @@ export default function ServicosContratadosPage() {
                             </button>
                             <button
                                 type="submit"
-                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md"
+                                className="px-4 py-2 text-sm font-medium text-white brand-gradient hover:opacity-90 rounded-md"
                             >
                                 Contratar
                             </button>
@@ -238,7 +238,7 @@ export default function ServicosContratadosPage() {
 
             {loading ? (
                 <div className="flex justify-center items-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand"></div>
                 </div>
             ) : (
                 <div className="bg-white shadow rounded-lg overflow-hidden">

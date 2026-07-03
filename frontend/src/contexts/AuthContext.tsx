@@ -15,29 +15,16 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-// Usuários master da demo — funcionam mesmo sem existirem no Supabase Auth
-// (fallback simulado; o site é de demonstração)
-const MASTER_USERS: { email: string; password: string }[] = [
-    { email: 'admin@fontara.com', password: 'admin123' },
-    { email: 'arthurdocusign@gmail.com', password: 'Arthurdocusign1!' },
+// E-mails com papel de administrador. A autenticação em si é SEMPRE feita
+// pelo Supabase Auth — nunca coloque senhas neste arquivo (ele é enviado
+// ao navegador de qualquer visitante).
+const MASTER_ADMIN_EMAILS = [
+    'admin@fontara.com',
+    'arthurdocusign@gmail.com',
 ]
 
-const MASTER_ADMIN_EMAILS = MASTER_USERS.map(u => u.email)
-
+// Chave da antiga sessão master simulada — mantida só para limpeza.
 const MASTER_SESSION_KEY = 'fontara_master_session'
-
-function buildMasterUser(email: string): User {
-    // Objeto mínimo compatível com o shape de User do Supabase
-    return {
-        id: `master-${email}`,
-        aud: 'authenticated',
-        role: 'authenticated',
-        email,
-        app_metadata: { provider: 'demo' },
-        user_metadata: { role: 'admin' },
-        created_at: new Date().toISOString(),
-    } as unknown as User
-}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
@@ -49,13 +36,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Verificar sessão atual
         const getSession = async () => {
             try {
-                // Sessão master simulada tem prioridade (sobrevive a refresh via sessionStorage)
-                const masterEmail = typeof window !== 'undefined' ? sessionStorage.getItem(MASTER_SESSION_KEY) : null
-                if (masterEmail && MASTER_ADMIN_EMAILS.includes(masterEmail)) {
-                    setUser(buildMasterUser(masterEmail))
-                    setIsAdmin(true)
-                    setLoading(false)
-                    return
+                // Remove resquício da antiga sessão master simulada
+                if (typeof window !== 'undefined') {
+                    sessionStorage.removeItem(MASTER_SESSION_KEY)
                 }
 
                 const { data: { session } } = await supabase.auth.getSession()
@@ -168,7 +151,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const signIn = async (email: string, password: string) => {
         const normalizedEmail = email.trim().toLowerCase()
         try {
-            // Tentando login via Supabase Auth
             const { error } = await supabase.auth.signInWithPassword({
                 email: normalizedEmail,
                 password
@@ -178,32 +160,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 return { error: null }
             }
 
-            // Fallback: usuários master simulados (site de demonstração)
-            const master = MASTER_USERS.find(u => u.email === normalizedEmail && u.password === password)
-            if (master) {
-                if (typeof window !== 'undefined') {
-                    sessionStorage.setItem(MASTER_SESSION_KEY, master.email)
-                }
-                setUser(buildMasterUser(master.email))
-                setIsAdmin(true)
-                setLoading(false)
-                return { error: null }
-            }
-
             console.error('❌ Erro no login:', error)
             return { error }
         } catch (error) {
-            // Supabase indisponível — ainda permite login master
-            const master = MASTER_USERS.find(u => u.email === normalizedEmail && u.password === password)
-            if (master) {
-                if (typeof window !== 'undefined') {
-                    sessionStorage.setItem(MASTER_SESSION_KEY, master.email)
-                }
-                setUser(buildMasterUser(master.email))
-                setIsAdmin(true)
-                setLoading(false)
-                return { error: null }
-            }
             console.error('❌ Erro inesperado no login:', error)
             return { error }
         }

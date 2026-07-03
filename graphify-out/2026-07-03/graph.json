@@ -4,14 +4,34 @@
   "graph": {},
   "nodes": [
     {
+      "label": "AdminNavBar.tsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_components_navigation_adminnavbar",
+      "community": 22,
+      "norm_label": "adminnavbar.tsx"
+    },
+    {
+      "label": "AdminNavBar()",
+      "file_type": "code",
+      "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "frontend_src_components_navigation_adminnavbar_adminnavbar",
+      "community": 22,
+      "norm_label": "adminnavbar()"
+    },
+    {
       "label": "layout.tsx",
       "file_type": "code",
       "source_file": "frontend/src/app/admin/layout.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "frontend_src_app_admin_layout",
       "community": 21,
-      "norm_label": "layout.tsx"
+      "norm_label": "layout.tsx",
+      "id": "frontend_src_app_admin_layout"
     },
     {
       "label": "AdminLayout()",
@@ -19,9 +39,9 @@
       "source_file": "frontend/src/app/admin/layout.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "frontend_src_app_admin_layout_adminlayout",
       "community": 21,
-      "norm_label": "adminlayout()"
+      "norm_label": "adminlayout()",
+      "id": "frontend_src_app_admin_layout_adminlayout"
     },
     {
       "label": "page.tsx",
@@ -29,9 +49,9 @@
       "source_file": "frontend/src/app/admin/page.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "frontend_src_app_admin_page",
       "community": 20,
-      "norm_label": "page.tsx"
+      "norm_label": "page.tsx",
+      "id": "frontend_src_app_admin_page"
     },
     {
       "label": "DashboardStats",
@@ -39,9 +59,9 @@
       "source_file": "frontend/src/app/admin/page.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "frontend_src_app_admin_page_dashboardstats",
       "community": 20,
-      "norm_label": "dashboardstats"
+      "norm_label": "dashboardstats",
+      "id": "frontend_src_app_admin_page_dashboardstats"
     },
     {
       "label": "AdminDashboard()",
@@ -49,9 +69,9 @@
       "source_file": "frontend/src/app/admin/page.tsx",
       "source_location": "L16",
       "_origin": "ast",
-      "id": "frontend_src_app_admin_page_admindashboard",
       "community": 20,
-      "norm_label": "admindashboard()"
+      "norm_label": "admindashboard()",
+      "id": "frontend_src_app_admin_page_admindashboard"
     },
     {
       "label": "CLAUDE.md",
@@ -1334,26 +1354,6 @@
       "id": "frontend_src_components_docusign_demodocument_htmltobase64"
     },
     {
-      "label": "AdminNavBar.tsx",
-      "file_type": "code",
-      "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 1,
-      "norm_label": "adminnavbar.tsx",
-      "id": "frontend_src_components_navigation_adminnavbar"
-    },
-    {
-      "label": "AdminNavBar()",
-      "file_type": "code",
-      "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
-      "source_location": "L9",
-      "_origin": "ast",
-      "community": 1,
-      "norm_label": "adminnavbar()",
-      "id": "frontend_src_components_navigation_adminnavbar_adminnavbar"
-    },
-    {
       "label": "AuthContext.tsx",
       "file_type": "code",
       "source_file": "frontend/src/contexts/AuthContext.tsx",
@@ -1688,12 +1688,22 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "frontend_src_components_navigation_adminnavbar",
+      "target": "frontend_src_components_navigation_adminnavbar_adminnavbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/admin/layout.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "frontend_src_app_admin_layout",
-      "target": "frontend_src_app_admin_layout_adminlayout",
-      "confidence_score": 1.0
+      "target": "frontend_src_app_admin_layout_adminlayout"
     },
     {
       "relation": "contains",
@@ -1701,9 +1711,9 @@
       "source_file": "frontend/src/app/admin/page.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "frontend_src_app_admin_page",
-      "target": "frontend_src_app_admin_page_admindashboard",
-      "confidence_score": 1.0
+      "target": "frontend_src_app_admin_page_admindashboard"
     },
     {
       "relation": "contains",
@@ -1711,9 +1721,9 @@
       "source_file": "frontend/src/app/admin/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "frontend_src_app_admin_page",
-      "target": "frontend_src_app_admin_page_dashboardstats",
-      "confidence_score": 1.0
+      "target": "frontend_src_app_admin_page_dashboardstats"
     },
     {
       "relation": "contains",
@@ -3632,49 +3642,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "frontend_src_components_navigation_adminnavbar",
-      "target": "frontend_src_components_navigation_adminnavbar_adminnavbar"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "frontend_src_components_navigation_adminnavbar",
-      "target": "frontend_src_contexts_authcontext"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "frontend_src_components_navigation_adminnavbar",
-      "target": "frontend_src_contexts_authcontext_useauth"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "frontend/src/components/navigation/AdminNavBar.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "source": "frontend_src_components_navigation_adminnavbar_adminnavbar",
-      "target": "frontend_src_contexts_authcontext_useauth"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "frontend/src/contexts/AuthContext.tsx",
       "source_location": "L16",
       "weight": 1.0,
@@ -4098,5 +4065,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "90bb4f5b191d93e101904a84fea4de0ba0206686"
+  "built_at_commit": "78371e9cd0b0ea197e36ea0ecd1d739384bc59c0"
 }

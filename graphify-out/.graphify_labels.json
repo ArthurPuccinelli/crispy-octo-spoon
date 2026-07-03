@@ -20,5 +20,22 @@
   "18": "extraction-spec.md",
   "19": "tailwind.config.js",
   "20": "page.tsx",
-  "21": "layout.tsx"
+  "21": "layout.tsx",
+  "22": "AdminNavBar.tsx",
+  "23": "docusign-actions.js",
+  "24": "package.json",
+  "25": "common.tsx",
+  "26": "eslint.config.mjs",
+  "27": "CreateRecord.js",
+  "28": "README.md",
+  "29": "PatchRecord.js",
+  "30": "GetTypeDefinitions.js",
+  "31": "SearchRecords.js",
+  "32": "supabase-keepalive.mjs",
+  "33": "verify.js",
+  "34": "GetTypeNames.js",
+  "35": "next.config.mjs",
+  "36": "postcss.config.mjs",
+  "37": "page.tsx",
+  "38": "next-env.d.ts"
 }
