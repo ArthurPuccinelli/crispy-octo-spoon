@@ -30,6 +30,10 @@ const NAV_ITEMS = [
         href: '/conta/assinaturas', label: 'Assinaturas',
         icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />,
     },
+    {
+        href: '/conta/dados', label: 'Meus dados',
+        icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />,
+    },
 ]
 
 export default function ContaLayout({ children }: { children: ReactNode }) {

@@ -6,6 +6,7 @@
 // do Netlify, ou UUID direto.
 
 import { useState, ReactNode } from 'react'
+import { getBankSession } from '@/lib/bankSession'
 
 export type MaestroFlowOptions = {
     /** Chave do workflow ('emprestimos' | 'cartao') ou UUID. Padrão: workflow default do backend. */
@@ -18,6 +19,10 @@ export type MaestroFlowOptions = {
     errorLabel?: string
     /** Oculta o cabeçalho do modal (fica só o botão de fechar flutuante). */
     hideHeader?: boolean
+    /** Inputs do trigger, avaliados no clique (ex.: dados do cliente logado). */
+    getInputs?: () => Record<string, string>
+    /** Nome da instância do workflow, avaliado no clique. */
+    getInstanceName?: () => string
 }
 
 export function useMaestroFlow(options: MaestroFlowOptions = {}) {
@@ -25,11 +30,16 @@ export function useMaestroFlow(options: MaestroFlowOptions = {}) {
     const [showModal, setShowModal] = useState(false)
     const [maestroUrl, setMaestroUrl] = useState('')
 
-    const triggerBody = JSON.stringify({ workflow: options.workflow, inputs: {} })
-
     const start = async () => {
         if (starting) return
         setStarting(true)
+        // Monta o body no momento do clique — os dados do cliente podem ter
+        // sido atualizados em /conta/dados depois da montagem do componente.
+        const triggerBody = JSON.stringify({
+            workflow: options.workflow,
+            inputs: options.getInputs?.() || {},
+            ...(options.getInstanceName ? { instanceName: options.getInstanceName() } : {}),
+        })
         try {
             const res = await fetch('/.netlify/functions/maestro/trigger', {
                 method: 'POST',
@@ -186,6 +196,20 @@ export function useCartaoMaestroFlow() {
         workflow: 'cartao',
         errorLabel: 'a contratação do cartão',
         hideHeader: true,
+        // Alimenta o workflow com os dados do cliente logado (perfil em /conta/dados).
+        // Nomes dos campos conforme o trigger input schema do workflow: nome / email / cpfcnpj.
+        getInputs: () => {
+            const session = getBankSession()
+            const inputs: Record<string, string> = {}
+            if (session?.name) inputs.nome = session.name
+            if (session?.email) inputs.email = session.email
+            if (session?.cpf) inputs.cpfcnpj = session.cpf.replace(/\D/g, '')
+            return inputs
+        },
+        getInstanceName: () => {
+            const session = getBankSession()
+            return `Cartao Platinum - ${session?.name || 'Cliente'} - ${new Date().toISOString().slice(0, 16)}`
+        },
     })
     return { startCartaoFlow: flow.start, starting: flow.starting, modal: flow.modal }
 }

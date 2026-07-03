@@ -3,7 +3,8 @@
 // Cartões — cartão virtual + contratação de novo cartão via jornada guiada (Maestro).
 
 import { useEffect, useState } from 'react'
-import { BankSession, getBankSession } from '@/lib/bankSession'
+import Link from 'next/link'
+import { BankSession, getBankSession, firstName } from '@/lib/bankSession'
 import { useCartaoMaestroFlow } from '@/components/docusign/MaestroDemo'
 
 export default function CartoesPage() {
@@ -32,13 +33,19 @@ export default function CartoesPage() {
                             Nova categoria liberada para você
                         </span>
                         <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
-                            {session?.name ? `${session.name.split(' ')[0]}, ` : ''}seu upgrade para o
+                            {firstName(session)}, seu upgrade para o
                             <span className="gradient-text"> Fontara Platinum</span> foi aprovado
                         </h2>
                         <p className="text-white/60 text-sm">
                             Limite pré-aprovado de <strong className="text-white">R$ 15.000</strong>, sem anuidade e com
                             2% de cashback. Oferta válida até o fim do mês.
                         </p>
+                        {session && !session.cpf && (
+                            <p className="mt-3 text-xs text-white/50">
+                                💡 <Link href="/conta/dados" className="text-brand-accent font-semibold hover:underline">Complete seus dados</Link> para
+                                uma contratação instantânea, já preenchida com suas informações.
+                            </p>
+                        )}
                     </div>
                     <button
                         onClick={cartao.startCartaoFlow}

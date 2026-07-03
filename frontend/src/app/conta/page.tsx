@@ -140,7 +140,7 @@ export default function ContaDashboard() {
                 <div className="relative z-10 flex-1 min-w-0">
                     <p className="text-brand-accent text-[11px] font-bold uppercase tracking-widest mb-1">Novo · Categoria liberada</p>
                     <p className="text-white font-bold text-base sm:text-lg">
-                        Você foi pré-aprovado para o Cartão Fontara Platinum
+                        {firstName(session)}, você foi pré-aprovado para o Cartão Fontara Platinum
                     </p>
                     <p className="text-white/50 text-sm">Limite de R$ 15.000, sem anuidade e 2% de cashback. Faça o upgrade agora.</p>
                 </div>
