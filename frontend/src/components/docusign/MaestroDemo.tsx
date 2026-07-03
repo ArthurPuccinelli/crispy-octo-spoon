@@ -16,6 +16,8 @@ export type MaestroFlowOptions = {
     subtitle?: string
     /** Nome da jornada usado nas mensagens de erro. */
     errorLabel?: string
+    /** Oculta o cabeçalho do modal (fica só o botão de fechar flutuante). */
+    hideHeader?: boolean
 }
 
 export function useMaestroFlow(options: MaestroFlowOptions = {}) {
@@ -108,7 +110,19 @@ export function useMaestroFlow(options: MaestroFlowOptions = {}) {
     const modal: ReactNode = showModal ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-6">
             <div className="relative flex flex-col w-full h-full max-w-7xl max-h-[94vh] bg-white rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
+                {options.hideHeader && (
+                    <button
+                        onClick={() => setShowModal(false)}
+                        className="absolute top-3 right-3 z-20 p-2 bg-black/10 hover:bg-black/25 text-slate-700 rounded-full transition-colors"
+                        aria-label="Fechar"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                )}
                 {/* Cabeçalho */}
+                {!options.hideHeader && (
                 <div className="relative flex items-center justify-between gap-4 px-6 sm:px-8 py-4 bg-surface flex-shrink-0">
                     <div className="absolute inset-0 brand-mesh opacity-60 pointer-events-none" />
                     <div className="relative z-10 min-w-0">
@@ -135,6 +149,7 @@ export function useMaestroFlow(options: MaestroFlowOptions = {}) {
                         </button>
                     </div>
                 </div>
+                )}
                 {/* Jornada embutida */}
                 <div className="flex-1 min-h-0 bg-slate-50">
                     {maestroUrl && (
@@ -169,9 +184,8 @@ export function useMaestroDemo() {
 export function useCartaoMaestroFlow() {
     const flow = useMaestroFlow({
         workflow: 'cartao',
-        title: 'Contratação do novo cartão',
-        subtitle: 'Análise, proposta e assinatura em uma única jornada digital',
         errorLabel: 'a contratação do cartão',
+        hideHeader: true,
     })
     return { startCartaoFlow: flow.start, starting: flow.starting, modal: flow.modal }
 }
