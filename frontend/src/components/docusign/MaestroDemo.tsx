@@ -109,7 +109,7 @@ export function useMaestroFlow(options: MaestroFlowOptions = {}) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-6">
             <div className="relative flex flex-col w-full h-full max-w-7xl max-h-[94vh] bg-white rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
                 {/* Cabeçalho */}
-                <div className="relative flex items-center justify-between gap-4 px-6 sm:px-8 py-4 bg-slate-950 flex-shrink-0">
+                <div className="relative flex items-center justify-between gap-4 px-6 sm:px-8 py-4 bg-surface flex-shrink-0">
                     <div className="absolute inset-0 brand-mesh opacity-60 pointer-events-none" />
                     <div className="relative z-10 min-w-0">
                         <p className="text-white font-bold text-base sm:text-lg truncate">

@@ -103,3 +103,6 @@ Desktop.ini
 # Temporary files
 *.tmp
 *.temp
+
+# graphify — artefatos regenerados pelos hooks a cada commit
+graphify-out/

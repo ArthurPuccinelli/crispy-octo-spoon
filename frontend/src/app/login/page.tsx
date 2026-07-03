@@ -47,7 +47,7 @@ export default function LoginPage() {
 
     if (authLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-950">
+            <div className="min-h-screen flex items-center justify-center bg-surface">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto mb-4"></div>
                     <p className="text-white/60">Verificando autenticação...</p>
@@ -61,7 +61,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen relative flex items-center justify-center bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="min-h-screen relative flex items-center justify-center bg-surface py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
             {/* Fundo animado */}
             <div className="absolute inset-0 brand-mesh" />
             <div className="absolute -top-32 -right-32 w-96 h-96 bg-brand/20 rounded-full blur-3xl animate-pulse-slow" />

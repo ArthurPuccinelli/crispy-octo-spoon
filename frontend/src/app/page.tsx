@@ -28,7 +28,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-slate-950 overflow-hidden">
+    <div className="min-h-screen bg-surface overflow-hidden">
       {/* Fundo: mesh da marca + orbes animados */}
       <div className="fixed inset-0 brand-mesh pointer-events-none" />
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -38,7 +38,7 @@ export default function Home() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-slate-950/70 backdrop-blur-xl border-b border-white/10">
+      <header className="sticky top-0 z-40 bg-surface/70 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-3">
             <div className={`transition-all duration-1000 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
@@ -90,7 +90,7 @@ export default function Home() {
         </div>
         {/* Mobile nav panel */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-white/10 bg-slate-950/90 backdrop-blur-xl">
+          <div className="md:hidden border-t border-white/10 bg-surface/90 backdrop-blur-xl">
             <div className="px-4 py-3 space-y-1">
               <a href="#produtos" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-white/80 hover:text-white hover:bg-white/10">Produtos</a>
               <a href="#vantagens" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-white/80 hover:text-white hover:bg-white/10">Vantagens</a>
@@ -229,8 +229,8 @@ export default function Home() {
             <div className="group relative glass-dark rounded-3xl p-8 border border-white/10 hover:border-brand/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
               <div className="absolute inset-0 brand-gradient-soft rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="w-16 h-16 brand-gradient rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 brand-chip rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
                 </div>
@@ -253,8 +253,8 @@ export default function Home() {
             <div className="group relative glass-dark rounded-3xl p-8 border border-white/10 hover:border-brand/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
               <div className="absolute inset-0 brand-gradient-soft rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="w-16 h-16 brand-gradient rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 brand-chip rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                   </svg>
                 </div>
@@ -277,8 +277,8 @@ export default function Home() {
             <div className="group relative glass-dark rounded-3xl p-8 border border-white/10 hover:border-brand/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
               <div className="absolute inset-0 brand-gradient-soft rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="w-16 h-16 brand-gradient rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 brand-chip rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
                 </div>
@@ -301,8 +301,8 @@ export default function Home() {
             <div className="group relative glass-dark rounded-3xl p-8 border border-white/10 hover:border-brand/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
               <div className="absolute inset-0 brand-gradient-soft rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="w-16 h-16 brand-gradient rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 brand-chip rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
@@ -325,8 +325,8 @@ export default function Home() {
             <div className="group relative glass-dark rounded-3xl p-8 border border-white/10 hover:border-brand/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
               <div className="absolute inset-0 brand-gradient-soft rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="w-16 h-16 brand-gradient rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 brand-chip rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
                 </div>
@@ -349,8 +349,8 @@ export default function Home() {
             <div className="group relative glass-dark rounded-3xl p-8 border border-white/10 hover:border-brand/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
               <div className="absolute inset-0 brand-gradient-soft rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="w-16 h-16 brand-gradient rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 brand-chip rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
@@ -375,8 +375,8 @@ export default function Home() {
         <section id="vantagens" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="grid md:grid-cols-3 gap-6">
             <div className="group glass-dark rounded-2xl p-6 border border-white/10 hover:border-brand/40 transition-all duration-500 hover:scale-[1.02]">
-              <div className="w-14 h-14 brand-gradient rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-14 h-14 brand-chip rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-7 h-7 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
@@ -386,8 +386,8 @@ export default function Home() {
               </p>
             </div>
             <div className="group glass-dark rounded-2xl p-6 border border-white/10 hover:border-brand/40 transition-all duration-500 hover:scale-[1.02]">
-              <div className="w-14 h-14 brand-gradient rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-14 h-14 brand-chip rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-7 h-7 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
@@ -397,8 +397,8 @@ export default function Home() {
               </p>
             </div>
             <div className="group glass-dark rounded-2xl p-6 border border-white/10 hover:border-brand/40 transition-all duration-500 hover:scale-[1.02]">
-              <div className="w-14 h-14 brand-gradient rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-14 h-14 brand-chip rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-7 h-7 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z" />
                 </svg>
               </div>

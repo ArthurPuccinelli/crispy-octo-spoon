@@ -77,7 +77,7 @@ export default function EmprestimosPage() {
                 </div>
 
                 {/* Contratação — demo Maestro */}
-                <div className="relative overflow-hidden rounded-3xl bg-slate-950 p-8 flex flex-col justify-between animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
+                <div className="relative overflow-hidden rounded-3xl bg-surface p-8 flex flex-col justify-between animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
                     <div className="absolute inset-0 brand-mesh opacity-70" />
                     <div className="relative z-10">
                         <p className="text-brand-accent text-xs font-bold uppercase tracking-widest mb-3">Contratação 100% digital</p>

@@ -40,7 +40,7 @@ export default function AdminNavBar() {
     }
 
     return (
-        <nav className="bg-slate-950/80 backdrop-blur-md border-b border-white/10 shadow-lg">
+        <nav className="bg-surface/80 backdrop-blur-md border-b border-white/10 shadow-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-12">
                     <div className="flex items-center">

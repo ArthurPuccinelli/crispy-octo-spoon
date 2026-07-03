@@ -71,6 +71,7 @@ export default function TemaPage() {
                                 <span className="w-8 h-8 rounded-lg shadow-lg" style={{ backgroundColor: preset.colors.primary }} />
                                 <span className="w-8 h-8 rounded-lg shadow-lg" style={{ backgroundColor: preset.colors.secondary }} />
                                 <span className="w-8 h-8 rounded-lg shadow-lg" style={{ backgroundColor: preset.colors.accent }} />
+                                <span className="w-8 h-8 rounded-lg shadow-lg border border-white/20" style={{ backgroundColor: preset.colors.surface }} />
                             </div>
                             <p className="text-white font-semibold text-sm">{preset.name}</p>
                             <p className="text-white/40 text-xs">{preset.description}</p>
@@ -86,11 +87,12 @@ export default function TemaPage() {
             <section>
                 <h2 className="text-lg font-bold text-white mb-4">Cores personalizadas</h2>
                 <div className="glass-dark rounded-2xl border border-white/10 p-6">
-                    <div className="grid sm:grid-cols-3 gap-6 mb-6">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                         {([
                             { key: 'primary', label: 'Cor principal', hint: 'Botões, links e destaques' },
                             { key: 'secondary', label: 'Cor secundária', hint: 'Par do gradiente da marca' },
                             { key: 'accent', label: 'Cor de acento', hint: 'Badges, ícones e detalhes' },
+                            { key: 'surface', label: 'Cor de fundo', hint: 'Painéis escuros — hero, sidebar e banners. Prefira tons escuros' },
                         ] as const).map(({ key, label, hint }) => (
                             <div key={key}>
                                 <label className="block text-sm font-medium text-white/70 mb-2">{label}</label>
@@ -117,7 +119,7 @@ export default function TemaPage() {
 
                     {/* Preview ao vivo */}
                     <div className="rounded-2xl border border-white/10 p-6 mb-6" style={{
-                        background: `linear-gradient(135deg, ${custom.primary}22, ${custom.secondary}22)`,
+                        background: `linear-gradient(135deg, ${custom.primary}22, ${custom.secondary}22), ${custom.surface}`,
                     }}>
                         <p className="text-white/50 text-xs uppercase tracking-widest mb-4">Pré-visualização</p>
                         <div className="flex flex-wrap items-center gap-4">

@@ -56,7 +56,7 @@ export default function ContaLayout({ children }: { children: ReactNode }) {
 
     if (!checked || !session) {
         return (
-            <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+            <div className="min-h-screen bg-surface flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto mb-4"></div>
                     <p className="text-white/50">Abrindo sua conta...</p>
@@ -71,7 +71,7 @@ export default function ContaLayout({ children }: { children: ReactNode }) {
     return (
         <div className="min-h-screen bg-slate-100 flex">
             {/* Sidebar desktop */}
-            <aside className="hidden lg:flex flex-col w-64 bg-slate-950 border-r border-white/5 fixed inset-y-0 z-30">
+            <aside className="hidden lg:flex flex-col w-64 bg-surface border-r border-white/5 fixed inset-y-0 z-30">
                 <div className="p-6 border-b border-white/5">
                     <Link href="/">
                         <Image src="/logo-fontara-final.svg" alt="Fontara Financial" width={160} height={40} className="h-8 w-auto" />
@@ -117,7 +117,7 @@ export default function ContaLayout({ children }: { children: ReactNode }) {
             {/* Conteúdo */}
             <div className="flex-1 lg:ml-64 flex flex-col min-h-screen">
                 {/* Header mobile */}
-                <header className="lg:hidden sticky top-0 z-30 bg-slate-950 border-b border-white/5">
+                <header className="lg:hidden sticky top-0 z-30 bg-surface border-b border-white/5">
                     <div className="flex items-center justify-between px-4 py-3">
                         <Link href="/conta">
                             <Image src="/logo-fontara-final.svg" alt="Fontara" width={130} height={32} className="h-7 w-auto" />
@@ -137,7 +137,7 @@ export default function ContaLayout({ children }: { children: ReactNode }) {
                         </button>
                     </div>
                     {mobileOpen && (
-                        <nav className="border-t border-white/5 px-3 py-3 space-y-1 bg-slate-950">
+                        <nav className="border-t border-white/5 px-3 py-3 space-y-1 bg-surface">
                             {NAV_ITEMS.map(item => (
                                 <Link
                                     key={item.href}

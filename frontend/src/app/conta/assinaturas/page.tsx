@@ -22,7 +22,7 @@ export default function AssinaturasPage() {
             </div>
 
             {/* Banner Assinatura Avançada */}
-            <div className="relative overflow-hidden rounded-3xl bg-slate-950 p-8 animate-fade-in-up">
+            <div className="relative overflow-hidden rounded-3xl bg-surface p-8 animate-fade-in-up">
                 <div className="absolute inset-0 brand-mesh opacity-70" />
                 <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6 justify-between">
                     <div>

@@ -9,6 +9,7 @@ import {
     THEME_PRESETS,
     THEME_STORAGE_KEY,
     applyTheme,
+    normalizeColors,
 } from '@/lib/themes'
 
 interface ThemeContextType {
@@ -43,9 +44,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         const local = readLocal()
         if (local) {
-            setColors(local.colors)
+            const localColors = normalizeColors(local.colors)
+            setColors(localColors)
             setActivePresetId(local.presetId)
-            applyTheme(local.colors)
+            applyTheme(localColors)
         } else {
             applyTheme(DEFAULT_THEME.colors)
         }
@@ -60,10 +62,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
                 if (!error && data?.value) {
                     const stored = data.value as StoredTheme
                     if (stored?.colors?.primary) {
-                        setColors(stored.colors)
+                        const remoteColors = normalizeColors(stored.colors)
+                        setColors(remoteColors)
                         setActivePresetId(stored.presetId || 'custom')
-                        applyTheme(stored.colors)
-                        writeLocal(stored)
+                        applyTheme(remoteColors)
+                        writeLocal({ ...stored, colors: remoteColors })
                         setSavedGlobally(true)
                     }
                 }

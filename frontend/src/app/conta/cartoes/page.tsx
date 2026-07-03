@@ -22,7 +22,7 @@ export default function CartoesPage() {
             </div>
 
             {/* Propaganda — nova categoria liberada */}
-            <div className="relative overflow-hidden rounded-3xl bg-slate-950 animate-fade-in-up">
+            <div className="relative overflow-hidden rounded-3xl bg-surface animate-fade-in-up">
                 <div className="absolute inset-0 brand-mesh opacity-80" />
                 <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full brand-gradient opacity-20 blur-3xl" />
                 <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-5 p-6 sm:p-8">
@@ -89,7 +89,7 @@ export default function CartoesPage() {
                 </div>
 
                 {/* Novo cartão — jornada guiada de contratação */}
-                <div className="relative overflow-hidden rounded-3xl bg-slate-950 p-8 flex flex-col justify-between animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
+                <div className="relative overflow-hidden rounded-3xl bg-surface p-8 flex flex-col justify-between animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
                     <div className="absolute inset-0 brand-mesh opacity-70" />
                     <div className="relative z-10">
                         <p className="text-brand-accent text-xs font-bold uppercase tracking-widest mb-3">Upgrade de categoria</p>

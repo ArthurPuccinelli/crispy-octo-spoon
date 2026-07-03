@@ -26,7 +26,7 @@ export default function EntrarPage() {
     }
 
     return (
-        <div className="min-h-screen grid lg:grid-cols-2 bg-slate-950">
+        <div className="min-h-screen grid lg:grid-cols-2 bg-surface">
             {/* Painel esquerdo — branding */}
             <div className="relative hidden lg:flex flex-col justify-between p-12 overflow-hidden">
                 <div className="absolute inset-0 brand-mesh" />

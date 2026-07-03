@@ -15,6 +15,11 @@ module.exports = {
           secondary: 'rgb(var(--brand-secondary) / <alpha-value>)',
           accent: 'rgb(var(--brand-accent) / <alpha-value>)',
         },
+        // Fundo dos painéis escuros (configurável no tema)
+        surface: {
+          DEFAULT: 'rgb(var(--surface) / <alpha-value>)',
+          raised: 'rgb(var(--surface-raised) / <alpha-value>)',
+        },
       },
       animation: {
         float: 'float 6s ease-in-out infinite',

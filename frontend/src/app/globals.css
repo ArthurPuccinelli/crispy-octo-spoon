@@ -13,6 +13,11 @@
   --brand-primary-hex: #14b8a6;
   --brand-secondary-hex: #06b6d4;
   --brand-accent-hex: #34d399;
+
+  /* Fundo dos painéis escuros — também configurável em /admin/tema */
+  --surface: 16 28 44;
+  --surface-hex: #101c2c;
+  --surface-raised: 30 42 58;
 }
 
 body {
@@ -100,9 +105,15 @@ textarea::placeholder {
 }
 
 .glass-dark {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgb(var(--surface-raised) / 0.55);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Chip de ícone — tom suave da marca (substitui o gradiente cheio nos ícones) */
+.brand-chip {
+  background: rgb(var(--brand-primary) / 0.14);
+  border: 1px solid rgb(var(--brand-primary) / 0.25);
 }
 
 /* Gradientes da marca — seguem o tema ativo */

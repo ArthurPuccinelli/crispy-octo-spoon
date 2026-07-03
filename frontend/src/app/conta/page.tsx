@@ -49,7 +49,7 @@ export default function ContaDashboard() {
 
             {/* Saldo + cartão */}
             <div className="grid lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 relative overflow-hidden rounded-3xl bg-slate-950 p-8 animate-fade-in-up">
+                <div className="lg:col-span-2 relative overflow-hidden rounded-3xl bg-surface p-8 animate-fade-in-up">
                     <div className="absolute inset-0 brand-mesh opacity-70" />
                     <div className="relative z-10">
                         <div className="flex items-center justify-between mb-2">
@@ -127,7 +127,7 @@ export default function ContaDashboard() {
             {/* Propaganda — upgrade de cartão */}
             <Link
                 href="/conta/cartoes"
-                className="group relative overflow-hidden rounded-3xl bg-slate-950 flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 sm:p-7 animate-fade-in-up hover:scale-[1.01] transition-transform duration-300"
+                className="group relative overflow-hidden rounded-3xl bg-surface flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 sm:p-7 animate-fade-in-up hover:scale-[1.01] transition-transform duration-300"
                 style={{ animationDelay: '0.2s' }}
             >
                 <div className="absolute inset-0 brand-mesh opacity-80" />
@@ -158,8 +158,8 @@ export default function ContaDashboard() {
                         disabled={maestro.starting}
                         className="group text-left bg-white rounded-2xl p-6 border border-slate-200 hover:border-brand/60 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60"
                     >
-                        <div className="w-11 h-11 brand-gradient rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-11 h-11 brand-chip rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                             </svg>
                         </div>
@@ -172,8 +172,8 @@ export default function ContaDashboard() {
                         onClick={cartao.openCartaoModal}
                         className="group text-left bg-white rounded-2xl p-6 border border-slate-200 hover:border-brand/60 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                     >
-                        <div className="w-11 h-11 brand-gradient rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-11 h-11 brand-chip rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                             </svg>
                         </div>
@@ -186,8 +186,8 @@ export default function ContaDashboard() {
                         onClick={advanced.openAdvancedSignature}
                         className="group text-left bg-white rounded-2xl p-6 border border-slate-200 hover:border-brand/60 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                     >
-                        <div className="w-11 h-11 brand-gradient rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-11 h-11 brand-chip rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                             </svg>
                         </div>

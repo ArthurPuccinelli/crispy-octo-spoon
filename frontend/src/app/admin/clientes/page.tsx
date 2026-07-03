@@ -85,7 +85,7 @@ export default function GestaoClientesPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-gray-100">
                     <div className="flex items-center">
-                        <div className="p-3 rounded-full brand-gradient">
+                        <div className="p-3 rounded-full brand-chip">
                             <span className="text-2xl text-white">👥</span>
                         </div>
                         <div className="ml-4">
@@ -96,7 +96,7 @@ export default function GestaoClientesPage() {
                 </div>
                 <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-gray-100">
                     <div className="flex items-center">
-                        <div className="p-3 rounded-full brand-gradient">
+                        <div className="p-3 rounded-full brand-chip">
                             <span className="text-2xl text-white">✅</span>
                         </div>
                         <div className="ml-4">

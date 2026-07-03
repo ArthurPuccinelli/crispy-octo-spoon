@@ -125,7 +125,7 @@ export default function AdminDashboard() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         <div className="glass-dark rounded-2xl shadow-lg p-6 border border-white/10">
                             <div className="flex items-center">
-                                <div className="p-3 rounded-full brand-gradient">
+                                <div className="p-3 rounded-full brand-chip">
                                     <span className="text-2xl text-white">👥</span>
                                 </div>
                                 <div className="ml-4">
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
 
                         <div className="glass-dark rounded-2xl shadow-lg p-6 border border-white/10">
                             <div className="flex items-center">
-                                <div className="p-3 rounded-full brand-gradient">
+                                <div className="p-3 rounded-full brand-chip">
                                     <span className="text-2xl text-white">📦</span>
                                 </div>
                                 <div className="ml-4">
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
 
                         <div className="glass-dark rounded-2xl shadow-lg p-6 border border-white/10">
                             <div className="flex items-center">
-                                <div className="p-3 rounded-full brand-gradient">
+                                <div className="p-3 rounded-full brand-chip">
                                     <span className="text-2xl text-white">📋</span>
                                 </div>
                                 <div className="ml-4">
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
 
                         <div className="glass-dark rounded-2xl shadow-lg p-6 border border-white/10">
                             <div className="flex items-center">
-                                <div className="p-3 rounded-full brand-gradient">
+                                <div className="p-3 rounded-full brand-chip">
                                     <span className="text-2xl text-white">✅</span>
                                 </div>
                                 <div className="ml-4">
@@ -183,7 +183,7 @@ export default function AdminDashboard() {
                         >
                             <div className="p-6">
                                 <div className="flex items-center mb-4">
-                                    <div className="w-12 h-12 brand-gradient rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <div className="w-12 h-12 brand-chip rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <span className="text-2xl text-white">{module.icon}</span>
                                     </div>
                                 </div>
