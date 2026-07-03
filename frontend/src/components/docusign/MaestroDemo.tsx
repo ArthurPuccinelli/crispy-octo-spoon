@@ -203,7 +203,7 @@ export function useCartaoMaestroFlow() {
             const inputs: Record<string, string> = {}
             if (session?.name) inputs.nome = session.name
             if (session?.email) inputs.email = session.email
-            if (session?.cpf) inputs.cpfcnpj = session.cpf.replace(/\D/g, '')
+            if (session?.cpf) inputs.cpfcnpj = session.cpf
             return inputs
         },
         getInstanceName: () => {

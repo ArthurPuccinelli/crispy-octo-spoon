@@ -5,7 +5,6 @@
 
 import { useEffect, useState } from 'react'
 import { BankSession, getBankSession, updateBankSession } from '@/lib/bankSession'
-import { validateCpf } from '@/components/docusign/demoDocument'
 
 function maskCpf(raw: string): string {
     const digits = raw.replace(/\D/g, '').slice(0, 11)
@@ -54,11 +53,6 @@ export default function DadosPage() {
             setError('Informe um e-mail válido.')
             return
         }
-        if (cpf.trim() && !validateCpf(cpf)) {
-            setError('CPF inválido — confira os dígitos.')
-            return
-        }
-
         const updated = updateBankSession({
             name: nome,
             email,
