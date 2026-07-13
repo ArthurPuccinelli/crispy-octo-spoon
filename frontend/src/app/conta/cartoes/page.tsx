@@ -112,7 +112,7 @@ export default function CartoesPage() {
                                 <span className="text-brand-accent">✓</span> Programa de pontos que não expiram
                             </li>
                             <li className="flex items-center gap-2">
-                                <span className="text-brand-accent">✓</span> Contratação guiada e assinatura digital, sem sair daqui
+                                <span className="text-brand-accent">✓</span> Contratação 100% digital, com assinatura eletrônica
                             </li>
                         </ul>
                     </div>

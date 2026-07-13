@@ -1,6 +1,7 @@
 'use client'
 
-// Fluxos Maestro — dispara um workflow e abre a jornada embutida em um modal amplo.
+// Fluxos Maestro — dispara um workflow e abre a jornada embutida em um modal amplo
+// ou em uma nova aba (openInNewTab).
 // Trata o fluxo de consentimento OAuth quando necessário.
 // O workflow é resolvido no backend: chave conhecida ('emprestimos', 'cartao') → env var
 // do Netlify, ou UUID direto.
@@ -19,6 +20,8 @@ export type MaestroFlowOptions = {
     errorLabel?: string
     /** Oculta o cabeçalho do modal (fica só o botão de fechar flutuante). */
     hideHeader?: boolean
+    /** Abre a jornada em uma nova aba em vez do modal. */
+    openInNewTab?: boolean
     /** Inputs do trigger, avaliados no clique (ex.: dados do cliente logado). */
     getInputs?: () => Record<string, string>
     /** Nome da instância do workflow, avaliado no clique. */
@@ -30,9 +33,25 @@ export function useMaestroFlow(options: MaestroFlowOptions = {}) {
     const [showModal, setShowModal] = useState(false)
     const [maestroUrl, setMaestroUrl] = useState('')
 
+    const openInTab = (tab: Window | null, url: string) => {
+        if (tab && !tab.closed) {
+            tab.location.href = url
+        } else {
+            window.open(url, '_blank')
+        }
+    }
+
     const start = async () => {
         if (starting) return
         setStarting(true)
+        // A aba precisa ser aberta de forma síncrona no clique — depois do fetch
+        // o navegador trataria o window.open como popup e bloquearia.
+        const tab = options.openInNewTab ? window.open('', '_blank') : null
+        if (tab) {
+            try {
+                tab.document.write('<title>Contratação digital</title><p style="font-family:system-ui,sans-serif;padding:2.5rem;color:#334155">Preparando sua contratação digital…</p>')
+            } catch (_) { /* melhor esforço */ }
+        }
         // Monta o body no momento do clique — os dados do cliente podem ter
         // sido atualizados em /conta/dados depois da montagem do componente.
         const triggerBody = JSON.stringify({
@@ -71,7 +90,11 @@ export function useMaestroFlow(options: MaestroFlowOptions = {}) {
 
                     if (retryRes.ok && (retryData.workflowInstanceUrl || retryData?.data?.workflowInstanceUrl || retryData?.instanceUrl)) {
                         const url = retryData.workflowInstanceUrl || retryData?.data?.workflowInstanceUrl || retryData?.instanceUrl
-                        window.location.href = url
+                        if (options.openInNewTab) {
+                            openInTab(tab, url)
+                        } else {
+                            window.location.href = url
+                        }
                         return
                     }
                 }
@@ -88,6 +111,7 @@ export function useMaestroFlow(options: MaestroFlowOptions = {}) {
                 })
                 const consentData = await consentRes.json()
                 if (consentRes.ok && consentData.consentUrl) {
+                    if (tab && !tab.closed) tab.close()
                     window.location.href = consentData.consentUrl
                     return
                 } else {
@@ -107,10 +131,16 @@ export function useMaestroFlow(options: MaestroFlowOptions = {}) {
                 throw new Error('Dados da contratação não retornados' + diag)
             }
 
-            // Abrir a jornada embutida no modal
-            setMaestroUrl(workflowInstanceUrl)
-            setShowModal(true)
+            if (options.openInNewTab) {
+                // Abrir a jornada na nova aba — o cliente fecha ao concluir
+                openInTab(tab, workflowInstanceUrl)
+            } else {
+                // Abrir a jornada embutida no modal
+                setMaestroUrl(workflowInstanceUrl)
+                setShowModal(true)
+            }
         } catch (e: any) {
+            if (tab && !tab.closed) tab.close()
             alert(`Erro ao iniciar ${options.errorLabel || 'a contratação'}: ${e?.message || 'desconhecido'}`)
         } finally {
             setStarting(false)
@@ -195,7 +225,7 @@ export function useCartaoMaestroFlow() {
     const flow = useMaestroFlow({
         workflow: 'cartao',
         errorLabel: 'a contratação do cartão',
-        hideHeader: true,
+        openInNewTab: true,
         // Alimenta o workflow com os dados do cliente logado (perfil em /conta/dados).
         // Nomes dos campos conforme o trigger input schema do workflow: nome / email / cpfcnpj.
         getInputs: () => {
